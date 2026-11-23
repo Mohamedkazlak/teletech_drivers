@@ -1,0 +1,17 @@
+---
+alwaysApply: true
+
+You are helping build "TeleTech Drivers", a Flutter app (Android only for testing) for company car/trip assignment.
+
+Non-negotiable engineering rules:
+- Clean code, SOLID, OOP. Small classes, single responsibility, meaningful names, no dead code, no giant widgets.
+- Feature-first clean architecture. Each feature has domain (entities, repository interfaces, use cases), data (models, data sources, repository implementations) and presentation (screens, widgets, Riverpod providers). Presentation never calls the HTTP client directly; it only uses domain repositories through providers.
+- Use these design patterns where they fit and name them in short comments: Repository, Factory, Strategy, Observer (streams), State (trip lifecycle), Dependency Injection (Riverpod).
+- State management: Riverpod. Navigation: go_router with role-based redirects.
+- Backend: the Laravel API in /backend. Do not change that API unless the task says so. No Google Maps billing. Map: flutter_map with OpenStreetMap tiles.
+- Roles: admin, companyAdmin, driversAdmin, driver, employee. Self-registration always creates an employee.
+- Every user-facing string goes through localization (English and Arabic, RTL-safe layouts). No hardcoded strings in widgets.
+- Handle loading, empty and error states on every screen. Show friendly error messages mapped from a Failure class, never raw exceptions.
+- After each task, run flutter analyze and fix all warnings. Do not leave TODOs.
+- Do not add packages I did not approve. If you need one, tell me why first.
+---

@@ -1,0 +1,21 @@
+import 'package:teletech_drivers/features/trip_request/domain/entities/trip_request.dart';
+import 'package:teletech_drivers/features/trip_request/domain/repositories/trip_request_repository.dart';
+
+/// Posts the employee's trip report.
+class ConfirmTripUseCase {
+  const ConfirmTripUseCase(this._repository);
+
+  final TripRequestRepository _repository;
+
+  Future<TripRequest> call({
+    required String requestId,
+    required bool driverShowedUp,
+    String? note,
+  }) {
+    return _repository.confirmTrip(
+      requestId: requestId,
+      driverShowedUp: driverShowedUp,
+      note: note,
+    );
+  }
+}

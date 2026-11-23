@@ -1,0 +1,3251 @@
+{
+  "@@locale": "en",
+  "appTitle": "TeleCars",
+  "@appTitle": {
+    "description": "Application title shown in the app bar and task switcher"
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "Label for switching to English"
+  },
+  "languageArabic": "Arabic",
+  "@languageArabic": {
+    "description": "Label for switching to Arabic"
+  },
+  "loginTitle": "Sign in",
+  "@loginTitle": {
+    "description": "Title of the sign-in screen"
+  },
+  "loginSubtitle": "Sign in with your company account.",
+  "@loginSubtitle": {
+    "description": "Supporting text on the sign-in screen"
+  },
+  "registerTitle": "Employee registration",
+  "@registerTitle": {
+    "description": "Title of the employee registration screen"
+  },
+  "registerSubtitle": "New accounts are created as employees.",
+  "@registerSubtitle": {
+    "description": "Supporting text explaining that registration creates an employee"
+  },
+  "nameLabel": "Name",
+  "@nameLabel": {
+    "description": "Label for the name field"
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for the email field"
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label for the password field"
+  },
+  "confirmPasswordLabel": "Confirm password",
+  "@confirmPasswordLabel": {
+    "description": "Label for the confirm-password field"
+  },
+  "signIn": "Sign in",
+  "@signIn": {
+    "description": "Button that submits the sign-in form"
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "Button that signs the current user out"
+  },
+  "createEmployeeAccount": "Create an employee account",
+  "@createEmployeeAccount": {
+    "description": "Action that opens employee registration or submits it"
+  },
+  "alreadyHaveAccount": "Already have an account? Sign in",
+  "@alreadyHaveAccount": {
+    "description": "Action that returns from registration to sign-in"
+  },
+  "validationNameRequired": "Enter your name.",
+  "@validationNameRequired": {
+    "description": "Validation message when the name is empty"
+  },
+  "validationEmailRequired": "Enter your email.",
+  "@validationEmailRequired": {
+    "description": "Validation message when the email is empty"
+  },
+  "validationEmailInvalid": "Enter a valid email address.",
+  "@validationEmailInvalid": {
+    "description": "Validation message when the email format is invalid"
+  },
+  "validationPasswordRequired": "Enter your password.",
+  "@validationPasswordRequired": {
+    "description": "Validation message when the password is empty"
+  },
+  "validationPasswordShort": "Use at least 8 characters.",
+  "@validationPasswordShort": {
+    "description": "Validation message when the password is shorter than 8 characters"
+  },
+  "validationConfirmPasswordRequired": "Confirm your password.",
+  "@validationConfirmPasswordRequired": {
+    "description": "Validation message when password confirmation is empty"
+  },
+  "validationPasswordMismatch": "The passwords do not match.",
+  "@validationPasswordMismatch": {
+    "description": "Validation message when the passwords differ"
+  },
+  "showPassword": "Show password",
+  "@showPassword": {
+    "description": "Tooltip for revealing a password"
+  },
+  "hidePassword": "Hide password",
+  "@hidePassword": {
+    "description": "Tooltip for hiding a password"
+  },
+  "loading": "Loading",
+  "@loading": {
+    "description": "Semantics label for a progress indicator"
+  },
+  "tryAgain": "Try again",
+  "@tryAgain": {
+    "description": "Button that retries loading the signed-in user"
+  },
+  "couldNotContinue": "Could not continue",
+  "@couldNotContinue": {
+    "description": "Title shown when auth state cannot be resolved"
+  },
+  "companyAdminHomeTitle": "Company admin",
+  "@companyAdminHomeTitle": {
+    "description": "Title of the company admin home screen"
+  },
+  "driversAdminHomeTitle": "Drivers admin",
+  "@driversAdminHomeTitle": {
+    "description": "Title of the drivers admin home screen"
+  },
+  "driverHomeTitle": "Driver",
+  "@driverHomeTitle": {
+    "description": "Title of the driver home screen"
+  },
+  "employeeHomeTitle": "Employee",
+  "@employeeHomeTitle": {
+    "description": "Title of the employee home screen"
+  },
+  "roleHomeWelcome": "Welcome, {name}",
+  "@roleHomeWelcome": {
+    "description": "Greeting on a role home screen",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sara"
+      }
+    }
+  },
+  "companyAdminHomeSubtitle": "Review trip requests and overall trip progress.",
+  "@companyAdminHomeSubtitle": {
+    "description": "Supporting text on the company admin home screen"
+  },
+  "requestsTab": "Requests",
+  "@requestsTab": {
+    "description": "Tab label for the trip requests list"
+  },
+  "pendingRequestsTab": "Pending requests",
+  "@pendingRequestsTab": {
+    "description": "Tab label for the pending trip requests queue"
+  },
+  "tripsTab": "Trips",
+  "@tripsTab": {
+    "description": "Tab label for the trips list"
+  },
+  "placesTab": "Places",
+  "@placesTab": {
+    "description": "Tab label for the approved places list"
+  },
+  "placesEmptyTitle": "No places yet",
+  "@placesEmptyTitle": {
+    "description": "Title when there are no approved places"
+  },
+  "placesEmptyMessage": "Seed the company places list, or add a place manually. Active places appear for employees when they request a trip.",
+  "@placesEmptyMessage": {
+    "description": "Supporting text when there are no approved places"
+  },
+  "addPlace": "Add place",
+  "@addPlace": {
+    "description": "Button that opens the add-place form"
+  },
+  "addPlaceTitle": "Add place",
+  "@addPlaceTitle": {
+    "description": "Title of the add-place dialog"
+  },
+  "editPlace": "Edit place",
+  "@editPlace": {
+    "description": "Tooltip for editing a place"
+  },
+  "editPlaceTitle": "Edit place",
+  "@editPlaceTitle": {
+    "description": "Title of the edit-place dialog"
+  },
+  "savePlace": "Save",
+  "@savePlace": {
+    "description": "Button that saves place edits"
+  },
+  "placeNameEnLabel": "Name (English)",
+  "@placeNameEnLabel": {
+    "description": "Label for the English place name field"
+  },
+  "placeNameArLabel": "Name (Arabic)",
+  "@placeNameArLabel": {
+    "description": "Label for the Arabic place name field"
+  },
+  "placeHeadquartersLabel": "Company headquarters",
+  "@placeHeadquartersLabel": {
+    "description": "Switch label marking a place as the company HQ"
+  },
+  "placeHeadquartersHint": "Only one place can be headquarters. Turning this on clears the flag on other places.",
+  "@placeHeadquartersHint": {
+    "description": "Hint under the headquarters switch in the place form"
+  },
+  "placeHeadquartersBadge": "Headquarters",
+  "@placeHeadquartersBadge": {
+    "description": "Badge shown on the places list for the HQ place"
+  },
+  "placeStatusActive": "Active",
+  "@placeStatusActive": {
+    "description": "Subtitle when a place is active"
+  },
+  "placeStatusInactive": "Inactive",
+  "@placeStatusInactive": {
+    "description": "Subtitle when a place is inactive"
+  },
+  "placeCreated": "Place added.",
+  "@placeCreated": {
+    "description": "SnackBar after a place is created"
+  },
+  "placeUpdated": "Place updated.",
+  "@placeUpdated": {
+    "description": "SnackBar after a place is edited"
+  },
+  "deletePlace": "Delete place",
+  "@deletePlace": {
+    "description": "Tooltip and confirm action for deleting a place"
+  },
+  "deletePlaceConfirmTitle": "Delete this place?",
+  "@deletePlaceConfirmTitle": {
+    "description": "Title of the delete-place confirmation dialog"
+  },
+  "deletePlaceConfirmMessage": "\"{name}\" will be removed from the approved places list.",
+  "@deletePlaceConfirmMessage": {
+    "description": "Body of the delete-place confirmation dialog",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Warehouse"
+      }
+    }
+  },
+  "placeDeleted": "Place deleted.",
+  "@placeDeleted": {
+    "description": "SnackBar after a place is deleted"
+  },
+  "seedDefaultPlaces": "Seed default places",
+  "@seedDefaultPlaces": {
+    "description": "One-time action that creates company default places when the list is empty"
+  },
+  "placesSeeded": "Default places created.",
+  "@placesSeeded": {
+    "description": "SnackBar after default places are seeded"
+  },
+  "validationPlaceNameEnRequired": "Enter the English name.",
+  "@validationPlaceNameEnRequired": {
+    "description": "Validation when the English place name is empty"
+  },
+  "validationPlaceNameArRequired": "Enter the Arabic name.",
+  "@validationPlaceNameArRequired": {
+    "description": "Validation when the Arabic place name is empty"
+  },
+  "validationPlaceNameDuplicate": "A place with this name already exists.",
+  "@validationPlaceNameDuplicate": {
+    "description": "Validation when a place name duplicates an existing one"
+  },
+  "errorConflict": "That name is already in use.",
+  "@errorConflict": {
+    "description": "Friendly message for ConflictFailure"
+  },
+  "pendingRequestsEmptyTitle": "No pending requests",
+  "@pendingRequestsEmptyTitle": {
+    "description": "Title when the pending requests queue is empty"
+  },
+  "pendingRequestsEmptyMessage": "New employee trip requests will show up here.",
+  "@pendingRequestsEmptyMessage": {
+    "description": "Supporting text when there are no pending requests"
+  },
+  "tripsEmptyTitle": "No trips yet",
+  "@tripsEmptyTitle": {
+    "description": "Title when there are no trips"
+  },
+  "tripsEmptyMessage": "Trips created by the drivers admin will appear here.",
+  "@tripsEmptyMessage": {
+    "description": "Supporting text when there are no trips"
+  },
+  "approveTripRequest": "Approve",
+  "@approveTripRequest": {
+    "description": "Button that approves a pending trip request"
+  },
+  "approveTripRequestTitle": "Approve this request?",
+  "@approveTripRequestTitle": {
+    "description": "Title of the approve confirmation dialog"
+  },
+  "approveTripRequestMessage": "The request will move to approved so the drivers admin can create a trip.",
+  "@approveTripRequestMessage": {
+    "description": "Body of the approve confirmation dialog"
+  },
+  "confirmApproveTripRequest": "Approve request",
+  "@confirmApproveTripRequest": {
+    "description": "Confirm action in the approve dialog"
+  },
+  "tripRequestApproved": "Trip request approved.",
+  "@tripRequestApproved": {
+    "description": "SnackBar after a trip request is approved"
+  },
+  "rejectTripRequest": "Reject",
+  "@rejectTripRequest": {
+    "description": "Button that opens the reject-request dialog"
+  },
+  "rejectTripRequestTitle": "Reject this request?",
+  "@rejectTripRequestTitle": {
+    "description": "Title of the reject confirmation dialog"
+  },
+  "rejectTripRequestMessage": "The employee will see this request as rejected.",
+  "@rejectTripRequestMessage": {
+    "description": "Body of the reject confirmation dialog"
+  },
+  "rejectionReasonLabel": "Reason (optional)",
+  "@rejectionReasonLabel": {
+    "description": "Label for the optional rejection reason field"
+  },
+  "rejectionReasonHint": "Tell the employee why it was rejected",
+  "@rejectionReasonHint": {
+    "description": "Hint for the optional rejection reason field"
+  },
+  "confirmRejectTripRequest": "Reject request",
+  "@confirmRejectTripRequest": {
+    "description": "Confirm action in the reject dialog"
+  },
+  "dialogCancel": "Cancel",
+  "@dialogCancel": {
+    "description": "Generic cancel action that closes a dialog"
+  },
+  "tripRequestRejected": "Trip request rejected.",
+  "@tripRequestRejected": {
+    "description": "SnackBar after a trip request is rejected"
+  },
+  "selectedRequestsCount": "{count} selected",
+  "@selectedRequestsCount": {
+    "description": "How many pending requests are selected",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "createOneTripPerRequest": "Create one trip per request",
+  "@createOneTripPerRequest": {
+    "description": "Action that uses the OneRequestPerTrip strategy"
+  },
+  "groupIntoOneTrip": "Group into one trip",
+  "@groupIntoOneTrip": {
+    "description": "Action that uses the GroupedRequests strategy"
+  },
+  "groupingSuggestionBanner": "{count} requests look groupable",
+  "@groupingSuggestionBanner": {
+    "description": "Dismissible banner above the pending requests list",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "groupingSuggestionDismiss": "Dismiss",
+  "@groupingSuggestionDismiss": {
+    "description": "Tooltip for closing the grouping suggestion banner"
+  },
+  "groupingSuggestionsSheetTitle": "Suggested groupings",
+  "@groupingSuggestionsSheetTitle": {
+    "description": "Title of the bottom sheet listing suggested request clusters"
+  },
+  "groupingSuggestionsEmpty": "No grouping suggestions left.",
+  "@groupingSuggestionsEmpty": {
+    "description": "Empty state when all suggestions were ignored or approved"
+  },
+  "groupingSuggestionTimeSpan": "Time: {span}",
+  "@groupingSuggestionTimeSpan": {
+    "description": "Time span line on a suggested cluster card",
+    "placeholders": {
+      "span": {
+        "type": "String",
+        "example": "Oct 26, 2026 9:00 AM – 9:45 AM"
+      }
+    }
+  },
+  "groupingSuggestionRequestCount": "{count, plural, =1{1 request} other{{count} requests}}",
+  "@groupingSuggestionRequestCount": {
+    "description": "How many requests are in a suggested cluster",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "groupingSuggestionRemoveRequest": "Remove from group",
+  "@groupingSuggestionRemoveRequest": {
+    "description": "Tooltip to remove one request from a suggested cluster"
+  },
+  "groupingSuggestionApproveAsGroup": "Approve as group",
+  "@groupingSuggestionApproveAsGroup": {
+    "description": "Approves all requests in the cluster with a shared suggestedGroupId"
+  },
+  "groupingSuggestionIgnore": "Ignore",
+  "@groupingSuggestionIgnore": {
+    "description": "Dismisses one suggested cluster without approving"
+  },
+  "groupingSuggestionApproved": "Requests approved as a group.",
+  "@groupingSuggestionApproved": {
+    "description": "SnackBar after approving a suggested cluster"
+  },
+  "suggestedGroupTitle": "Suggested group ({count})",
+  "@suggestedGroupTitle": {
+    "description": "Drivers Admin card title for requests sharing suggestedGroupId",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "suggestedGroupEmployees": "Employees: {names}",
+  "@suggestedGroupEmployees": {
+    "description": "Employee names on a suggested group card",
+    "placeholders": {
+      "names": {
+        "type": "String",
+        "example": "Sara, Omar"
+      }
+    }
+  },
+  "createGroupedTrip": "Create grouped trip",
+  "@createGroupedTrip": {
+    "description": "Drivers Admin action using GroupedRequests for a suggested group"
+  },
+  "splitSuggestedGroup": "Split",
+  "@splitSuggestedGroup": {
+    "description": "Breaks a suggested group so requests can be handled individually"
+  },
+  "tripsCreated": "Trip(s) created.",
+  "@tripsCreated": {
+    "description": "SnackBar after trips are created from requests"
+  },
+  "tripRequestDestinationValue": "To: {destination}",
+  "@tripRequestDestinationValue": {
+    "description": "Destination line on a request card",
+    "placeholders": {
+      "destination": {
+        "type": "String",
+        "example": "Airport"
+      }
+    }
+  },
+  "tripScheduledValue": "Scheduled: {dateTime}",
+  "@tripScheduledValue": {
+    "description": "Scheduled time line on a trip card",
+    "placeholders": {
+      "dateTime": {
+        "type": "String",
+        "example": "Oct 18, 2026 9:00 AM"
+      }
+    }
+  },
+  "tripPassengersCount": "{count, plural, =1{1 passenger} other{{count} passengers}}",
+  "@tripPassengersCount": {
+    "description": "Passenger count on a trip summary card",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "tripDetailsTitle": "Trip details",
+  "@tripDetailsTitle": {
+    "description": "Title of the trip details screen"
+  },
+  "tripPassengersSection": "Passengers",
+  "@tripPassengersSection": {
+    "description": "Section heading for passengers on trip details"
+  },
+  "tripRequestsSection": "Requests",
+  "@tripRequestsSection": {
+    "description": "Section heading for linked requests on trip details"
+  },
+  "tripStatusUnassigned": "Unassigned",
+  "@tripStatusUnassigned": {
+    "description": "Status chip for an unassigned trip"
+  },
+  "tripStatusAssigned": "Assigned",
+  "@tripStatusAssigned": {
+    "description": "Status chip for an assigned trip"
+  },
+  "tripStatusGoing": "Going",
+  "@tripStatusGoing": {
+    "description": "Status chip for a trip en route to destination"
+  },
+  "tripStatusAtDestination": "At destination",
+  "@tripStatusAtDestination": {
+    "description": "Status chip while the driver is at the destination"
+  },
+  "tripStatusReturning": "Returning",
+  "@tripStatusReturning": {
+    "description": "Status chip for the return leg of a trip"
+  },
+  "tripStatusCompleted": "Completed",
+  "@tripStatusCompleted": {
+    "description": "Status chip for a completed trip"
+  },
+  "tripStatusCancelled": "Cancelled",
+  "@tripStatusCancelled": {
+    "description": "Status chip for a cancelled trip"
+  },
+  "arrivedAtDestination": "Arrived at destination",
+  "@arrivedAtDestination": {
+    "description": "Driver action to mark arrival at destination"
+  },
+  "arrivedAtDestinationConfirmTitle": "Mark arrived at destination?",
+  "@arrivedAtDestinationConfirmTitle": {
+    "description": "Confirm dialog title for arrive action"
+  },
+  "arrivedAtDestinationConfirmMessage": "This ends the going phase and saves the route so far.",
+  "@arrivedAtDestinationConfirmMessage": {
+    "description": "Confirm dialog body for arrive action"
+  },
+  "arrivedAtDestinationSuccess": "Arrived at destination.",
+  "@arrivedAtDestinationSuccess": {
+    "description": "SnackBar after arrive action succeeds"
+  },
+  "startReturn": "Start return",
+  "@startReturn": {
+    "description": "Driver action to begin the return leg"
+  },
+  "startReturnConfirmTitle": "Start the return leg?",
+  "@startReturnConfirmTitle": {
+    "description": "Confirm dialog title for start return"
+  },
+  "startReturnConfirmMessage": "Location tracking resumes for the trip back.",
+  "@startReturnConfirmMessage": {
+    "description": "Confirm dialog body for start return"
+  },
+  "startReturnSuccess": "Return started.",
+  "@startReturnSuccess": {
+    "description": "SnackBar after start return succeeds"
+  },
+  "locationPermissionDeniedTitle": "Location permission needed",
+  "@locationPermissionDeniedTitle": {
+    "description": "Title when when-in-use location was denied"
+  },
+  "locationPermissionDeniedMessage": "Allow location while using the app so dispatch can follow your trip.",
+  "@locationPermissionDeniedMessage": {
+    "description": "Body when location permission was denied"
+  },
+  "locationPermissionPermanentlyDeniedMessage": "Location access is blocked. Open app settings to enable it.",
+  "@locationPermissionPermanentlyDeniedMessage": {
+    "description": "Body when location permission is permanently denied"
+  },
+  "locationServicesDisabledMessage": "Turn on GPS / location services to share your trip position.",
+  "@locationServicesDisabledMessage": {
+    "description": "Body when device location services are off"
+  },
+  "openAppSettings": "Open app settings",
+  "@openAppSettings": {
+    "description": "Button that opens the system app settings page"
+  },
+  "enableLocationServices": "Enable location services",
+  "@enableLocationServices": {
+    "description": "Button that opens system location settings"
+  },
+  "driversAdminHomeSubtitle": "Manage drivers and assign trips.",
+  "@driversAdminHomeSubtitle": {
+    "description": "Supporting text on the drivers admin home screen"
+  },
+  "driversTab": "Drivers",
+  "@driversTab": {
+    "description": "Tab label for the drivers list"
+  },
+  "driversEmptyTitle": "No drivers exist yet",
+  "@driversEmptyTitle": {
+    "description": "Title when there are no drivers"
+  },
+  "driversEmptyMessage": "Add a driver account to start assigning trips.",
+  "@driversEmptyMessage": {
+    "description": "Supporting text when there are no drivers"
+  },
+  "fixLegacyDrivers": "Fix legacy drivers",
+  "@fixLegacyDrivers": {
+    "description": "Admin action that backfills missing fields on old driver documents"
+  },
+  "fixLegacyDriversConfirmTitle": "Fix legacy driver profiles?",
+  "@fixLegacyDriversConfirmTitle": {
+    "description": "Title of the confirmation dialog for legacy driver backfill"
+  },
+  "fixLegacyDriversConfirmMessage": "This writes missing defaults (active status and bilingual names from the old name) onto driver accounts that still use the previous format.",
+  "@fixLegacyDriversConfirmMessage": {
+    "description": "Body of the confirmation dialog for legacy driver backfill"
+  },
+  "fixLegacyDriversConfirmAction": "Fix now",
+  "@fixLegacyDriversConfirmAction": {
+    "description": "Confirm button for legacy driver backfill"
+  },
+  "fixLegacyDriversSuccess": "{count} driver profiles updated.",
+  "@fixLegacyDriversSuccess": {
+    "description": "SnackBar after legacy driver documents were patched",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fixLegacyDriversNone": "All driver profiles already look up to date.",
+  "@fixLegacyDriversNone": {
+    "description": "SnackBar when no legacy driver documents needed a patch"
+  },
+  "addDriver": "Add driver",
+  "@addDriver": {
+    "description": "Button that opens the add-driver form"
+  },
+  "addDriverTitle": "Add driver",
+  "@addDriverTitle": {
+    "description": "Title of the add-driver dialog"
+  },
+  "phoneLabelOptional": "Phone (optional)",
+  "@phoneLabelOptional": {
+    "description": "Label for the optional phone field"
+  },
+  "temporaryPasswordLabel": "Temporary password",
+  "@temporaryPasswordLabel": {
+    "description": "Label for the temporary password field when creating a driver"
+  },
+  "driverStatusActive": "Active",
+  "@driverStatusActive": {
+    "description": "Subtitle when a driver is active"
+  },
+  "driverStatusInactive": "Inactive",
+  "@driverStatusInactive": {
+    "description": "Subtitle when a driver is inactive"
+  },
+  "driverCreated": "Driver account created.",
+  "@driverCreated": {
+    "description": "SnackBar after a driver is created"
+  },
+  "validationPhoneTooLong": "Phone number is too long.",
+  "@validationPhoneTooLong": {
+    "description": "Validation when the phone number exceeds the max length"
+  },
+  "errorAccountInactive": "This driver account is inactive. Contact an administrator.",
+  "@errorAccountInactive": {
+    "description": "Friendly message when an inactive driver tries to sign in"
+  },
+  "errorOrphanedAccountCleanupFailed": "The account was created but the profile could not be saved, and cleanup failed. Contact an administrator.",
+  "@errorOrphanedAccountCleanupFailed": {
+    "description": "Friendly message when the account was created but the profile could not be saved and cleanup failed"
+  },
+  "tripsUnassignedTab": "Unassigned",
+  "@tripsUnassignedTab": {
+    "description": "Tab for trips with no driver"
+  },
+  "tripsAssignedTab": "Assigned",
+  "@tripsAssignedTab": {
+    "description": "Tab for trips that have a driver"
+  },
+  "tripsAllTab": "All",
+  "@tripsAllTab": {
+    "description": "Tab for every trip"
+  },
+  "adminTripsEmptyTitle": "No trips here",
+  "@adminTripsEmptyTitle": {
+    "description": "Title when a drivers-admin trips filter is empty"
+  },
+  "adminTripsUnassignedEmptyMessage": "Unassigned trips from company admin will show up here.",
+  "@adminTripsUnassignedEmptyMessage": {
+    "description": "Empty message for the unassigned trips tab"
+  },
+  "adminTripsAssignedEmptyMessage": "Assigned trips will show up here.",
+  "@adminTripsAssignedEmptyMessage": {
+    "description": "Empty message for the assigned trips tab"
+  },
+  "adminTripsAllEmptyMessage": "Trips created by company admin will show up here.",
+  "@adminTripsAllEmptyMessage": {
+    "description": "Empty message for the all-trips tab"
+  },
+  "tripRouteSummary": "{pickup} → {destination}",
+  "@tripRouteSummary": {
+    "description": "Short pickup to destination route on a trip card",
+    "placeholders": {
+      "pickup": {
+        "type": "String",
+        "example": "Office"
+      },
+      "destination": {
+        "type": "String",
+        "example": "Airport"
+      }
+    }
+  },
+  "assignDriver": "Assign driver",
+  "@assignDriver": {
+    "description": "Button that opens the driver picker for an unassigned trip"
+  },
+  "reassignDriver": "Reassign driver",
+  "@reassignDriver": {
+    "description": "Button that opens the driver picker to change the assigned driver"
+  },
+  "cancelTrip": "Cancel trip",
+  "@cancelTrip": {
+    "description": "Button that cancels a trip that has not started"
+  },
+  "cancelTripConfirmTitle": "Cancel this trip?",
+  "@cancelTripConfirmTitle": {
+    "description": "Title of the cancel-trip confirmation dialog"
+  },
+  "cancelTripConfirmMessage": "This trip has not started and will be marked cancelled.",
+  "@cancelTripConfirmMessage": {
+    "description": "Body of the cancel-trip confirmation dialog"
+  },
+  "confirmCancelTrip": "Cancel trip",
+  "@confirmCancelTrip": {
+    "description": "Confirm action in the cancel-trip dialog"
+  },
+  "tripCancelled": "Trip cancelled.",
+  "@tripCancelled": {
+    "description": "SnackBar after a trip is cancelled"
+  },
+  "tripDriverAssigned": "Driver assigned.",
+  "@tripDriverAssigned": {
+    "description": "SnackBar after a driver is assigned to a trip"
+  },
+  "tripDriverReassigned": "Driver reassigned.",
+  "@tripDriverReassigned": {
+    "description": "SnackBar after a trip driver is changed"
+  },
+  "selectDriverTitle": "Select a driver",
+  "@selectDriverTitle": {
+    "description": "Title of the active-driver picker sheet"
+  },
+  "noActiveDriversMessage": "No active drivers available. Activate a driver first.",
+  "@noActiveDriversMessage": {
+    "description": "Message when the assignment picker has no active drivers"
+  },
+  "driverScheduleConflictTitle": "Schedule overlap",
+  "@driverScheduleConflictTitle": {
+    "description": "Title of the warning when a driver has another nearby trip"
+  },
+  "driverScheduleConflictMessage": "This driver already has another trip within two hours of this time. You can still assign them.",
+  "@driverScheduleConflictMessage": {
+    "description": "Body of the schedule-overlap warning (warning, not a block)"
+  },
+  "driverScheduleConflictContinue": "Assign anyway",
+  "@driverScheduleConflictContinue": {
+    "description": "Confirm action that continues despite a schedule overlap warning"
+  },
+  "driverHasNearbyTripHint": "Has another trip within 2 hours",
+  "@driverHasNearbyTripHint": {
+    "description": "Hint under a driver name when they have a nearby trip"
+  },
+  "tripAssignedDriverValue": "Driver: {name}",
+  "@tripAssignedDriverValue": {
+    "description": "Assigned driver line on trip details",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Ahmed"
+      }
+    }
+  },
+  "driverHomeSubtitle": "View assigned, weekly, and past trips.",
+  "@driverHomeSubtitle": {
+    "description": "Supporting text describing the driver home trips view"
+  },
+  "driverTripsAssignedTab": "Assigned",
+  "@driverTripsAssignedTab": {
+    "description": "Tab for the driver's active assigned and in-progress trips"
+  },
+  "driverTripsWeeklyTab": "This week",
+  "@driverTripsWeeklyTab": {
+    "description": "Tab for trips scheduled in the current week"
+  },
+  "driverTripsPastTab": "Past",
+  "@driverTripsPastTab": {
+    "description": "Tab for completed and cancelled trips"
+  },
+  "driverTripsEmptyTitle": "No trips here",
+  "@driverTripsEmptyTitle": {
+    "description": "Title when a driver trips tab has no items"
+  },
+  "driverTripsAssignedEmptyMessage": "Trips assigned to you will appear here.",
+  "@driverTripsAssignedEmptyMessage": {
+    "description": "Empty message for the driver's assigned trips tab"
+  },
+  "driverTripsWeeklyEmptyMessage": "No trips planned for this week.",
+  "@driverTripsWeeklyEmptyMessage": {
+    "description": "Empty message for the driver's weekly trips tab"
+  },
+  "driverTripsPastEmptyMessage": "Completed and cancelled trips will appear here.",
+  "@driverTripsPastEmptyMessage": {
+    "description": "Empty message for the driver's past trips tab"
+  },
+  "startTrip": "Start trip",
+  "@startTrip": {
+    "description": "Button that starts an assigned trip"
+  },
+  "endTrip": "End trip",
+  "@endTrip": {
+    "description": "Button that ends an in-progress trip"
+  },
+  "startTripConfirmTitle": "Start this trip?",
+  "@startTripConfirmTitle": {
+    "description": "Title of the start-trip confirmation dialog"
+  },
+  "startTripConfirmMessage": "Passengers will see this trip as in progress.",
+  "@startTripConfirmMessage": {
+    "description": "Body of the start-trip confirmation dialog"
+  },
+  "endTripConfirmTitle": "End this trip?",
+  "@endTripConfirmTitle": {
+    "description": "Title of the end-trip confirmation dialog"
+  },
+  "endTripConfirmMessage": "This marks the trip as completed.",
+  "@endTripConfirmMessage": {
+    "description": "Body of the end-trip confirmation dialog"
+  },
+  "tripStarted": "Trip started.",
+  "@tripStarted": {
+    "description": "SnackBar after a driver starts a trip"
+  },
+  "tripEnded": "Trip completed.",
+  "@tripEnded": {
+    "description": "SnackBar after a driver ends a trip"
+  },
+  "employeeHomeSubtitle": "Your trip requests will appear here.",
+  "@employeeHomeSubtitle": {
+    "description": "Placeholder text on the employee home screen"
+  },
+  "homeEmpty": "Nothing to show yet.",
+  "@homeEmpty": {
+    "description": "Empty state on a role home screen"
+  },
+  "errorNetwork": "Unable to connect. Check your internet and try again.",
+  "@errorNetwork": {
+    "description": "Friendly message for NetworkFailure"
+  },
+  "errorAuth": "Authentication failed. Please sign in again.",
+  "@errorAuth": {
+    "description": "Friendly message for a generic AuthFailure"
+  },
+  "errorPermission": "You do not have permission to do that.",
+  "@errorPermission": {
+    "description": "Friendly message for PermissionFailure"
+  },
+  "errorUnknown": "Something went wrong. Please try again.",
+  "@errorUnknown": {
+    "description": "Friendly message for UnknownFailure"
+  },
+  "errorInvalidEmail": "Enter a valid email address.",
+  "@errorInvalidEmail": {
+    "description": "Friendly message when the email is rejected"
+  },
+  "errorInvalidCredentials": "The email or password is incorrect.",
+  "@errorInvalidCredentials": {
+    "description": "Friendly message for a failed sign-in"
+  },
+  "errorUserDisabled": "This account is disabled. Contact an administrator.",
+  "@errorUserDisabled": {
+    "description": "Friendly message when the account is disabled"
+  },
+  "errorEmailAlreadyInUse": "This email is already registered.",
+  "@errorEmailAlreadyInUse": {
+    "description": "Friendly message when registration uses an existing email"
+  },
+  "errorWeakPassword": "The password is too weak. Use at least 8 characters.",
+  "@errorWeakPassword": {
+    "description": "Friendly message when the password is rejected as weak"
+  },
+  "errorTooManyRequests": "Too many attempts. Wait a moment and try again.",
+  "@errorTooManyRequests": {
+    "description": "Friendly message when sign-in is rate limited"
+  },
+  "errorOperationNotAllowed": "Email sign-in is not available.",
+  "@errorOperationNotAllowed": {
+    "description": "Friendly message when email auth is disabled"
+  },
+  "errorMissingProfile": "This account has no user profile. Contact an administrator or register again.",
+  "@errorMissingProfile": {
+    "description": "Friendly message when the signed-in account has no profile"
+  },
+  "errorInvalidProfile": "This account profile is invalid. Contact an administrator.",
+  "@errorInvalidProfile": {
+    "description": "Friendly message when the stored profile cannot be read"
+  },
+  "errorNotFound": "That item could not be found.",
+  "@errorNotFound": {
+    "description": "Friendly message for NotFoundFailure"
+  },
+  "errorInvalidState": "That action is not available for the current status.",
+  "@errorInvalidState": {
+    "description": "Friendly message for InvalidStateFailure"
+  },
+  "tripRequestsEmptyTitle": "No trip requests yet",
+  "@tripRequestsEmptyTitle": {
+    "description": "Title shown when the employee has no trip requests"
+  },
+  "tripRequestsEmptyMessage": "Tap + to request a company car trip.",
+  "@tripRequestsEmptyMessage": {
+    "description": "Supporting text for the empty trip requests state"
+  },
+  "newTripRequest": "New trip request",
+  "@newTripRequest": {
+    "description": "Tooltip and action label for creating a trip request"
+  },
+  "newTripRequestTitle": "New request",
+  "@newTripRequestTitle": {
+    "description": "Title of the new trip request form"
+  },
+  "pickupLocationLabel": "Pickup place",
+  "@pickupLocationLabel": {
+    "description": "Label for the pickup place dropdown"
+  },
+  "destinationLabel": "Destination place",
+  "@destinationLabel": {
+    "description": "Label for the destination place dropdown"
+  },
+  "searchPlacesHint": "Search places",
+  "@searchPlacesHint": {
+    "description": "Hint inside the searchable place dropdown"
+  },
+  "otherPlaceOption": "Other (not listed)",
+  "@otherPlaceOption": {
+    "description": "Dropdown option for a place not in the approved list"
+  },
+  "customPlaceLabel": "Custom place",
+  "@customPlaceLabel": {
+    "description": "Label for the free-text custom place field"
+  },
+  "customPlaceHint": "Type the place name",
+  "@customPlaceHint": {
+    "description": "Hint for the free-text custom place field"
+  },
+  "noPlacesForRequestTitle": "No places available",
+  "@noPlacesForRequestTitle": {
+    "description": "Title when the employee cannot pick places yet"
+  },
+  "noPlacesForRequestMessage": "Contact your company admin to add approved places before requesting a trip.",
+  "@noPlacesForRequestMessage": {
+    "description": "Supporting text when no approved places exist for trip requests"
+  },
+  "requestedDateTimeLabel": "Date and time",
+  "@requestedDateTimeLabel": {
+    "description": "Label for the requested date and time field"
+  },
+  "selectDate": "Select date",
+  "@selectDate": {
+    "description": "Help text for the date picker"
+  },
+  "selectTime": "Select time",
+  "@selectTime": {
+    "description": "Help text for the time picker"
+  },
+  "selectDateTime": "Select date and time",
+  "@selectDateTime": {
+    "description": "Placeholder when no date/time is chosen yet"
+  },
+  "notesLabel": "Notes",
+  "@notesLabel": {
+    "description": "Label for optional trip request notes"
+  },
+  "notesHint": "One fellow employee name per line (do not include phone numbers).",
+  "@notesHint": {
+    "description": "Hint under notes telling employees to list fellow riders by name only"
+  },
+  "notesFellowEmployeesHint": "Write one name per line. Their phone numbers are never shared.",
+  "@notesFellowEmployeesHint": {
+    "description": "Extra helper text under the notes field on the new-request form"
+  },
+  "addAnotherNameLine": "Add another name",
+  "@addAnotherNameLine": {
+    "description": "Button that inserts a new line in notes for another fellow employee name"
+  },
+  "submitTripRequest": "Submit request",
+  "@submitTripRequest": {
+    "description": "Button that creates a trip request"
+  },
+  "cancelTripRequest": "Cancel request",
+  "@cancelTripRequest": {
+    "description": "Button that cancels a pending trip request"
+  },
+  "cancelTripRequestConfirmTitle": "Cancel this request?",
+  "@cancelTripRequestConfirmTitle": {
+    "description": "Title of the cancel confirmation dialog"
+  },
+  "cancelTripRequestConfirmMessage": "This pending request will be cancelled. You can create a new one later.",
+  "@cancelTripRequestConfirmMessage": {
+    "description": "Body of the cancel confirmation dialog"
+  },
+  "confirmCancelTripRequest": "Cancel request",
+  "@confirmCancelTripRequest": {
+    "description": "Confirm action in the cancel dialog"
+  },
+  "dialogDismiss": "Keep request",
+  "@dialogDismiss": {
+    "description": "Dismiss action that keeps the pending request"
+  },
+  "tripRequestStatusPending": "Pending",
+  "@tripRequestStatusPending": {
+    "description": "Status chip for a pending trip request"
+  },
+  "tripRequestStatusApproved": "Approved",
+  "@tripRequestStatusApproved": {
+    "description": "Status chip for an approved trip request"
+  },
+  "tripRequestStatusRejected": "Rejected",
+  "@tripRequestStatusRejected": {
+    "description": "Status chip for a rejected trip request"
+  },
+  "tripRequestStatusCancelled": "Cancelled",
+  "@tripRequestStatusCancelled": {
+    "description": "Status chip for a cancelled trip request"
+  },
+  "tripRequestPickupValue": "From: {pickup}",
+  "@tripRequestPickupValue": {
+    "description": "Pickup line on a trip request card",
+    "placeholders": {
+      "pickup": {
+        "type": "String",
+        "example": "Office gate"
+      }
+    }
+  },
+  "tripRequestWhenValue": "When: {dateTime}",
+  "@tripRequestWhenValue": {
+    "description": "Requested date/time line on a trip request card",
+    "placeholders": {
+      "dateTime": {
+        "type": "String",
+        "example": "Oct 17, 2026 5:00 PM"
+      }
+    }
+  },
+  "tripRequestNotesValue": "Notes: {notes}",
+  "@tripRequestNotesValue": {
+    "description": "Notes line on a trip request card",
+    "placeholders": {
+      "notes": {
+        "type": "String",
+        "example": "Bring laptop bag"
+      }
+    }
+  },
+  "validationPickupPlaceRequired": "Select a pickup place.",
+  "@validationPickupPlaceRequired": {
+    "description": "Validation when pickup place is missing"
+  },
+  "validationDestinationPlaceRequired": "Select a destination place.",
+  "@validationDestinationPlaceRequired": {
+    "description": "Validation when destination place is missing"
+  },
+  "validationCustomPlaceRequired": "Enter the custom place name.",
+  "@validationCustomPlaceRequired": {
+    "description": "Validation when Other is selected but the custom name is empty"
+  },
+  "validationPickupDestinationSame": "Pickup and destination must be different places.",
+  "@validationPickupDestinationSame": {
+    "description": "Validation when pickup and destination are the same place"
+  },
+  "validationDateTimeRequired": "Select a date and time.",
+  "@validationDateTimeRequired": {
+    "description": "Validation when date/time is missing"
+  },
+  "validationDateTimeFuture": "Choose a date and time in the future.",
+  "@validationDateTimeFuture": {
+    "description": "Validation when date/time is not in the future"
+  },
+  "tripRequestCreated": "Trip request submitted.",
+  "@tripRequestCreated": {
+    "description": "SnackBar after a trip request is created"
+  },
+  "requestATrip": "Request a trip",
+  "@requestATrip": {
+    "description": "FAB / action for company and drivers admins to request a trip for themselves"
+  },
+  "adminRequestChip": "Admin request",
+  "@adminRequestChip": {
+    "description": "Chip on auto-approved admin self-requests in admin queues"
+  },
+  "tripRequestCancelled": "Trip request cancelled.",
+  "@tripRequestCancelled": {
+    "description": "SnackBar after a trip request is cancelled"
+  },
+  "phoneLabel": "Phone",
+  "@phoneLabel": {
+    "description": "Label for the phone number field"
+  },
+  "validationPhoneRequired": "Enter your phone number.",
+  "@validationPhoneRequired": {
+    "description": "Validation when phone is empty"
+  },
+  "branchLabel": "Branch",
+  "@branchLabel": {
+    "description": "Label for the branch dropdown"
+  },
+  "validationBranchRequired": "Select your branch.",
+  "@validationBranchRequired": {
+    "description": "Validation when branch is not selected"
+  },
+  "branchCompanyHeadquarters": "Company Headquarters",
+  "@branchCompanyHeadquarters": {
+    "description": "Branch option: company headquarters"
+  },
+  "branchNewHeadquarters": "New Headquarters",
+  "@branchNewHeadquarters": {
+    "description": "Branch option: new headquarters"
+  },
+  "branchFilterAll": "All",
+  "@branchFilterAll": {
+    "description": "Branch filter chip that shows every branch"
+  },
+  "branchLockedHint": "Contact the admin to change your branch.",
+  "@branchLockedHint": {
+    "description": "Shown under the read-only branch on non-admin profiles"
+  },
+  "approvalFilterLabel": "Approval",
+  "@approvalFilterLabel": {
+    "description": "Company admin requested-trips filter for pending, approved, or rejected"
+  },
+  "tripStatusFilterLabel": "Trip status",
+  "@tripStatusFilterLabel": {
+    "description": "Company admin trips filter for the trip lifecycle"
+  },
+  "tripStatusUpcoming": "Upcoming",
+  "@tripStatusUpcoming": {
+    "description": "Trip status filter value for unassigned and assigned trips"
+  },
+  "tripStatusFilterInProgress": "In progress",
+  "@tripStatusFilterInProgress": {
+    "description": "Trip status filter value for a trip that has started"
+  },
+  "driversAdminTripUnassigned": "Your trip is unassigned. Open it here to choose a driver.",
+  "@driversAdminTripUnassigned": {
+    "description": "Shown after a drivers admin creates a trip for themselves"
+  },
+  "completeProfileTitle": "Complete your profile",
+  "@completeProfileTitle": {
+    "description": "Title of the complete-profile screen"
+  },
+  "completeProfileSubtitle": "Add your branch and phone number to continue.",
+  "@completeProfileSubtitle": {
+    "description": "Supporting text on the complete-profile screen"
+  },
+  "completeProfileSubmit": "Save and continue",
+  "@completeProfileSubmit": {
+    "description": "Button that saves branch and phone"
+  },
+  "completeProfileSaved": "Profile updated.",
+  "@completeProfileSaved": {
+    "description": "SnackBar after profile completion"
+  },
+  "callEmployeePhone": "Call {phone}",
+  "@callEmployeePhone": {
+    "description": "Semantics / tooltip for tap-to-call on the requester phone",
+    "placeholders": {
+      "phone": {
+        "type": "String",
+        "example": "+966500000000"
+      }
+    }
+  },
+  "requesterSection": "Requester",
+  "@requesterSection": {
+    "description": "Section title for the requesting employee on detail screens"
+  },
+  "requestersSection": "Requesters",
+  "@requestersSection": {
+    "description": "Heading when a grouped trip has more than one requester"
+  },
+  "passengersCountLabel": "Passengers: {count}",
+  "@passengersCountLabel": {
+    "description": "Passenger total on a driver trip, taken from the server count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "requestDetailsTitle": "Request details",
+  "@requestDetailsTitle": {
+    "description": "Title of the trip request details screen"
+  },
+  "tripDriverNameValue": "Driver: {name}",
+  "@tripDriverNameValue": {
+    "description": "Driver name line on a trip card",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Ahmed"
+      }
+    }
+  },
+  "tripDriverUnassigned": "Driver: Unassigned",
+  "@tripDriverUnassigned": {
+    "description": "Shown when a trip has no driver yet"
+  },
+  "tripStartedValue": "Started: {dateTime}",
+  "@tripStartedValue": {
+    "description": "Trip start time line",
+    "placeholders": {
+      "dateTime": {
+        "type": "String",
+        "example": "Oct 18, 2026 9:00 AM"
+      }
+    }
+  },
+  "tripEndedValue": "Ended: {dateTime}",
+  "@tripEndedValue": {
+    "description": "Trip end time line",
+    "placeholders": {
+      "dateTime": {
+        "type": "String",
+        "example": "Oct 18, 2026 10:00 AM"
+      }
+    }
+  },
+  "tripNotStartedYet": "Not started yet",
+  "@tripNotStartedYet": {
+    "description": "Shown when startedAt is null"
+  },
+  "tripNotEndedYet": "Not ended yet",
+  "@tripNotEndedYet": {
+    "description": "Shown when endedAt is null"
+  },
+  "approvedRequestsTab": "Approved requests",
+  "@approvedRequestsTab": {
+    "description": "Drivers admin tab for approved requests awaiting a trip"
+  },
+  "approvedRequestsEmptyTitle": "No approved requests",
+  "@approvedRequestsEmptyTitle": {
+    "description": "Title when there are no approved requests awaiting trips"
+  },
+  "approvedRequestsEmptyMessage": "Approved requests that are not yet in a trip will show up here.",
+  "@approvedRequestsEmptyMessage": {
+    "description": "Supporting text when approved-awaiting-trip queue is empty"
+  },
+  "tripsInProgressTab": "In progress",
+  "@tripsInProgressTab": {
+    "description": "Trips filter for started trips"
+  },
+  "tripsCompletedTab": "Completed",
+  "@tripsCompletedTab": {
+    "description": "Trips filter for completed trips"
+  },
+  "adminTripsInProgressEmptyMessage": "No trips in progress.",
+  "@adminTripsInProgressEmptyMessage": {
+    "description": "Empty state for in-progress trips filter"
+  },
+  "adminTripsCompletedEmptyMessage": "No completed trips yet.",
+  "@adminTripsCompletedEmptyMessage": {
+    "description": "Empty state for completed trips filter"
+  },
+  "liveMapTab": "Live map",
+  "@liveMapTab": {
+    "description": "Drivers admin tab for the live map"
+  },
+  "liveMapTitle": "Live map",
+  "@liveMapTitle": {
+    "description": "Title of driver and admin live map screens"
+  },
+  "sharingLocation": "Sharing location",
+  "@sharingLocation": {
+    "description": "Chip when the driver is sharing GPS with dispatch"
+  },
+  "locationSharingOff": "Location off",
+  "@locationSharingOff": {
+    "description": "Chip when location sharing is disabled"
+  },
+  "locationUpdateKeptLast": "Couldn't send a new position. Dispatch still has your last known location.",
+  "@locationUpdateKeptLast": {
+    "description": "Shown when a live GPS read or upload fails but the previous point is kept"
+  },
+  "locationSharingWarning": "Trip started, but location sharing is off. Tap Location off to enable GPS for dispatch.",
+  "@locationSharingWarning": {
+    "description": "Banner when trip starts without location permission"
+  },
+  "destinationLocationNotSet": "Destination location not set",
+  "@destinationLocationNotSet": {
+    "description": "Note on the map when place coordinates are missing"
+  },
+  "recenterMap": "Recenter",
+  "@recenterMap": {
+    "description": "Floating button to re-enable follow mode on the driver map"
+  },
+  "distanceRemainingKm": "{km} km remaining",
+  "@distanceRemainingKm": {
+    "description": "Straight-line distance remaining to destination",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "passengersFromNotes": "Passengers (from notes)",
+  "@passengersFromNotes": {
+    "description": "Label for fellow passengers listed in trip request notes"
+  },
+  "openLiveMap": "Open live map",
+  "@openLiveMap": {
+    "description": "Link from an in-progress trip to the live map"
+  },
+  "noActiveTripsRightNow": "No active trips right now",
+  "@noActiveTripsRightNow": {
+    "description": "Empty-state title when no drivers are tracking"
+  },
+  "noActiveTripsRightNowMessage": "A started trip appears here only after the driver app is sharing GPS (Location allowed + a GPS fix). Check the driver device if this stays empty.",
+  "@noActiveTripsRightNowMessage": {
+    "description": "Empty-state message for the admin live map"
+  },
+  "fitAllDrivers": "Fit all",
+  "@fitAllDrivers": {
+    "description": "Button that zooms the admin map to show all active drivers"
+  },
+  "lastSeenMinutesAgo": "Last seen {minutes} min ago",
+  "@lastSeenMinutesAgo": {
+    "description": "Stale driver marker label",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "speedKmh": "Speed: {speed} km/h",
+  "@speedKmh": {
+    "description": "Driver speed on the admin bottom sheet",
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "lastUpdateValue": "Last update: {time}",
+  "@lastUpdateValue": {
+    "description": "Last GPS update time on the admin bottom sheet",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "openTripDetails": "Open trip details",
+  "@openTripDetails": {
+    "description": "Button from admin live map sheet to trip details"
+  },
+  "placeCoordinatesLabel": "Location on map",
+  "@placeCoordinatesLabel": {
+    "description": "Section label for place lat/lng picker"
+  },
+  "useMyCurrentLocation": "Use my current location",
+  "@useMyCurrentLocation": {
+    "description": "Button that fills place coordinates from the device GPS"
+  },
+  "latitudeLabel": "Latitude",
+  "@latitudeLabel": {
+    "description": "Latitude number field label"
+  },
+  "longitudeLabel": "Longitude",
+  "@longitudeLabel": {
+    "description": "Longitude number field label"
+  },
+  "validationLatitudeInvalid": "Enter a valid latitude (-90 to 90).",
+  "@validationLatitudeInvalid": {
+    "description": "Validation when latitude is out of range"
+  },
+  "validationLongitudeInvalid": "Enter a valid longitude (-180 to 180).",
+  "@validationLongitudeInvalid": {
+    "description": "Validation when longitude is out of range"
+  },
+  "validationPlaceLocationRequired": "Pick a location on the map before saving.",
+  "@validationPlaceLocationRequired": {
+    "description": "Validation when place coordinates are missing on save"
+  },
+  "placeAddressLabel": "Address",
+  "@placeAddressLabel": {
+    "description": "Address field on the place form"
+  },
+  "validationPlaceAddressRequired": "Enter the address.",
+  "@validationPlaceAddressRequired": {
+    "description": "Validation when a place address is empty"
+  },
+  "validationPlaceCoordinatePair": "Enter both latitude and longitude, or leave both empty.",
+  "@validationPlaceCoordinatePair": {
+    "description": "Validation when only one place coordinate is filled"
+  },
+  "placeLocationOptionalHint": "Location is optional. Tap the map or enter latitude and longitude.",
+  "@placeLocationOptionalHint": {
+    "description": "Explains that a new place can be saved without a map point"
+  },
+  "clearPlaceLocation": "Clear location",
+  "@clearPlaceLocation": {
+    "description": "Removes the selected place coordinates"
+  },
+  "placeHasCoordinates": "Coordinates set",
+  "@placeHasCoordinates": {
+    "description": "Place list subtitle when lat/lng exist"
+  },
+  "placeMissingCoordinates": "No coordinates",
+  "@placeMissingCoordinates": {
+    "description": "Place list subtitle when lat/lng are missing"
+  },
+  "tapMapToSetLocation": "Tap the map to set the location",
+  "@tapMapToSetLocation": {
+    "description": "Hint overlay on empty place coordinate picker"
+  },
+  "placeCannotSelectWithoutLocation": "This place has no location and cannot be used for a trip. Ask an admin to add coordinates.",
+  "@placeCannotSelectWithoutLocation": {
+    "description": "Shown when selecting a legacy place without coordinates"
+  },
+  "noLocationBadge": "No location",
+  "@noLocationBadge": {
+    "description": "Warning badge on places missing latitude/longitude"
+  },
+  "locationServicesDisabled": "Turn on location services to continue.",
+  "@locationServicesDisabled": {
+    "description": "Error when device location services are off"
+  },
+  "locationPermissionDenied": "Location permission is required to share with dispatch.",
+  "@locationPermissionDenied": {
+    "description": "Error when location permission is denied"
+  },
+  "locationUnavailable": "Location is unavailable.",
+  "@locationUnavailable": {
+    "description": "Error when GPS fix fails for place picker"
+  },
+  "pickLocationTitle": "Pick a location",
+  "@pickLocationTitle": {
+    "description": "App bar title for the map location picker"
+  },
+  "myLocationButton": "My location",
+  "@myLocationButton": {
+    "description": "FAB tooltip to center the map on the device GPS"
+  },
+  "locationSearchHint": "Search place or address",
+  "@locationSearchHint": {
+    "description": "Hint for Nominatim search field (submit only)"
+  },
+  "locationSearchAction": "Search",
+  "@locationSearchAction": {
+    "description": "Tooltip for submitting the location search"
+  },
+  "locationSearchNoResults": "No places found for that search.",
+  "@locationSearchNoResults": {
+    "description": "Empty Nominatim search results"
+  },
+  "locationSearchFailed": "Search failed. Check your connection and try again.",
+  "@locationSearchFailed": {
+    "description": "Nominatim search network or server error"
+  },
+  "resolvingAddress": "Resolving address…",
+  "@resolvingAddress": {
+    "description": "Shown while reverse-geocoding the map center"
+  },
+  "addressNotAvailable": "Address not available",
+  "@addressNotAvailable": {
+    "description": "Fallback when reverse geocoding fails"
+  },
+  "confirmLocation": "Confirm location",
+  "@confirmLocation": {
+    "description": "Primary button on the location picker"
+  },
+  "openSettingsAction": "Open settings",
+  "@openSettingsAction": {
+    "description": "Opens app or location settings from the picker"
+  },
+  "chooseOnMap": "Choose on map",
+  "@chooseOnMap": {
+    "description": "Button next to saved-places selector to open the map picker"
+  },
+  "nameMapPlaceTitle": "Name this location",
+  "@nameMapPlaceTitle": {
+    "description": "Title of the sheet after confirming a map pick"
+  },
+  "placeNameArOptionalLabel": "Name (Arabic, optional)",
+  "@placeNameArOptionalLabel": {
+    "description": "Optional Arabic name when naming a map-picked place"
+  },
+  "useLocationForTripOnly": "Use for this trip only",
+  "@useLocationForTripOnly": {
+    "description": "Attach map location to the trip without saving a place"
+  },
+  "saveLocationAsPlace": "Save as a new place",
+  "@saveLocationAsPlace": {
+    "description": "Create an approved place from the map pick (admins only)"
+  },
+  "customLocationChip": "Custom location",
+  "@customLocationChip": {
+    "description": "Badge on trip details for a map-picked place"
+  },
+  "pickLocationOnMap": "Pick on map",
+  "@pickLocationOnMap": {
+    "description": "Admin button to open the shared location picker"
+  },
+  "editLocationOnMap": "Edit on map",
+  "@editLocationOnMap": {
+    "description": "Admin button to re-open the picker for existing coordinates"
+  },
+  "enterCoordinatesManually": "Enter coordinates manually",
+  "@enterCoordinatesManually": {
+    "description": "Collapsed section for typing lat/lng by hand"
+  },
+  "noMapLocationBadge": "No location",
+  "@noMapLocationBadge": {
+    "description": "Legacy key; prefer noLocationBadge"
+  },
+  "addLocationAction": "Add location",
+  "@addLocationAction": {
+    "description": "Action to attach coordinates to a place without opening full edit"
+  },
+  "editDriver": "Edit driver",
+  "@editDriver": {
+    "description": "Action to edit a driver's details"
+  },
+  "editDriverTitle": "Edit driver",
+  "@editDriverTitle": {
+    "description": "Title of the edit-driver dialog"
+  },
+  "driverUpdated": "Driver updated.",
+  "@driverUpdated": {
+    "description": "SnackBar after a driver is edited"
+  },
+  "saveDriver": "Save",
+  "@saveDriver": {
+    "description": "Button that saves driver edits"
+  },
+  "tripEventsSection": "Trip events",
+  "@tripEventsSection": {
+    "description": "Section title for lifecycle events on trip details"
+  },
+  "tripEventTripStarted": "Trip started",
+  "@tripEventTripStarted": {
+    "description": "Trip events label for goingStartedAt"
+  },
+  "tripEventArrivedAtDestination": "Arrived at destination",
+  "@tripEventArrivedAtDestination": {
+    "description": "Trip events label for goingEndedAt"
+  },
+  "tripEventStartedReturning": "Started returning",
+  "@tripEventStartedReturning": {
+    "description": "Trip events label for returnStartedAt"
+  },
+  "tripEventTripEnded": "Trip ended",
+  "@tripEventTripEnded": {
+    "description": "Trip events label for finishedAt"
+  },
+  "tripNotArrivedYet": "Not arrived yet",
+  "@tripNotArrivedYet": {
+    "description": "Shown when goingEndedAt is null"
+  },
+  "tripNotReturningYet": "Not returning yet",
+  "@tripNotReturningYet": {
+    "description": "Shown when returnStartedAt is null"
+  },
+  "handledByValue": "Handled by: {name}",
+  "@handledByValue": {
+    "description": "Who approved or rejected a request",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Admin"
+      }
+    }
+  },
+  "handledAtValue": "Handled at: {dateTime}",
+  "@handledAtValue": {
+    "description": "When a request was approved or rejected",
+    "placeholders": {
+      "dateTime": {
+        "type": "String",
+        "example": "Oct 18, 2026 2:00 PM"
+      }
+    }
+  },
+  "filterPending": "Pending",
+  "@filterPending": {
+    "description": "Filter chip for pending requests"
+  },
+  "filterApproved": "Approved",
+  "@filterApproved": {
+    "description": "Filter chip for approved requests"
+  },
+  "filterRejected": "Rejected",
+  "@filterRejected": {
+    "description": "Filter chip for rejected requests"
+  },
+  "requestsEmptyTitle": "No requests",
+  "@requestsEmptyTitle": {
+    "description": "Title when the filtered requests list is empty"
+  },
+  "requestsEmptyMessage": "No trip requests match this filter.",
+  "@requestsEmptyMessage": {
+    "description": "Supporting text when filtered requests are empty"
+  },
+  "driverNameEnLabel": "Name (English)",
+  "@driverNameEnLabel": {
+    "description": "Label for the driver's English name"
+  },
+  "driverNameArLabel": "Name (Arabic)",
+  "@driverNameArLabel": {
+    "description": "Label for the driver's Arabic name"
+  },
+  "nationalIdLabel": "National ID",
+  "@nationalIdLabel": {
+    "description": "Label for the Egyptian national ID field"
+  },
+  "carLicenseLabel": "Car plate",
+  "@carLicenseLabel": {
+    "description": "Label for the Egyptian car plate fields"
+  },
+  "carPlateLettersLabel": "Letters",
+  "@carPlateLettersLabel": {
+    "description": "Letters part of an Egyptian car plate"
+  },
+  "carPlateNumbersLabel": "Numbers",
+  "@carPlateNumbersLabel": {
+    "description": "Numbers part of an Egyptian car plate"
+  },
+  "personalLicenseLabel": "Personal license",
+  "@personalLicenseLabel": {
+    "description": "Label for the personal driving license text field"
+  },
+  "driverDetailsTitle": "Driver details",
+  "@driverDetailsTitle": {
+    "description": "Title of the driver details screen"
+  },
+  "nationalIdMaskedValue": "National ID: {masked}",
+  "@nationalIdMaskedValue": {
+    "description": "Masked national ID line on the drivers list",
+    "placeholders": {
+      "masked": {
+        "type": "String",
+        "example": "295••••••23"
+      }
+    }
+  },
+  "nationalIdNotSet": "National ID: not set",
+  "@nationalIdNotSet": {
+    "description": "Shown when a legacy driver has no private profile yet"
+  },
+  "carLicenseValue": "Car plate: {license}",
+  "@carLicenseValue": {
+    "description": "Car plate line in the assignment picker",
+    "placeholders": {
+      "license": {
+        "type": "String",
+        "example": "ط ع ب 9295"
+      }
+    }
+  },
+  "carLicenseNotSet": "Car plate: not set",
+  "@carLicenseNotSet": {
+    "description": "Shown in the picker when the car plate is missing"
+  },
+  "validationDriverNameEnRequired": "Enter the English name.",
+  "@validationDriverNameEnRequired": {
+    "description": "Validation when driver English name is empty"
+  },
+  "validationDriverNameArRequired": "Enter the Arabic name.",
+  "@validationDriverNameArRequired": {
+    "description": "Validation when driver Arabic name is empty"
+  },
+  "validationPhoneInvalid": "Enter a valid phone number.",
+  "@validationPhoneInvalid": {
+    "description": "Validation when phone format is invalid"
+  },
+  "validationNationalIdRequired": "Enter the national ID.",
+  "@validationNationalIdRequired": {
+    "description": "Validation when national ID is empty"
+  },
+  "validationNationalIdInvalid": "Enter a valid 14-digit Egyptian national ID.",
+  "@validationNationalIdInvalid": {
+    "description": "Validation when national ID is not 14 digits"
+  },
+  "validationCarLicenseRequired": "Enter the car plate.",
+  "@validationCarLicenseRequired": {
+    "description": "Validation when the car plate is empty"
+  },
+  "validationCarPlateInvalid": "Enter 1–3 Arabic letters and 1–4 numbers, like ط ع ب 9295.",
+  "@validationCarPlateInvalid": {
+    "description": "Validation when the car plate is not an Egyptian letters-and-numbers plate"
+  },
+  "validationPersonalLicenseRequired": "Enter the personal license.",
+  "@validationPersonalLicenseRequired": {
+    "description": "Validation when personal license is empty"
+  },
+  "registerSectionDetails": "Your details",
+  "@registerSectionDetails": {
+    "description": "Section label for name/email/phone/branch on signup"
+  },
+  "registerSectionSecurity": "Security",
+  "@registerSectionSecurity": {
+    "description": "Section label for password fields on signup"
+  },
+  "roleLabelEmployee": "Employee",
+  "@roleLabelEmployee": {
+    "description": "Role chip label for employees"
+  },
+  "roleLabelDriver": "Driver",
+  "@roleLabelDriver": {
+    "description": "Role chip label for drivers"
+  },
+  "roleLabelCompanyAdmin": "Company admin",
+  "@roleLabelCompanyAdmin": {
+    "description": "Role chip label for company admins"
+  },
+  "roleLabelDriversAdmin": "Drivers admin",
+  "@roleLabelDriversAdmin": {
+    "description": "Role chip label for drivers admins"
+  },
+  "bootstrapGettingLocation": "Getting your location",
+  "@bootstrapGettingLocation": {
+    "description": "Trip bootstrap checklist step"
+  },
+  "bootstrapLoadingLocations": "Loading trip locations",
+  "@bootstrapLoadingLocations": {
+    "description": "Trip bootstrap checklist step"
+  },
+  "bootstrapPreparingRoute": "Preparing route",
+  "@bootstrapPreparingRoute": {
+    "description": "Trip bootstrap checklist step"
+  },
+  "bootstrapSharingLocation": "Sharing location with dispatch",
+  "@bootstrapSharingLocation": {
+    "description": "Trip bootstrap checklist step"
+  },
+  "waitingForGpsSignal": "Waiting for GPS signal",
+  "@waitingForGpsSignal": {
+    "description": "Banner when no GPS fix is available yet"
+  },
+  "locationOffTapToFix": "Location off, tap to fix",
+  "@locationOffTapToFix": {
+    "description": "Chip when location permission is denied"
+  },
+  "approximateRoute": "Route unavailable, showing direct line",
+  "@approximateRoute": {
+    "description": "Chip when OSRM failed and a straight line is shown"
+  },
+  "approximateLocation": "Approximate location",
+  "@approximateLocation": {
+    "description": "Chip when a place was forward-geocoded"
+  },
+  "locationNotSetFor": "Location not set for {name}",
+  "@locationNotSetFor": {
+    "description": "Note when a place has no coordinates",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "youHaveArrived": "You have arrived",
+  "@youHaveArrived": {
+    "description": "Card title when within arrival radius"
+  },
+  "arrivedStartReturn": "Arrived / Start return",
+  "@arrivedStartReturn": {
+    "description": "Button to switch to the return leg"
+  },
+  "navigateButton": "Navigate",
+  "@navigateButton": {
+    "description": "Opens external maps for turn-by-turn"
+  },
+  "tripProgressPercent": "{percent}% complete",
+  "@tripProgressPercent": {
+    "description": "Progress percentage on the live map card",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "distanceCoveredRemaining": "{covered} km covered · {remaining} km remaining",
+  "@distanceCoveredRemaining": {
+    "description": "Covered and remaining distance on the live map",
+    "placeholders": {
+      "covered": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "etaApproximateMinutes": "ETA ~{minutes} min (approximate)",
+  "@etaApproximateMinutes": {
+    "description": "Approximate ETA label",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "devToolsTitle": "Dev tools",
+  "@devToolsTitle": {
+    "description": "Debug sheet title on the live map"
+  },
+  "devSimulateMovement": "Simulate movement",
+  "@devSimulateMovement": {
+    "description": "Toggle GPS simulation along the route"
+  },
+  "devSimulateSpeed": "Speed: {speed} km/h",
+  "@devSimulateSpeed": {
+    "description": "Simulation speed label",
+    "placeholders": {
+      "speed": {
+        "type": "int"
+      }
+    }
+  },
+  "devPauseSimulation": "Pause",
+  "@devPauseSimulation": {
+    "description": "Pause simulated movement"
+  },
+  "devResumeSimulation": "Resume",
+  "@devResumeSimulation": {
+    "description": "Resume simulated movement"
+  },
+  "devJumpToNinety": "Jump to 90%",
+  "@devJumpToNinety": {
+    "description": "Jump simulator near the destination"
+  },
+  "adminTripProgress": "{percent}% · {remaining} km remaining",
+  "@adminTripProgress": {
+    "description": "Read-only progress line in admin driver sheet",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "routeUnavailableShowingDirectLine": "Route unavailable, showing direct line",
+  "@routeUnavailableShowingDirectLine": {
+    "description": "Notice when OSRM fails and a dashed straight line is drawn"
+  },
+  "recalculateRoute": "Recalculate route",
+  "@recalculateRoute": {
+    "description": "Manual button to re-fetch the OSRM planned route"
+  },
+  "retryAction": "Retry",
+  "@retryAction": {
+    "description": "Generic retry button on the live map"
+  },
+  "locatingDriverPosition": "Getting your location…",
+  "@locatingDriverPosition": {
+    "description": "Loading state while acquiring the trip start GPS fix"
+  },
+  "locationFixTimedOut": "Could not get your location. Check GPS and try again.",
+  "@locationFixTimedOut": {
+    "description": "Shown after the ~15s position timeout on live map open"
+  },
+  "liveMapPhaseArrived": "Arrived",
+  "@liveMapPhaseArrived": {
+    "description": "Top phase chip when the driver is at the destination"
+  },
+  "estimatedDistanceKm": "{km} km",
+  "@estimatedDistanceKm": {
+    "description": "Estimated route distance in the bottom card",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "estimatedEtaMinutes": "ETA {minutes} min",
+  "@estimatedEtaMinutes": {
+    "description": "Estimated ETA from the planned route",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "tripReportTitle": "Trip report",
+  "@tripReportTitle": {
+    "description": "Section title for the trip report card"
+  },
+  "tripReportInProgress": "Report in progress",
+  "@tripReportInProgress": {
+    "description": "Chip shown while a trip report is still collecting data"
+  },
+  "tripReportStartedAt": "Started at",
+  "@tripReportStartedAt": {
+    "description": "Label for goingStartedAt on the trip report"
+  },
+  "tripReportFinishedAt": "Finished at",
+  "@tripReportFinishedAt": {
+    "description": "Label for finishedAt on the trip report"
+  },
+  "tripReportTotalDuration": "Total duration",
+  "@tripReportTotalDuration": {
+    "description": "Label for total trip duration"
+  },
+  "tripReportGoingDuration": "Going duration",
+  "@tripReportGoingDuration": {
+    "description": "Label for outbound leg duration"
+  },
+  "tripReportWaitingDuration": "Waiting at destination",
+  "@tripReportWaitingDuration": {
+    "description": "Label for wait time between going end and return start"
+  },
+  "tripReportReturnDuration": "Return duration",
+  "@tripReportReturnDuration": {
+    "description": "Label for return leg duration"
+  },
+  "tripReportDistanceGoing": "Distance going",
+  "@tripReportDistanceGoing": {
+    "description": "Label for outbound distance"
+  },
+  "tripReportDistanceReturn": "Distance back",
+  "@tripReportDistanceReturn": {
+    "description": "Label for return distance"
+  },
+  "tripReportDistanceTotal": "Total distance",
+  "@tripReportDistanceTotal": {
+    "description": "Label for total distance"
+  },
+  "tripReportDistanceKmValue": "{km} km",
+  "@tripReportDistanceKmValue": {
+    "description": "Formatted distance in kilometers",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "12.34"
+      }
+    }
+  },
+  "tripReportDurationHoursMinutesSeconds": "{hours}h {minutes}m {seconds}s",
+  "@tripReportDurationHoursMinutesSeconds": {
+    "description": "Duration with hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "tripReportDurationMinutesSeconds": "{minutes}m {seconds}s",
+  "@tripReportDurationMinutesSeconds": {
+    "description": "Duration with minutes only",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "tripReportDurationSeconds": "{seconds}s",
+  "@tripReportDurationSeconds": {
+    "description": "Duration under one minute",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "tripReportRouteSection": "Route",
+  "@tripReportRouteSection": {
+    "description": "Heading above the trip report map"
+  },
+  "tripReportGoingRouteLegend": "Going",
+  "@tripReportGoingRouteLegend": {
+    "description": "Map legend for the going polyline"
+  },
+  "tripReportReturnRouteLegend": "Returning",
+  "@tripReportReturnRouteLegend": {
+    "description": "Map legend for the return polyline"
+  },
+  "viewTripDetails": "Trip details",
+  "@viewTripDetails": {
+    "description": "Button or action to open driver trip details"
+  },
+  "noAvailableDriversTitle": "No available drivers",
+  "@noAvailableDriversTitle": {
+    "description": "Trip assignment empty state when nobody is officially available"
+  },
+  "noAvailableDriversMessage": "Approve an availability request first, or wait for a driver to become free.",
+  "@noAvailableDriversMessage": {
+    "description": "Trip assignment empty state message"
+  },
+  "relativeTimeJustNow": "Just now",
+  "@relativeTimeJustNow": {
+    "description": "Relative time: less than a minute ago"
+  },
+  "relativeTimeMinutesAgo": "{minutes} min ago",
+  "@relativeTimeMinutesAgo": {
+    "description": "Relative time in minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeHoursAgo": "{hours} hr ago",
+  "@relativeTimeHoursAgo": {
+    "description": "Relative time in hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeTimeDaysAgo": "{days} d ago",
+  "@relativeTimeDaysAgo": {
+    "description": "Relative time in days",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "favoritePlacesLabel": "Favorite places",
+  "@favoritePlacesLabel": {
+    "description": "Label for Drivers Admin multi-select of a driver's favorite places"
+  },
+  "favoritePlacesSearchHint": "Search places to add",
+  "@favoritePlacesSearchHint": {
+    "description": "Search hint when adding favorite places on the driver form"
+  },
+  "favoritePlaceRemove": "Remove favorite place",
+  "@favoritePlaceRemove": {
+    "description": "Semantics label for removing a favorite place chip"
+  },
+  "recommendedDriversSection": "Recommended",
+  "@recommendedDriversSection": {
+    "description": "Section header for recommended drivers in the assign picker"
+  },
+  "otherDriversSection": "Other drivers",
+  "@otherDriversSection": {
+    "description": "Section header for non-recommended drivers in the assign picker"
+  },
+  "driverReasonFavoritePlace": "Favorite place",
+  "@driverReasonFavoritePlace": {
+    "description": "Chip when the trip matches a driver's favorite place"
+  },
+  "driverReasonAvailable": "Available",
+  "@driverReasonAvailable": {
+    "description": "Chip when the driver is officially available"
+  },
+  "driverReasonUnavailable": "Unavailable",
+  "@driverReasonUnavailable": {
+    "description": "Warning chip when the driver is not officially available"
+  },
+  "driverReasonOnActiveTrip": "On active trip",
+  "@driverReasonOnActiveTrip": {
+    "description": "Warning chip when the driver has an in-progress trip"
+  },
+  "driverReasonScheduleConflict": "Schedule conflict",
+  "@driverReasonScheduleConflict": {
+    "description": "Warning chip when the driver has a nearby scheduled trip"
+  },
+  "assignDriverWarningTitle": "Assign this driver?",
+  "@assignDriverWarningTitle": {
+    "description": "Title of the confirm dialog when assigning a non-ideal driver"
+  },
+  "assignDriverWarningMessage": "This driver is not fully available for this trip. You can still assign them.",
+  "@assignDriverWarningMessage": {
+    "description": "Body of the confirm dialog when assigning a non-ideal driver"
+  },
+  "assignDriverWarningContinue": "Assign anyway",
+  "@assignDriverWarningContinue": {
+    "description": "Confirm action that continues despite availability warnings"
+  },
+  "driverFavoritePlacesEmpty": "None",
+  "@driverFavoritePlacesEmpty": {
+    "description": "Shown when a driver has no favorite places on details"
+  },
+  "myRequestsTab": "My requests",
+  "@myRequestsTab": {
+    "description": "Company admin home tab for the signed-in admin's own trip requests"
+  },
+  "myRequestsFilterAll": "All",
+  "@myRequestsFilterAll": {
+    "description": "Filter chip: show all of my trip requests"
+  },
+  "myRequestsFilterActive": "Active",
+  "@myRequestsFilterActive": {
+    "description": "Filter chip: show active (in-progress) own trip requests"
+  },
+  "myRequestsFilterCompleted": "Completed",
+  "@myRequestsFilterCompleted": {
+    "description": "Filter chip: show completed own trip requests"
+  },
+  "myRequestsFilterCancelledRejected": "Cancelled / Rejected",
+  "@myRequestsFilterCancelledRejected": {
+    "description": "Filter chip: show cancelled or rejected own trip requests"
+  },
+  "myRequestsEmptyTitle": "No requests yet",
+  "@myRequestsEmptyTitle": {
+    "description": "Title when the company admin has no own trip requests"
+  },
+  "myRequestsEmptyMessage": "Trip requests you create for yourself will appear here.",
+  "@myRequestsEmptyMessage": {
+    "description": "Supporting text when My Requests list is empty"
+  },
+  "myRequestsFilteredEmptyMessage": "No requests match this filter.",
+  "@myRequestsFilteredEmptyMessage": {
+    "description": "Supporting text when a My Requests filter has no matches"
+  },
+  "myRequestProgressTitle": "Request progress",
+  "@myRequestProgressTitle": {
+    "description": "Title of the own-request progress details screen"
+  },
+  "requestProgressStepRequested": "Requested",
+  "@requestProgressStepRequested": {
+    "description": "Progress step: request submitted"
+  },
+  "requestProgressStepApproved": "Approved",
+  "@requestProgressStepApproved": {
+    "description": "Progress step: request approved"
+  },
+  "requestProgressStepDriverAssigned": "Driver assigned",
+  "@requestProgressStepDriverAssigned": {
+    "description": "Progress step: a driver was assigned to the trip"
+  },
+  "requestProgressStepGoing": "Going",
+  "@requestProgressStepGoing": {
+    "description": "Progress step: trip going to destination"
+  },
+  "requestProgressStepArrived": "Arrived",
+  "@requestProgressStepArrived": {
+    "description": "Progress step: arrived at destination"
+  },
+  "requestProgressStepReturning": "Returning",
+  "@requestProgressStepReturning": {
+    "description": "Progress step: returning from destination"
+  },
+  "requestProgressStepCompleted": "Completed",
+  "@requestProgressStepCompleted": {
+    "description": "Progress step: trip completed"
+  },
+  "requestProgressCurrentStep": "Current: {step}",
+  "@requestProgressCurrentStep": {
+    "description": "Compact progress bar label showing the current step",
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "requestProgressFailedStep": "Failed: {step}",
+  "@requestProgressFailedStep": {
+    "description": "Compact progress bar label when the request failed",
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "assignedDriverSection": "Assigned driver",
+  "@assignedDriverSection": {
+    "description": "Section title for assigned driver on own-request details"
+  },
+  "assignedDriverPhoneValue": "Phone: {phone}",
+  "@assignedDriverPhoneValue": {
+    "description": "Assigned driver phone line",
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "assignedDriverPending": "No driver assigned yet.",
+  "@assignedDriverPending": {
+    "description": "Shown when the linked trip has no driver yet"
+  },
+  "roleLabelAdmin": "System admin",
+  "@roleLabelAdmin": {
+    "description": "Role chip label for system administrators"
+  },
+  "adminDashboardTitle": "Admin dashboard",
+  "@adminDashboardTitle": {
+    "description": "Title of the system admin home screen"
+  },
+  "adminDashboardSubtitle": "Manage drivers, places, and employees. Request trips for yourself.",
+  "@adminDashboardSubtitle": {
+    "description": "Subtitle on the system admin dashboard"
+  },
+  "adminDriversSection": "Drivers",
+  "@adminDriversSection": {
+    "description": "Dashboard card for drivers management"
+  },
+  "adminDriversSectionHint": "Add, edit, or deactivate drivers",
+  "@adminDriversSectionHint": {
+    "description": "Hint under drivers card"
+  },
+  "adminPlacesSection": "Places",
+  "@adminPlacesSection": {
+    "description": "Dashboard card for places management"
+  },
+  "adminPlacesSectionHint": "Manage locations and map pins",
+  "@adminPlacesSectionHint": {
+    "description": "Hint under places card"
+  },
+  "adminEmployeesSection": "Employees",
+  "@adminEmployeesSection": {
+    "description": "Dashboard card for employees management"
+  },
+  "adminEmployeesSectionHint": "Add, edit, or deactivate employees",
+  "@adminEmployeesSectionHint": {
+    "description": "Hint under employees card"
+  },
+  "adminUsersSection": "Users",
+  "@adminUsersSection": {
+    "description": "Dashboard card for resetting any account password"
+  },
+  "adminUsersSectionHint": "Set a temporary password for any account",
+  "@adminUsersSectionHint": {
+    "description": "Hint under the users card"
+  },
+  "adminUsersSearchHint": "Search by name, email, or phone",
+  "@adminUsersSearchHint": {
+    "description": "Search field on the users screen"
+  },
+  "adminFilterAllRoles": "All roles",
+  "@adminFilterAllRoles": {
+    "description": "Role filter that shows every account"
+  },
+  "adminUsersEmptyTitle": "No users",
+  "@adminUsersEmptyTitle": {
+    "description": "Empty state title on the users screen"
+  },
+  "adminUsersEmptyMessage": "No accounts match this search.",
+  "@adminUsersEmptyMessage": {
+    "description": "Empty state message on the users screen"
+  },
+  "adminResetPasswordAction": "Reset password",
+  "@adminResetPasswordAction": {
+    "description": "Button that sets a temporary password"
+  },
+  "adminResetPasswordTitle": "Reset password",
+  "@adminResetPasswordTitle": {
+    "description": "Title of the temporary-password dialog"
+  },
+  "adminResetPasswordMessage": "{name} must change this password the next time they sign in.",
+  "@adminResetPasswordMessage": {
+    "description": "Explains that the temporary password is replaced on the next sign-in",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminResetPasswordNote": "Share this password with the user. They must change it when they sign in.",
+  "@adminResetPasswordNote": {
+    "description": "Note under the temporary password fields"
+  },
+  "adminResetPasswordSuccess": "Temporary password saved.",
+  "@adminResetPasswordSuccess": {
+    "description": "Snack bar after a password reset"
+  },
+  "adminTemporaryPasswordBadge": "Temporary password",
+  "@adminTemporaryPasswordBadge": {
+    "description": "Shown when the account must still change the temporary password"
+  },
+  "adminMyTripsSection": "My trips",
+  "@adminMyTripsSection": {
+    "description": "Dashboard card for admin own trip requests"
+  },
+  "adminMyTripsSectionHint": "Follow progress of your requests",
+  "@adminMyTripsSectionHint": {
+    "description": "Hint under my trips card"
+  },
+  "adminRequestTripSection": "Request trip",
+  "@adminRequestTripSection": {
+    "description": "Dashboard card to open the trip request form"
+  },
+  "adminRequestTripSectionHint": "Auto-accepted and sent for driver assignment",
+  "@adminRequestTripSectionHint": {
+    "description": "Hint under request trip card"
+  },
+  "adminSearchHint": "Search by name, email, or phone",
+  "@adminSearchHint": {
+    "description": "Search field hint on admin list screens"
+  },
+  "adminFilterAll": "All",
+  "@adminFilterAll": {
+    "description": "Active-status filter: all"
+  },
+  "adminFilterActive": "Active",
+  "@adminFilterActive": {
+    "description": "Active-status filter: active only"
+  },
+  "adminFilterInactive": "Inactive",
+  "@adminFilterInactive": {
+    "description": "Active-status filter: inactive only"
+  },
+  "adminFilterAllBranches": "All branches",
+  "@adminFilterAllBranches": {
+    "description": "Branch filter chip for all branches"
+  },
+  "adminDriversEmptyTitle": "No drivers found",
+  "@adminDriversEmptyTitle": {
+    "description": "Empty state title for admin drivers list"
+  },
+  "adminDriversEmptyMessage": "Add a driver or clear filters to see results.",
+  "@adminDriversEmptyMessage": {
+    "description": "Empty state message for admin drivers list"
+  },
+  "adminEmployeesEmptyTitle": "No employees found",
+  "@adminEmployeesEmptyTitle": {
+    "description": "Empty state title for admin employees list"
+  },
+  "adminEmployeesEmptyMessage": "Add an employee or clear filters to see results.",
+  "@adminEmployeesEmptyMessage": {
+    "description": "Empty state message for admin employees list"
+  },
+  "adminAddEmployeeTitle": "Add employee",
+  "@adminAddEmployeeTitle": {
+    "description": "Dialog title for creating an employee"
+  },
+  "adminEditEmployeeTitle": "Edit employee",
+  "@adminEditEmployeeTitle": {
+    "description": "Dialog title for editing an employee"
+  },
+  "adminAddEmployee": "Add employee",
+  "@adminAddEmployee": {
+    "description": "Primary action to create an employee"
+  },
+  "adminSaveEmployee": "Save employee",
+  "@adminSaveEmployee": {
+    "description": "Primary action to save employee edits"
+  },
+  "adminEmployeeCreated": "Employee created",
+  "@adminEmployeeCreated": {
+    "description": "SnackBar after creating an employee"
+  },
+  "adminEmployeeUpdated": "Employee updated",
+  "@adminEmployeeUpdated": {
+    "description": "SnackBar after updating an employee"
+  },
+  "adminSoftDeleteConfirmTitle": "Deactivate account?",
+  "@adminSoftDeleteConfirmTitle": {
+    "description": "Confirmation dialog title for soft delete"
+  },
+  "adminSoftDeleteDriverMessage": "{name} will be deactivated and cannot sign in. Auth account is kept.",
+  "@adminSoftDeleteDriverMessage": {
+    "description": "Confirmation message when soft-deleting a driver",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminSoftDeleteEmployeeMessage": "{name} will be deactivated and cannot sign in. Auth account is kept.",
+  "@adminSoftDeleteEmployeeMessage": {
+    "description": "Confirmation message when soft-deleting an employee",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminSoftDeleteAction": "Deactivate",
+  "@adminSoftDeleteAction": {
+    "description": "Confirm soft-delete button"
+  },
+  "adminSoftDeleteSuccess": "Account deactivated",
+  "@adminSoftDeleteSuccess": {
+    "description": "SnackBar after soft delete"
+  },
+  "adminReactivateAction": "Reactivate",
+  "@adminReactivateAction": {
+    "description": "Menu action to reactivate a soft-deleted user"
+  },
+  "adminSeedDebugTitle": "Seed admin profile (debug)",
+  "@adminSeedDebugTitle": {
+    "description": "Debug dialog title for seeding an admin profile"
+  },
+  "adminSeedDebugMessage": "Writes an admin profile for a user id that already exists.",
+  "@adminSeedDebugMessage": {
+    "description": "Debug dialog explanation for admin seed"
+  },
+  "adminSeedUidLabel": "Auth UID",
+  "@adminSeedUidLabel": {
+    "description": "Label for UID field in admin seed dialog"
+  },
+  "adminSeedDebugAction": "Write profile",
+  "@adminSeedDebugAction": {
+    "description": "Confirm button for admin seed dialog"
+  },
+  "adminSeedDebugSuccess": "Admin profile written",
+  "@adminSeedDebugSuccess": {
+    "description": "SnackBar after debug admin seed succeeds"
+  },
+  "navMyTrips": "My trips",
+  "@navMyTrips": {
+    "description": "Bottom bar: my trips"
+  },
+  "navTrips": "Trips",
+  "@navTrips": {
+    "description": "Bottom bar: trips"
+  },
+  "navRequests": "Requests",
+  "@navRequests": {
+    "description": "Bottom bar: requests"
+  },
+  "navPlaces": "Places",
+  "@navPlaces": {
+    "description": "Bottom bar: places"
+  },
+  "navMyRequests": "My requests",
+  "@navMyRequests": {
+    "description": "Bottom bar: my requests"
+  },
+  "navDrivers": "Drivers",
+  "@navDrivers": {
+    "description": "Bottom bar: drivers"
+  },
+  "navLiveMap": "Live map",
+  "@navLiveMap": {
+    "description": "Bottom bar: live map"
+  },
+  "navDashboard": "Dashboard",
+  "@navDashboard": {
+    "description": "Bottom bar: dashboard"
+  },
+  "navEmployees": "Employees",
+  "@navEmployees": {
+    "description": "Bottom bar: employees"
+  },
+  "navUsers": "Users",
+  "@navUsers": {
+    "description": "More menu: reset any account password"
+  },
+  "navRequestedTrips": "Requested trips",
+  "@navRequestedTrips": {
+    "description": "Bottom bar: company admin requested trips"
+  },
+  "navAssignedTrips": "Assigned trips",
+  "@navAssignedTrips": {
+    "description": "Bottom bar: driver assigned trips"
+  },
+  "navCompletedTrips": "Completed trips",
+  "@navCompletedTrips": {
+    "description": "Bottom bar: driver completed trips"
+  },
+  "navStats": "Stats",
+  "@navStats": {
+    "description": "Bottom bar: driver stats"
+  },
+  "comingSoon": "Coming soon",
+  "@comingSoon": {
+    "description": "Placeholder body for a screen that is not built yet"
+  },
+  "forcedChangePasswordTitle": "Change your password",
+  "@forcedChangePasswordTitle": {
+    "description": "Forced password change screen title"
+  },
+  "forcedChangePasswordMessage": "You must change your password before continuing.",
+  "@forcedChangePasswordMessage": {
+    "description": "Explains why the rest of the app is blocked"
+  },
+  "navProfile": "Profile",
+  "@navProfile": {
+    "description": "Bottom bar: profile"
+  },
+  "navSettings": "Settings",
+  "@navSettings": {
+    "description": "Bottom bar: settings"
+  },
+  "navMore": "More",
+  "@navMore": {
+    "description": "Bottom bar overflow menu"
+  },
+  "profileTitle": "Profile",
+  "@profileTitle": {
+    "description": "Profile screen title"
+  },
+  "profileSaved": "Profile saved",
+  "@profileSaved": {
+    "description": "SnackBar after profile update"
+  },
+  "profileSave": "Save profile",
+  "@profileSave": {
+    "description": "Profile save button"
+  },
+  "roleFieldLabel": "Role",
+  "@roleFieldLabel": {
+    "description": "Read-only role field"
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Settings screen title"
+  },
+  "languageSection": "Language",
+  "@languageSection": {
+    "description": "Language section heading"
+  },
+  "changePasswordTitle": "Change password",
+  "@changePasswordTitle": {
+    "description": "Change-password section heading"
+  },
+  "currentPasswordLabel": "Current password",
+  "@currentPasswordLabel": {
+    "description": "Current password field"
+  },
+  "newPasswordLabel": "New password",
+  "@newPasswordLabel": {
+    "description": "New password field"
+  },
+  "changePasswordAction": "Update password",
+  "@changePasswordAction": {
+    "description": "Change-password submit button"
+  },
+  "changePasswordSuccess": "Password updated",
+  "@changePasswordSuccess": {
+    "description": "SnackBar after password change"
+  },
+  "changePasswordRateLimited": "Too many attempts. Try again in a minute.",
+  "@changePasswordRateLimited": {
+    "description": "Shown when change-password returns 429"
+  },
+  "logoutConfirmTitle": "Sign out?",
+  "@logoutConfirmTitle": {
+    "description": "Logout confirmation title"
+  },
+  "logoutConfirmMessage": "You will need to sign in again to continue.",
+  "@logoutConfirmMessage": {
+    "description": "Logout confirmation body"
+  },
+  "logoutActiveTripWarning": "You have a trip in progress. Signing out stops live tracking.",
+  "@logoutActiveTripWarning": {
+    "description": "Extra warning when a driver signs out during an active trip"
+  },
+  "logoutConfirmAction": "Sign out",
+  "@logoutConfirmAction": {
+    "description": "Confirm logout button"
+  },
+  "liveMapScheduledAt": "Scheduled {time}",
+  "@liveMapScheduledAt": {
+    "description": "Scheduled departure on the live-map driver sheet",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "myTripsTabAll": "All",
+  "@myTripsTabAll": {
+    "description": "My Trips tab for every request"
+  },
+  "myTripsTabActive": "Active",
+  "@myTripsTabActive": {
+    "description": "My Trips tab for active requests"
+  },
+  "myTripsTabCompleted": "Completed",
+  "@myTripsTabCompleted": {
+    "description": "My Trips tab for completed requests"
+  },
+  "myTripsTabCancelled": "Cancelled",
+  "@myTripsTabCancelled": {
+    "description": "My Trips tab for cancelled requests"
+  },
+  "myTripsNeedReport": "{count, plural, =1{1 trip needs your report} other{{count} trips need your report}}",
+  "@myTripsNeedReport": {
+    "description": "Banner when completed trips still need a report",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "myTripsEmptyTitle": "No trips here",
+  "@myTripsEmptyTitle": {
+    "description": "Empty title on a My Trips tab"
+  },
+  "myTripsEmptyMessage": "Trip requests in this tab will show up here.",
+  "@myTripsEmptyMessage": {
+    "description": "Empty message on a My Trips tab"
+  },
+  "myTripsDriverName": "Driver: {name}",
+  "@myTripsDriverName": {
+    "description": "Assigned driver on a trip request card",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tripRequestDetailsTitle": "Trip details",
+  "@tripRequestDetailsTitle": {
+    "description": "Trip request details screen title"
+  },
+  "detailPickup": "Pickup",
+  "@detailPickup": {
+    "description": "Pickup field label"
+  },
+  "detailDestination": "Destination",
+  "@detailDestination": {
+    "description": "Destination field label"
+  },
+  "detailAddress": "Address",
+  "@detailAddress": {
+    "description": "Address field label"
+  },
+  "detailRequestedAt": "Requested",
+  "@detailRequestedAt": {
+    "description": "Requested time field label"
+  },
+  "detailNotes": "Notes",
+  "@detailNotes": {
+    "description": "Notes field label on trip details"
+  },
+  "detailPhone": "Phone",
+  "@detailPhone": {
+    "description": "Phone field label"
+  },
+  "detailBranch": "Branch",
+  "@detailBranch": {
+    "description": "Branch field label"
+  },
+  "detailEmployee": "Employee",
+  "@detailEmployee": {
+    "description": "Employee field label"
+  },
+  "detailRejectionReason": "Rejection reason",
+  "@detailRejectionReason": {
+    "description": "Rejection reason field label"
+  },
+  "detailHandledAt": "Handled",
+  "@detailHandledAt": {
+    "description": "When the request was handled"
+  },
+  "detailNoNotes": "No notes",
+  "@detailNoNotes": {
+    "description": "Shown when a request has no notes"
+  },
+  "tripBlockTitle": "Assigned trip",
+  "@tripBlockTitle": {
+    "description": "Heading for the linked trip block"
+  },
+  "tripBlockNoDriver": "No driver assigned yet",
+  "@tripBlockNoDriver": {
+    "description": "Shown when the linked trip has no driver"
+  },
+  "confirmationUnconfirmed": "Not confirmed (auto-closed after 24h)",
+  "@confirmationUnconfirmed": {
+    "description": "Read-only label when a report auto-closed"
+  },
+  "confirmationConfirmed": "Confirmed",
+  "@confirmationConfirmed": {
+    "description": "Label after the employee confirms a trip"
+  },
+  "confirmationPending": "Waiting for your report",
+  "@confirmationPending": {
+    "description": "Label when a report is still pending"
+  },
+  "driverShowedUpYes": "Driver showed up",
+  "@driverShowedUpYes": {
+    "description": "Confirmed that the driver showed up"
+  },
+  "driverShowedUpNo": "Driver did not show up",
+  "@driverShowedUpNo": {
+    "description": "Confirmed that the driver did not show up"
+  },
+  "confirmTripQuestion": "Did the driver show up?",
+  "@confirmTripQuestion": {
+    "description": "Required question on the trip report"
+  },
+  "confirmTripYes": "Driver showed up",
+  "@confirmTripYes": {
+    "description": "Report choice: the driver showed up"
+  },
+  "confirmTripNo": "Did not show up",
+  "@confirmTripNo": {
+    "description": "Report choice: the driver did not show up"
+  },
+  "confirmTripNoteHint": "Optional",
+  "@confirmTripNoteHint": {
+    "description": "Hint for the optional trip report note"
+  },
+  "confirmTripSubmit": "Submit report",
+  "@confirmTripSubmit": {
+    "description": "Submit the trip report"
+  },
+  "confirmTripSuccess": "Trip report submitted.",
+  "@confirmTripSuccess": {
+    "description": "SnackBar after a trip report is saved"
+  },
+  "confirmTripAlreadyClosed": "This trip was already confirmed or closed",
+  "@confirmTripAlreadyClosed": {
+    "description": "Shown when confirm-trip returns 409"
+  },
+  "confirmTripChooseAnswer": "Choose whether the driver showed up.",
+  "@confirmTripChooseAnswer": {
+    "description": "Validation when the show-up answer is missing"
+  },
+  "confirmTripNoteTooLong": "Note must be 500 characters or fewer.",
+  "@confirmTripNoteTooLong": {
+    "description": "Validation when the trip report note is too long"
+  },
+  "periodWeek": "Week",
+  "@periodWeek": {
+    "description": "Week period"
+  },
+  "periodMonth": "Month",
+  "@periodMonth": {
+    "description": "Month period"
+  },
+  "periodYear": "Year",
+  "@periodYear": {
+    "description": "Year period"
+  },
+  "periodAll": "All",
+  "@periodAll": {
+    "description": "All-time period"
+  },
+  "periodAllTime": "All time",
+  "@periodAllTime": {
+    "description": "Range label when the period is all time"
+  },
+  "periodPrevious": "Previous period",
+  "@periodPrevious": {
+    "description": "Previous period button"
+  },
+  "periodNext": "Next period",
+  "@periodNext": {
+    "description": "Next period button"
+  },
+  "assignedTripsEmptyMessage": "No assigned trips in this period.",
+  "@assignedTripsEmptyMessage": {
+    "description": "Empty assigned trips for the selected period"
+  },
+  "completedTripsEmptyMessage": "No completed trips in this period.",
+  "@completedTripsEmptyMessage": {
+    "description": "Empty completed trips for the selected period"
+  },
+  "tripDistanceValue": "Distance {distance} km",
+  "@tripDistanceValue": {
+    "description": "Trip distance in kilometres",
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "tripDurationValue": "Duration {duration}",
+  "@tripDurationValue": {
+    "description": "Trip duration as h:mm",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "statsTrips": "Trips",
+  "@statsTrips": {
+    "description": "Stats tile for trip count"
+  },
+  "statsTime": "Time",
+  "@statsTime": {
+    "description": "Stats tile for driving time"
+  },
+  "statsDistance": "Distance",
+  "@statsDistance": {
+    "description": "Stats tile for distance"
+  },
+  "statsKmValue": "{distance} km",
+  "@statsKmValue": {
+    "description": "Distance value on the stats tile",
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "statsChartEmpty": "No trips in this period.",
+  "@statsChartEmpty": {
+    "description": "Empty stats chart"
+  },
+  "myTripsTabCancelledRejected": "Cancelled/Rejected",
+  "@myTripsTabCancelledRejected": {
+    "description": "My Trips tab for cancelled and rejected requests"
+  },
+  "tripStatusLine": "Trip status: {status}",
+  "@tripStatusLine": {
+    "description": "Trip status shown on a request card",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmationStatusValue": "Confirmation: {status}",
+  "@confirmationStatusValue": {
+    "description": "Passenger confirmation status on a trip",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "driverDidNotShow": "Driver did not show",
+  "@driverDidNotShow": {
+    "description": "Badge when driver_showed_up is false"
+  },
+  "tripsAwaitingReportTab": "Awaiting report",
+  "@tripsAwaitingReportTab": {
+    "description": "Drivers admin trips tab for awaiting_report"
+  },
+  "liveProgressLastSeen": "Last seen {time}",
+  "@liveProgressLastSeen": {
+    "description": "Last location time on an in-progress trip",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "liveMapStateOnTrip": "On a trip",
+  "@liveMapStateOnTrip": {
+    "description": "Live map driver state on_trip"
+  },
+  "liveMapStateAvailable": "Available",
+  "@liveMapStateAvailable": {
+    "description": "Live map driver state available"
+  },
+  "liveMapStateUnavailable": "Unavailable",
+  "@liveMapStateUnavailable": {
+    "description": "Live map driver state unavailable"
+  },
+  "liveMapNoLocationTitle": "No location yet",
+  "@liveMapNoLocationTitle": {
+    "description": "Heading for drivers without coordinates"
+  },
+  "driverMustChangePasswordNote": "The driver must change this password on first login.",
+  "@driverMustChangePasswordNote": {
+    "description": "Note under the temporary password field"
+  },
+  "favoritePlacesLimit": "Choose up to 5 favorite places.",
+  "@favoritePlacesLimit": {
+    "description": "Favorite places picker limit"
+  },
+  "recommendationTier": "Tier {tier}",
+  "@recommendationTier": {
+    "description": "Recommendation rank",
+    "placeholders": {
+      "tier": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationTripsThisWeek": "{count} trips this week",
+  "@recommendationTripsThisWeek": {
+    "description": "How many trips the driver has this week",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cannotDeleteHeadquartersPlace": "The headquarters place cannot be deleted.",
+  "@cannotDeleteHeadquartersPlace": {
+    "description": "Shown when deleting the headquarters place returns 422"
+  },
+  "loadMore": "Load more",
+  "@loadMore": {
+    "description": "Loads the next page of a list"
+  },
+  "createdByMeEmptyTitle": "No trips in this tab",
+  "@createdByMeEmptyTitle": {
+    "description": "Empty created-by-me trips list"
+  },
+  "createdByMeEmptyMessage": "Trips you create will show up here.",
+  "@createdByMeEmptyMessage": {
+    "description": "Empty created-by-me trips message"
+  },
+  "adminTripsAwaitingReportEmptyMessage": "No trips are waiting for a passenger report.",
+  "@adminTripsAwaitingReportEmptyMessage": {
+    "description": "Empty awaiting-report trips tab"
+  },
+  "liveMapNoDrivers": "No drivers match this filter.",
+  "@liveMapNoDrivers": {
+    "description": "Empty live map after a filter"
+  },
+  "realtimeConnected": "Live",
+  "@realtimeConnected": {
+    "description": "Socket is connected"
+  },
+  "realtimeConnecting": "Connecting",
+  "@realtimeConnecting": {
+    "description": "Socket is connecting"
+  },
+  "realtimeDisconnected": "Offline",
+  "@realtimeDisconnected": {
+    "description": "Socket is disconnected"
+  },
+  "trackingPendingApproval": "Pending approval",
+  "@trackingPendingApproval": {
+    "description": "Answer when a request is not approved yet"
+  },
+  "trackingApprovedQuestion": "Approved?",
+  "@trackingApprovedQuestion": {
+    "description": "Timeline question: was the request approved"
+  },
+  "trackingApprovedAt": "Approved {time}",
+  "@trackingApprovedAt": {
+    "description": "Approved answer with the decision time",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "Nov 2, 2026 2:00 PM"
+      }
+    }
+  },
+  "trackingNotYet": "Not yet",
+  "@trackingNotYet": {
+    "description": "Answer when a tracking step has not happened"
+  },
+  "trackingDriverQuestion": "Driver assigned?",
+  "@trackingDriverQuestion": {
+    "description": "Timeline question: was a driver assigned"
+  },
+  "trackingDriverLine": "{name} · {phone}",
+  "@trackingDriverLine": {
+    "description": "Assigned driver name and phone",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Nader"
+      },
+      "phone": {
+        "type": "String",
+        "example": "010"
+      }
+    }
+  },
+  "trackingNowQuestion": "Where is it now?",
+  "@trackingNowQuestion": {
+    "description": "Timeline question for the current stage"
+  },
+  "trackingStageSubmitted": "Submitted",
+  "@trackingStageSubmitted": {
+    "description": "Tracking timeline: request submitted"
+  },
+  "trackingStageApproved": "Approved",
+  "@trackingStageApproved": {
+    "description": "Tracking timeline: request approved"
+  },
+  "trackingStageRejected": "Rejected",
+  "@trackingStageRejected": {
+    "description": "Tracking timeline: request rejected"
+  },
+  "trackingStageDriverAssigned": "Driver assigned",
+  "@trackingStageDriverAssigned": {
+    "description": "Tracking timeline: driver assigned"
+  },
+  "trackingStageInProgress": "In progress",
+  "@trackingStageInProgress": {
+    "description": "Tracking timeline: trip started"
+  },
+  "trackingStageFinished": "Trip finished",
+  "@trackingStageFinished": {
+    "description": "Tracking timeline: driver ended the trip"
+  },
+  "trackingStageAwaitingConfirmation": "Awaiting confirmation",
+  "@trackingStageAwaitingConfirmation": {
+    "description": "Tracking timeline: waiting for the requester report"
+  },
+  "trackingStageConfirmed": "Confirmed",
+  "@trackingStageConfirmed": {
+    "description": "Tracking timeline: requester confirmed the trip"
+  },
+  "trackingStageUnconfirmed": "Unconfirmed",
+  "@trackingStageUnconfirmed": {
+    "description": "Tracking timeline: confirmation window closed"
+  },
+  "trackingStageCancelled": "Cancelled",
+  "@trackingStageCancelled": {
+    "description": "Tracking timeline: request or trip cancelled"
+  },
+  "trackingChipDriverAssigned": "Driver assigned",
+  "@trackingChipDriverAssigned": {
+    "description": "My Trips chip after a driver is assigned"
+  },
+  "trackingRejectionTitle": "Rejection reason",
+  "@trackingRejectionTitle": {
+    "description": "Heading above a rejection reason"
+  },
+  "trackingScheduled": "Scheduled {time}",
+  "@trackingScheduled": {
+    "description": "Scheduled time on the tracking timeline",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "Nov 4, 2026 9:00 AM"
+      }
+    }
+  },
+  "trackingVehicle": "Car plate {license}",
+  "@trackingVehicle": {
+    "description": "Assigned car plate on the tracking timeline",
+    "placeholders": {
+      "license": {
+        "type": "String",
+        "example": "ط ع ب 9295"
+      }
+    }
+  },
+  "trackingNoPhone": "No phone",
+  "@trackingNoPhone": {
+    "description": "Shown when an assigned driver has no phone"
+  },
+  "useThisTime": "Use this time",
+  "@useThisTime": {
+    "description": "Confirms the date and time chosen for a trip"
+  },
+  "notificationsTitle": "Notifications",
+  "@notificationsTitle": {
+    "description": "Notifications screen title and bell tooltip"
+  },
+  "notificationsEmpty": "No notifications yet.",
+  "@notificationsEmpty": {
+    "description": "Empty notifications list"
+  },
+  "notificationsMarkAll": "Mark all as read",
+  "@notificationsMarkAll": {
+    "description": "Marks every notification read"
+  },
+  "notificationsUnread": "Unread",
+  "@notificationsUnread": {
+    "description": "Accessibility label for an unread notification"
+  },
+  "notificationUnknown": "Notification",
+  "@notificationUnknown": {
+    "description": "Fallback when a notification key is not recognized"
+  },
+  "notificationRequestSubmittedTitle": "New trip request",
+  "@notificationRequestSubmittedTitle": {
+    "description": "Title for request_submitted"
+  },
+  "notificationRequestSubmittedBody": "{requester} requested a trip from {pickup} to {destination}.",
+  "@notificationRequestSubmittedBody": {
+    "description": "Body for request_submitted",
+    "placeholders": {
+      "requester": {
+        "type": "String",
+        "example": "Mona"
+      },
+      "pickup": {
+        "type": "String",
+        "example": "HQ"
+      },
+      "destination": {
+        "type": "String",
+        "example": "Site"
+      }
+    }
+  },
+  "notificationTripReadyTitle": "Trip ready to assign",
+  "@notificationTripReadyTitle": {
+    "description": "Title for trip_ready_to_assign"
+  },
+  "notificationTripReadyBody": "{requester} is waiting for a driver on the trip from {pickup} to {destination}.",
+  "@notificationTripReadyBody": {
+    "description": "Body for trip_ready_to_assign",
+    "placeholders": {
+      "requester": {
+        "type": "String",
+        "example": "Mona"
+      },
+      "pickup": {
+        "type": "String",
+        "example": "HQ"
+      },
+      "destination": {
+        "type": "String",
+        "example": "Site"
+      }
+    }
+  },
+  "notificationTripAssignedTitle": "Driver assigned",
+  "@notificationTripAssignedTitle": {
+    "description": "Title for trip_assigned"
+  },
+  "notificationTripAssignedBody": "{driver} is assigned to the trip from {pickup} to {destination}.",
+  "@notificationTripAssignedBody": {
+    "description": "Body for trip_assigned",
+    "placeholders": {
+      "driver": {
+        "type": "String",
+        "example": "Nader"
+      },
+      "pickup": {
+        "type": "String",
+        "example": "HQ"
+      },
+      "destination": {
+        "type": "String",
+        "example": "Site"
+      }
+    }
+  },
+  "notificationOwnTripAssignedTitle": "Driver assigned to your trip",
+  "@notificationOwnTripAssignedTitle": {
+    "description": "Title for own_trip_assigned"
+  },
+  "notificationOwnTripAssignedBody": "{driver} is assigned to your trip from {pickup} to {destination}.",
+  "@notificationOwnTripAssignedBody": {
+    "description": "Body for own_trip_assigned",
+    "placeholders": {
+      "driver": {
+        "type": "String",
+        "example": "Nader"
+      },
+      "pickup": {
+        "type": "String",
+        "example": "HQ"
+      },
+      "destination": {
+        "type": "String",
+        "example": "Site"
+      }
+    }
+  },
+  "notificationTripEndedTitle": "Trip ended",
+  "@notificationTripEndedTitle": {
+    "description": "Title for trip_ended_report_needed"
+  },
+  "notificationTripEndedBody": "Your trip from {pickup} to {destination} has ended. Please submit the report.",
+  "@notificationTripEndedBody": {
+    "description": "Body for trip_ended_report_needed",
+    "placeholders": {
+      "pickup": {
+        "type": "String",
+        "example": "HQ"
+      },
+      "destination": {
+        "type": "String",
+        "example": "Site"
+      }
+    }
+  },
+  "notificationChannelTrips": "Trips",
+  "@notificationChannelTrips": {
+    "description": "Android notification channel name for trip pushes"
+  },
+  "notificationChannelTripsDescription": "Trip assignments and request updates",
+  "@notificationChannelTripsDescription": {
+    "description": "Android notification channel description for trip pushes"
+  },
+  "navAttendance": "Attendance",
+  "attendanceCardTitle": "Attendance",
+  "attendanceNotCheckedIn": "Not checked in",
+  "attendanceCheckedInAt": "Checked in at {time}",
+  "@attendanceCheckedInAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "attendanceCheckedOutAt": "Checked out at {time}",
+  "@attendanceCheckedOutAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "attendanceScanCheckIn": "Scan QR to check in",
+  "attendanceScanCheckOut": "Scan QR to check out",
+  "attendanceScanTitle": "Scan QR",
+  "attendanceScanCancelled": "Scan cancelled.",
+  "attendanceScanUnsupported": "QR scanning runs on the Android or iOS app. Stop the app completely, then open it again on a phone or emulator. Hot reload does not load the camera.",
+  "attendanceCheckedInSuccess": "Checked in.",
+  "attendanceCheckedOutSuccess": "Checked out.",
+  "attendanceHistoryEmpty": "No attendance in this period.",
+  "attendanceTotals": "Present {present}, absent {absent}, on-site {hours} h",
+  "@attendanceTotals": {
+    "placeholders": {
+      "present": {
+        "type": "int"
+      },
+      "absent": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "attendanceAbsent": "Absent",
+  "attendanceNoCheckOut": "No check-out",
+  "attendanceDayLine": "In {checkIn} · Out {checkOut} · {hours} h",
+  "@attendanceDayLine": {
+    "placeholders": {
+      "checkIn": {
+        "type": "String"
+      },
+      "checkOut": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "attendanceStatusCheckedIn": "Checked in",
+  "attendanceStatusCheckedOut": "Checked out",
+  "attendanceInvalidQr": "This QR code is not valid.",
+  "attendanceMockLocation": "A mocked location cannot be used to check in.",
+  "attendanceLowAccuracy": "The GPS reading is not accurate enough.",
+  "attendanceOutsideRadius": "You are {distance} m from headquarters. The allowed radius is {radius} m.",
+  "@attendanceOutsideRadius": {
+    "placeholders": {
+      "distance": {
+        "type": "int"
+      },
+      "radius": {
+        "type": "int"
+      }
+    }
+  },
+  "attendanceAlreadyCheckedIn": "You already checked in today.",
+  "attendanceNotCheckedInError": "Check in before checking out.",
+  "attendanceAlreadyCheckedOut": "You already checked out today.",
+  "attendanceActiveTrip": "Finish the active trip before checking out.",
+  "attendanceFilterAll": "All",
+  "attendanceFilterCheckedIn": "Checked in today",
+  "attendanceFilterNotCheckedIn": "Not checked in",
+  "attendanceFilterEmpty": "No drivers match this attendance filter.",
+  "attendanceOnTrip": "On trip",
+  "attendanceAdjustTitle": "Adjust attendance",
+  "attendanceWorkDate": "Work date",
+  "attendanceCheckInTime": "Check-in time",
+  "attendanceCheckOutTime": "Check-out time",
+  "attendanceReasonLabel": "Reason",
+  "attendanceReasonRequired": "Enter a reason.",
+  "attendanceAdjustSave": "Save",
+  "attendanceCancel": "Cancel",
+  "attendanceQrTitle": "Attendance QR",
+  "attendanceOffDay": "Today is a weekly day off.",
+  "locationPreciseRequired": "Precise location is required.",
+  "locationInaccurate": "The location reading is not accurate enough.",
+  "locationMocked": "Mock locations are not allowed."
+}

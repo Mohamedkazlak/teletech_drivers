@@ -1,0 +1,201 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:teletech_drivers/core/constants/api_json_keys.dart';
+import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
+import 'package:teletech_drivers/core/localization/language_toggle_button.dart';
+import 'package:teletech_drivers/core/router/app_routes.dart';
+import 'package:teletech_drivers/core/router/role_route_strategy.dart';
+import 'package:teletech_drivers/core/utils/failure_messages.dart';
+import 'package:teletech_drivers/core/widgets/animated_error_banner.dart';
+import 'package:teletech_drivers/core/widgets/app_button.dart';
+import 'package:teletech_drivers/core/widgets/app_scaffold.dart';
+import 'package:teletech_drivers/core/widgets/app_text_field.dart';
+import 'package:teletech_drivers/features/auth/presentation/controllers/change_password_controller.dart';
+import 'package:teletech_drivers/features/auth/presentation/providers/auth_providers.dart';
+import 'package:teletech_drivers/features/auth/presentation/validation/auth_validators.dart';
+import 'package:teletech_drivers/features/auth/presentation/widgets/password_visibility_button.dart';
+import 'package:teletech_drivers/features/auth/presentation/widgets/sign_out_button.dart';
+
+/// Blocks the app until the signed-in user changes a temporary password.
+class ForcedChangePasswordScreen extends ConsumerStatefulWidget {
+  const ForcedChangePasswordScreen({super.key});
+
+  @override
+  ConsumerState<ForcedChangePasswordScreen> createState() =>
+      _ForcedChangePasswordScreenState();
+}
+
+class _ForcedChangePasswordScreenState
+    extends ConsumerState<ForcedChangePasswordScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _currentController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmController = TextEditingController();
+  var _obscureCurrent = true;
+  var _obscurePassword = true;
+  var _obscureConfirm = true;
+  var _autovalidateMode = AutovalidateMode.disabled;
+
+  @override
+  void dispose() {
+    _currentController.dispose();
+    _passwordController.dispose();
+    _confirmController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    final l10n = AppLocalizations.of(context);
+    if (!_formKey.currentState!.validate()) {
+      setState(() => _autovalidateMode = AutovalidateMode.onUserInteraction);
+      return;
+    }
+    final saved = await ref
+        .read(changePasswordControllerProvider.notifier)
+        .submit(
+          currentPassword: _currentController.text,
+          password: _passwordController.text,
+          passwordConfirmation: _confirmController.text,
+        );
+    if (!mounted || !saved) return;
+    final user = ref.read(currentUserProvider).asData?.value;
+    final router = GoRouter.of(context);
+    final stillOnGate =
+        router.state.matchedLocation == AppRoutes.changePasswordRequired;
+    if (user != null && !user.mustChangePassword && stillOnGate) {
+      router.go(const AppRoleRouteStrategy().homeLocation(user.role));
+    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(l10n.changePasswordSuccess)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final passwordState = ref.watch(changePasswordControllerProvider);
+    final banner = passwordState.rateLimited
+        ? l10n.changePasswordRateLimited
+        : passwordState.fieldErrors.isEmpty
+        ? passwordState.failure?.message(l10n)
+        : null;
+
+    return BackButtonListener(
+      onBackButtonPressed: () async => true,
+      child: AppScaffold(
+        title: l10n.forcedChangePasswordTitle,
+        showBackButton: false,
+        actions: const [
+          LanguageToggleButton(),
+          SignOutButton(style: SignOutButtonStyle.icon),
+        ],
+        body: ListView(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 24),
+          children: [
+            Text(l10n.forcedChangePasswordMessage),
+            const SizedBox(height: 16),
+            Form(
+              key: _formKey,
+              autovalidateMode: passwordState.fieldErrors.isNotEmpty
+                  ? AutovalidateMode.always
+                  : _autovalidateMode,
+              child: Column(
+                children: [
+                  AppTextField(
+                    controller: _currentController,
+                    label: l10n.currentPasswordLabel,
+                    enabled: !passwordState.isLoading,
+                    obscureText: _obscureCurrent,
+                    textInputAction: TextInputAction.next,
+                    prefixIcon: Icons.lock_outline,
+                    suffix: PasswordVisibilityButton(
+                      obscure: _obscureCurrent,
+                      onPressed: passwordState.isLoading
+                          ? null
+                          : () => setState(
+                              () => _obscureCurrent = !_obscureCurrent,
+                            ),
+                    ),
+                    onChanged: (_) => ref
+                        .read(changePasswordControllerProvider.notifier)
+                        .clearFailure(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return l10n.validationPasswordRequired;
+                      }
+                      return passwordState.fieldErrors[ApiJsonKeys
+                          .currentPassword];
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  AppTextField(
+                    controller: _passwordController,
+                    label: l10n.newPasswordLabel,
+                    enabled: !passwordState.isLoading,
+                    obscureText: _obscurePassword,
+                    textInputAction: TextInputAction.next,
+                    prefixIcon: Icons.lock_outline,
+                    suffix: PasswordVisibilityButton(
+                      obscure: _obscurePassword,
+                      onPressed: passwordState.isLoading
+                          ? null
+                          : () => setState(
+                              () => _obscurePassword = !_obscurePassword,
+                            ),
+                    ),
+                    onChanged: (_) => ref
+                        .read(changePasswordControllerProvider.notifier)
+                        .clearFailure(),
+                    validator: (value) =>
+                        AuthValidators.password(value, l10n) ??
+                        passwordState.fieldErrors[ApiJsonKeys.password],
+                  ),
+                  const SizedBox(height: 16),
+                  AppTextField(
+                    controller: _confirmController,
+                    label: l10n.confirmPasswordLabel,
+                    enabled: !passwordState.isLoading,
+                    obscureText: _obscureConfirm,
+                    textInputAction: TextInputAction.done,
+                    prefixIcon: Icons.lock_outline,
+                    suffix: PasswordVisibilityButton(
+                      obscure: _obscureConfirm,
+                      onPressed: passwordState.isLoading
+                          ? null
+                          : () => setState(
+                              () => _obscureConfirm = !_obscureConfirm,
+                            ),
+                    ),
+                    onFieldSubmitted: (_) => unawaited(_submit()),
+                    onChanged: (_) => ref
+                        .read(changePasswordControllerProvider.notifier)
+                        .clearFailure(),
+                    validator: (value) =>
+                        AuthValidators.confirmPassword(
+                          value,
+                          _passwordController.text,
+                          l10n,
+                        ) ??
+                        passwordState.fieldErrors[ApiJsonKeys
+                            .passwordConfirmation],
+                  ),
+                ],
+              ),
+            ),
+            AnimatedErrorBanner(message: banner),
+            const SizedBox(height: 16),
+            AppButton(
+              label: l10n.changePasswordAction,
+              loadingLabel: l10n.loading,
+              isLoading: passwordState.isLoading,
+              onPressed: () => unawaited(_submit()),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

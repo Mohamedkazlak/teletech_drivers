@@ -1,0 +1,21 @@
+{
+  "name": "teletech-drivers",
+  "private": true,
+  "scripts": {
+    "preflight": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/preflight.ps1",
+    "dev:backend": "cd backend && php artisan serve --host=0.0.0.0 --port=8000",
+    "dev:reverb": "cd backend && php artisan reverb:start --host=0.0.0.0 --port=8080",
+    "dev:scheduler": "cd backend && php artisan schedule:work",
+    "dev:queue": "cd backend && php artisan queue:work",
+    "dev:web": "npm --prefix web run dev -- --host",
+    "dev:mobile": "npm run preflight && powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/run-mobile.ps1",
+    "dev": "npm run preflight && concurrently -n backend,reverb,scheduler,queue,web -c blue,yellow,magenta,white,green \"npm run dev:backend\" \"npm run dev:reverb\" \"npm run dev:scheduler\" \"npm run dev:queue\" \"npm run dev:web\"",
+    "dev:all": "npm run preflight && concurrently -n backend,reverb,scheduler,queue,web,mobile -c blue,yellow,magenta,white,green,cyan \"npm run dev:backend\" \"npm run dev:reverb\" \"npm run dev:scheduler\" \"npm run dev:queue\" \"npm run dev:web\" \"powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/run-mobile.ps1\"",
+    "db:reset": "node scripts/db-reset.mjs",
+    "db:users": "cd backend && php artisan dev:seed-users",
+    "check": "cd backend && php artisan test && cd .. && flutter analyze && flutter test && npm --prefix web run lint && npm --prefix web run typecheck && npm --prefix web run test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

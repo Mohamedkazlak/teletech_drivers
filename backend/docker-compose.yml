@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: teletech_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: teletech
+      POSTGRES_USER: teletech
+      POSTGRES_PASSWORD: teletech
+    ports:
+      - "5432:5432"
+    volumes:
+      - teletech_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U teletech -d teletech"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  teletech_pgdata:

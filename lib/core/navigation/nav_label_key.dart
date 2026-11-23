@@ -1,0 +1,22 @@
+/// Localization key for a navigation label. Resolved in the presentation layer.
+enum NavLabelKey {
+  myTrips,
+  trips,
+  requests,
+  requestedTrips,
+  attendance,
+  assignedTrips,
+  completedTrips,
+  stats,
+  places,
+  myRequests,
+  drivers,
+  liveMap,
+  dashboard,
+  employees,
+  users,
+  attendanceBoard,
+  profile,
+  settings,
+  more,
+}

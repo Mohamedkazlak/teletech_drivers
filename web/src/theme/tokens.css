@@ -1,0 +1,41 @@
+/*
+  TeleTech tokens from lib/core/theme/app_colors.dart and app_theme.dart.
+  The Flutter app registers only AppTheme.light (lib/app.dart), so the site
+  stays on that light theme. The sidebar panel is left as it is; its active
+  and hover colors read these variables.
+*/
+
+@theme {
+  --font-sans: 'Cairo', 'Segoe UI', 'Noto Naskh Arabic', 'Noto Sans Arabic', sans-serif;
+
+  --color-deep: #0b4da2;
+  --color-mid: #4a78be;
+  --color-light: #8ca6d9;
+  --color-pale: #e8eef9;
+  --color-navy: #062b5c;
+  --color-scaffold: #f6f9fe;
+  --color-success: #2e9e6b;
+  --color-warning: #e0a030;
+  --color-danger: #d64545;
+
+  --radius-control: 14px;
+  --radius-card: 16px;
+  --radius-chip: 20px;
+  --radius-auth: 24px;
+
+  --shadow-button: 0 2px 6px rgb(11 77 162 / 0.25);
+  --shadow-dialog: 0 8px 24px rgb(11 77 162 / 0.16);
+  --shadow-auth: 0 10px 24px rgb(11 77 162 / 0.2);
+}
+
+:root {
+  color-scheme: light;
+  --control-height: 52px;
+  --status-pending: var(--color-warning);
+  --status-approved: var(--color-mid);
+  --status-assigned: var(--color-mid);
+  --status-in-progress: var(--color-deep);
+  --status-completed: var(--color-success);
+  --status-rejected: var(--color-danger);
+  --focus-ring: var(--color-deep);
+}
