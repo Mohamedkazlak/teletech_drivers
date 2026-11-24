@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:teletech_drivers/core/theme/app_gradients.dart';
+import 'package:teletech_drivers/core/widgets/brand_mark.dart';
 
 /// Curved brand gradient used on Login / Signup.
 class AuthGradientHeader extends StatelessWidget {
-  const AuthGradientHeader({this.heightFactor = 0.4, super.key});
+  const AuthGradientHeader({this.heightFactor = 0.46, super.key});
 
   final double heightFactor;
 
@@ -18,6 +19,7 @@ class AuthGradientHeader extends StatelessWidget {
         clipper: const _EllipseBottomClipper(),
         child: const DecoratedBox(
           decoration: BoxDecoration(gradient: AppGradients.primary),
+          child: RingField(opacity: 0.08, rings: 6),
         ),
       ),
     );

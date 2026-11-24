@@ -136,7 +136,7 @@ class PlacesTab extends ConsumerWidget {
               const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 88),
             ),
             itemCount: items.length,
-            separatorBuilder: (_, _) => const Divider(height: 1),
+            separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               final place = items[index];
               final isToggling =

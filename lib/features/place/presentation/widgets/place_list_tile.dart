@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/widgets/surface_card.dart';
 import 'package:teletech_drivers/features/place/domain/entities/place.dart';
 import 'package:teletech_drivers/features/place/presentation/widgets/place_preview_map.dart';
 
@@ -36,8 +37,9 @@ class PlaceListTile extends StatelessWidget {
         : l10n.placeStatusInactive;
     final busy = isToggling || isDeleting;
 
-    return ListTile(
-      contentPadding: const EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
+    return SurfaceCard(
+      child: ListTile(
+      contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 8, 4, 8),
       onTap: busy ? null : onEdit,
       title: Text(primaryName),
       subtitle: Column(
@@ -116,6 +118,7 @@ class PlaceListTile extends StatelessWidget {
             ),
           ],
         ],
+      ),
       ),
     );
   }

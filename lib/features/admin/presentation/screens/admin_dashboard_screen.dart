@@ -6,6 +6,7 @@ import 'package:teletech_drivers/core/presentation/glass_bar_inset.dart';
 import 'package:teletech_drivers/core/localization/language_toggle_button.dart';
 import 'package:teletech_drivers/core/presentation/app_loading_indicator.dart';
 import 'package:teletech_drivers/core/router/app_routes.dart';
+import 'package:teletech_drivers/core/theme/app_colors.dart';
 import 'package:teletech_drivers/core/widgets/app_scaffold.dart';
 import 'package:teletech_drivers/features/admin/presentation/providers/employee_providers.dart';
 import 'package:teletech_drivers/features/admin/presentation/providers/user_account_providers.dart';
@@ -65,7 +66,9 @@ class AdminDashboardScreen extends ConsumerWidget {
               children: [
                 Text(
                   l10n.adminDashboardSubtitle,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppColors.inkMuted,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 GridView.count(
@@ -76,9 +79,10 @@ class AdminDashboardScreen extends ConsumerWidget {
                   crossAxisSpacing: 12,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  childAspectRatio: 1.15,
+                  childAspectRatio: 1.0,
                   children: [
                     AdminSectionCard(
+                      animateIndex: 0,
                       title: l10n.adminDriversSection,
                       subtitle: l10n.adminDriversSectionHint,
                       icon: Icons.local_taxi_outlined,
@@ -86,6 +90,7 @@ class AdminDashboardScreen extends ConsumerWidget {
                       onTap: () => context.go(AppRoutes.adminDrivers),
                     ),
                     AdminSectionCard(
+                      animateIndex: 1,
                       title: l10n.adminPlacesSection,
                       subtitle: l10n.adminPlacesSectionHint,
                       icon: Icons.place_outlined,
@@ -93,6 +98,7 @@ class AdminDashboardScreen extends ConsumerWidget {
                       onTap: () => context.go(AppRoutes.adminPlaces),
                     ),
                     AdminSectionCard(
+                      animateIndex: 2,
                       title: l10n.adminEmployeesSection,
                       subtitle: l10n.adminEmployeesSectionHint,
                       icon: Icons.badge_outlined,
@@ -100,6 +106,7 @@ class AdminDashboardScreen extends ConsumerWidget {
                       onTap: () => context.go(AppRoutes.adminEmployees),
                     ),
                     AdminSectionCard(
+                      animateIndex: 3,
                       title: l10n.adminUsersSection,
                       subtitle: l10n.adminUsersSectionHint,
                       icon: Icons.manage_accounts_outlined,
@@ -107,6 +114,7 @@ class AdminDashboardScreen extends ConsumerWidget {
                       onTap: () => context.go(AppRoutes.adminUsers),
                     ),
                     AdminSectionCard(
+                      animateIndex: 4,
                       title: l10n.adminMyTripsSection,
                       subtitle: l10n.adminMyTripsSectionHint,
                       icon: Icons.assignment_outlined,
@@ -114,9 +122,11 @@ class AdminDashboardScreen extends ConsumerWidget {
                       onTap: () => context.go(AppRoutes.adminMyTrips),
                     ),
                     AdminSectionCard(
+                      animateIndex: 5,
                       title: l10n.adminRequestTripSection,
                       subtitle: l10n.adminRequestTripSectionHint,
                       icon: Icons.add_road_outlined,
+                      emphasized: true,
                       onTap: () {
                         if (user == null) return;
                         openNewTripRequest(context, user: user);

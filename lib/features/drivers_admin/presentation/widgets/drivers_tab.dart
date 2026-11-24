@@ -189,10 +189,10 @@ class _DriversTabState extends ConsumerState<DriversTab> {
                   : ListView.separated(
                       padding: GlassBarInset.listPadding(
                         context,
-                        const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 88),
+                        const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 88),
                       ),
                       itemCount: items.length,
-                      separatorBuilder: (_, _) => const Divider(height: 1),
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
                       itemBuilder: (context, index) {
                         final driver = items[index];
                         final isToggling =

@@ -48,6 +48,8 @@ class TripListTile extends ConsumerWidget {
       animateIndex: animateIndex,
       onTap: onTap,
       title: l10n.tripRouteSummary(pickupName, destinationName),
+      from: pickupName,
+      to: destinationName,
       statusLabel: statusLabel,
       statusColor: statusColor,
       trailing: Column(

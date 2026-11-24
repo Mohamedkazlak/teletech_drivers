@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/widgets/surface_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/presentation/app_loading_indicator.dart';
@@ -135,10 +137,13 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
                   itemBuilder: (context, index) {
                     final user = filtered[index];
                     final isSelf = user.id == currentUserId;
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(color: Theme.of(context).dividerColor),
+                    return SurfaceCard(
+                      animateIndex: index,
+                      child: ListTile(
+                      contentPadding: const EdgeInsetsDirectional.fromSTEB(14, 8, 4, 8),
+                      leading: InitialsAvatar(
+                        name: user.localizedName(languageCode),
+                        statusColor: user.isActive ? AppColors.success : AppColors.inkMuted,
                       ),
                       title: Text(user.localizedName(languageCode)),
                       subtitle: Text(
@@ -164,6 +169,7 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
                                 ),
                               ],
                             ),
+                    ),
                     );
                   },
                 );

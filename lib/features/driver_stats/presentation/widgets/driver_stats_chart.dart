@@ -4,6 +4,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
+import 'package:teletech_drivers/core/theme/app_typography.dart';
+import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
+import 'package:teletech_drivers/core/widgets/empty_state.dart';
 import 'package:teletech_drivers/features/driver_stats/domain/entities/stats_bucket.dart';
 import 'package:teletech_drivers/features/driver_stats/presentation/stats_chart_label.dart';
 
@@ -21,16 +25,21 @@ class DriverStatsChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    if (buckets.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24),
-        child: Text(
-          l10n.statsChartEmpty,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyLarge,
+    final hasTrips = buckets.any((bucket) => bucket.trips > 0);
+    if (buckets.isEmpty || !hasTrips) {
+      return SizedBox(
+        height: 220,
+        child: EmptyState(
+          icon: Icons.insights_rounded,
+          title: l10n.driverTripsEmptyTitle,
+          message: l10n.statsChartEmpty,
         ),
       );
     }
+    final labelStyle = Theme.of(
+      context,
+    ).textTheme.labelSmall?.copyWith(color: AppColors.inkMuted);
+    final reduceMotion = AppAnimations.disabled(context);
 
     final locale = Localizations.localeOf(context).toString();
     final labels = [
@@ -57,11 +66,36 @@ class DriverStatsChart extends StatelessWidget {
             child: SizedBox(
               width: width,
               child: BarChart(
+                duration: reduceMotion
+                    ? Duration.zero
+                    : const Duration(milliseconds: 450),
+                curve: AppMotion.easeOut,
                 BarChartData(
                   maxY: maxY,
                   alignment: BarChartAlignment.spaceAround,
-                  barTouchData: const BarTouchData(enabled: false),
-                  gridData: const FlGridData(show: false),
+                  barTouchData: BarTouchData(
+                    touchTooltipData: BarTouchTooltipData(
+                      getTooltipColor: (_) => AppColors.navy,
+                      getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                        return BarTooltipItem(
+                          rod.toY.toInt().toString(),
+                          AppTypography.tabular(
+                                Theme.of(context).textTheme.labelLarge,
+                              )?.copyWith(color: AppColors.white) ??
+                              const TextStyle(color: AppColors.white),
+                        );
+                      },
+                    ),
+                  ),
+                  gridData: FlGridData(
+                    drawVerticalLine: false,
+                    horizontalInterval: maxY <= 5 ? 1 : null,
+                    getDrawingHorizontalLine: (_) => const FlLine(
+                      color: AppColors.line,
+                      strokeWidth: 1,
+                      dashArray: [4, 4],
+                    ),
+                  ),
                   borderData: FlBorderData(show: false),
                   titlesData: FlTitlesData(
                     topTitles: const AxisTitles(
@@ -81,7 +115,7 @@ class DriverStatsChart extends StatelessWidget {
                           }
                           return Text(
                             value.toInt().toString(),
-                            style: Theme.of(context).textTheme.labelSmall,
+                            style: AppTypography.tabular(labelStyle),
                           );
                         },
                       ),
@@ -97,10 +131,7 @@ class DriverStatsChart extends StatelessWidget {
                           }
                           return Padding(
                             padding: const EdgeInsets.only(top: 6),
-                            child: Text(
-                              labels[index],
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
+                            child: Text(labels[index], style: labelStyle),
                           );
                         },
                       ),
@@ -114,9 +145,12 @@ class DriverStatsChart extends StatelessWidget {
                           BarChartRodData(
                             toY: buckets[index].trips.toDouble(),
                             color: AppColors.deepBlue,
-                            width: 12,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(4),
+                            width: 14,
+                            borderRadius: BorderRadius.circular(7),
+                            backDrawRodData: BackgroundBarChartRodData(
+                              show: true,
+                              toY: maxY,
+                              color: AppColors.paleBlue,
                             ),
                           ),
                         ],

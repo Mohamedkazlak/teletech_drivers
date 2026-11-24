@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
-import 'package:teletech_drivers/core/theme/app_gradients.dart';
-import 'package:teletech_drivers/core/theme/app_theme.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
+import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
 
-/// Gradient greeting block for end-user home screens.
+/// Greeting block for end-user home screens.
+///
+/// Sits on the page itself (no card) so the screen's one hero surface, the
+/// status card below it, carries the weight.
 class HomeHeader extends StatelessWidget {
   const HomeHeader({
     required this.greeting,
@@ -16,64 +20,65 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
-      padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-      decoration: BoxDecoration(
-        gradient: AppGradients.primary,
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.deepBlue.withValues(alpha: 0.22),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
+    Widget header = Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(20, 12, 20, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            greeting,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: AppColors.white,
-            ),
-          ),
+          Text(greeting, style: Theme.of(context).textTheme.headlineSmall),
           if (chips.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             Wrap(spacing: 8, runSpacing: 8, children: chips),
           ],
         ],
       ),
     );
+
+    if (!AppAnimations.disabled(context)) {
+      header = header
+          .animate()
+          .fadeIn(duration: AppMotion.standard)
+          .moveY(
+            begin: 6,
+            end: 0,
+            duration: AppMotion.emphasized,
+            curve: AppMotion.easeOut,
+          );
+    }
+    return header;
   }
 }
 
-/// Chip styled for use on the dark gradient header.
+/// Quiet label pill under the greeting (role, branch).
 class HomeHeaderChip extends StatelessWidget {
-  const HomeHeaderChip({required this.label, super.key});
+  const HomeHeaderChip({required this.label, this.icon, super.key});
 
   final String label;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsetsDirectional.symmetric(
-        horizontal: 12,
-        vertical: 6,
-      ),
+      padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 12, 5),
       decoration: BoxDecoration(
-        color: AppColors.white.withValues(alpha: 0.18),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.white.withValues(alpha: 0.35)),
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: AppColors.line),
       ),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: AppColors.white,
-          fontWeight: FontWeight.w600,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 14, color: AppColors.inkMuted),
+            const SizedBox(width: 6),
+          ],
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: AppColors.inkMuted,
+            ),
+          ),
+        ],
       ),
     );
   }

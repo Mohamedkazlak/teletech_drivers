@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/widgets/surface_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
@@ -204,17 +206,18 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
                     final name = languageCode == 'ar'
                         ? driver.nameAr
                         : driver.nameEn;
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                        ),
+                    return SurfaceCard(
+                      animateIndex: index,
+                      child: ListTile(
+                      contentPadding: const EdgeInsetsDirectional.fromSTEB(14, 8, 4, 8),
+                      leading: InitialsAvatar(
+                        name: name,
+                        statusColor: driver.isActive ? AppColors.success : AppColors.inkMuted,
                       ),
                       title: Text(name),
                       subtitle: Text(
-                        '${driver.email}\n${driver.phone} · '
-                        '${driver.isActive ? l10n.adminFilterActive : l10n.adminFilterInactive}',
+                        '${driver.email}\n'
+                        '${[driver.phone, driver.isActive ? l10n.adminFilterActive : l10n.adminFilterInactive].where((part) => part.trim().isNotEmpty).join(' · ')}',
                       ),
                       isThreeLine: true,
                       onTap: () => context.push(
@@ -255,6 +258,7 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
                             ),
                         ],
                       ),
+                    ),
                     );
                   },
                 );

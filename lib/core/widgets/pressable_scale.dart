@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
 import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
 
 /// Scales slightly on press without blocking interaction.
@@ -8,6 +10,7 @@ class PressableScale extends StatefulWidget {
     this.onTap,
     this.enabled = true,
     this.scale = 0.97,
+    this.haptic = false,
     super.key,
   });
 
@@ -15,6 +18,9 @@ class PressableScale extends StatefulWidget {
   final VoidCallback? onTap;
   final bool enabled;
   final double scale;
+
+  /// Light haptic tick on press-down (primary actions).
+  final bool haptic;
 
   @override
   State<PressableScale> createState() => _PressableScaleState();
@@ -24,21 +30,24 @@ class _PressableScaleState extends State<PressableScale> {
   var _pressed = false;
 
   void _setPressed(bool value) {
-    if (!widget.enabled || AppAnimations.disabled(context)) return;
+    if (!widget.enabled) return;
+    if (value && widget.haptic) HapticFeedback.lightImpact();
+    if (AppAnimations.disabled(context)) return;
     setState(() => _pressed = value);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Press is quick; release is a touch slower so the rebound reads.
     final duration = AppAnimations.duration(
       context,
-      const Duration(milliseconds: 120),
+      _pressed ? AppMotion.press : AppMotion.quick,
     );
 
     Widget child = AnimatedScale(
       scale: _pressed ? widget.scale : 1,
       duration: duration,
-      curve: Curves.easeOut,
+      curve: AppMotion.easeOut,
       child: widget.child,
     );
 

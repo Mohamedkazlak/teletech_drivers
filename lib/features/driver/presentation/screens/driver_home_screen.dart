@@ -84,9 +84,15 @@ class _DriverHomeHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
     final chips = <Widget>[
-      HomeHeaderChip(label: roleLabel(user.role, l10n)),
+      HomeHeaderChip(
+        label: roleLabel(user.role, l10n),
+        icon: Icons.badge_outlined,
+      ),
       if (user.branch != null)
-        HomeHeaderChip(label: branchLabel(user.branch!, l10n)),
+        HomeHeaderChip(
+          label: branchLabel(user.branch!, l10n),
+          icon: Icons.place_outlined,
+        ),
     ];
 
     return HomeHeader(

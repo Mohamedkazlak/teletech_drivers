@@ -33,11 +33,12 @@ class EmployeeHomeScreen extends ConsumerWidget {
       ],
       floatingActionButton: user == null
           ? null
-          : FloatingActionButton(
+          : FloatingActionButton.extended(
               heroTag: 'employee-new-trip-request',
               tooltip: l10n.newTripRequest,
               onPressed: () => openNewTripRequest(context, user: user),
-              child: const Icon(Icons.add),
+              icon: const Icon(Icons.add_road_rounded),
+              label: Text(l10n.newTripRequest),
             ),
       body: SafeArea(
         child: Column(
@@ -91,9 +92,15 @@ class _EmployeeHomeHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
     final chips = <Widget>[
-      HomeHeaderChip(label: roleLabel(user.role, l10n)),
+      HomeHeaderChip(
+        label: roleLabel(user.role, l10n),
+        icon: Icons.badge_outlined,
+      ),
       if (user.branch != null)
-        HomeHeaderChip(label: branchLabel(user.branch!, l10n)),
+        HomeHeaderChip(
+          label: branchLabel(user.branch!, l10n),
+          icon: Icons.place_outlined,
+        ),
     ];
 
     return HomeHeader(

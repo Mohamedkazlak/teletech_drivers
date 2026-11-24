@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:teletech_drivers/core/presentation/glass_bar_inset.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
-import 'package:teletech_drivers/core/widgets/app_logo.dart';
+import 'package:teletech_drivers/core/widgets/brand_mark.dart';
 import 'package:teletech_drivers/features/notification/presentation/widgets/notification_bell_button.dart';
 
-/// App-wide scaffold that always surfaces the TeleTech logo.
+/// App-wide scaffold that always surfaces the TeleCars ring mark.
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
     required this.body,
@@ -101,7 +101,7 @@ class _AppBarTitle extends StatelessWidget {
     final text = title?.trim();
     final hasTitle = text != null && text.isNotEmpty;
 
-    Widget logo = const AppLogo(height: 32);
+    Widget logo = const BrandMark(size: 28);
     final longPress = onLogoLongPress;
     if (longPress != null) {
       logo = GestureDetector(
@@ -120,7 +120,7 @@ class _AppBarTitle extends StatelessWidget {
               text,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ],

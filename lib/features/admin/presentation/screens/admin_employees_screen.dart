@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/widgets/surface_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/presentation/app_loading_indicator.dart';
@@ -228,19 +230,18 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
                   itemBuilder: (context, index) {
                     final employee = filtered[index];
                     final branch = employee.branch;
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                        ),
+                    return SurfaceCard(
+                      animateIndex: index,
+                      child: ListTile(
+                      contentPadding: const EdgeInsetsDirectional.fromSTEB(14, 8, 4, 8),
+                      leading: InitialsAvatar(
+                        name: employee.localizedName(languageCode),
+                        statusColor: employee.isActive ? AppColors.success : AppColors.inkMuted,
                       ),
                       title: Text(employee.localizedName(languageCode)),
                       subtitle: Text(
                         '${employee.email}\n'
-                        '${employee.phone ?? ''} · '
-                        '${branch == null ? '—' : branchLabel(branch, l10n)} · '
-                        '${employee.isActive ? l10n.adminFilterActive : l10n.adminFilterInactive}',
+                        '${[employee.phone ?? '', branch == null ? '' : branchLabel(branch, l10n), employee.isActive ? l10n.adminFilterActive : l10n.adminFilterInactive].where((part) => part.trim().isNotEmpty).join(' · ')}',
                       ),
                       isThreeLine: true,
                       trailing: PopupMenuButton<String>(
@@ -279,6 +280,7 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
                             ),
                         ],
                       ),
+                    ),
                     );
                   },
                 );

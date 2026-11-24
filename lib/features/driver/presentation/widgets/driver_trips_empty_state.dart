@@ -12,8 +12,7 @@ class DriverTripsEmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return EmptyState(
-      icon: Icons.route_outlined,
+    return EmptyState.route(
       title: l10n.driverTripsEmptyTitle,
       message: message,
     );

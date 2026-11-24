@@ -40,7 +40,10 @@ class DriverPeriodTripList extends ConsumerWidget {
     }
 
     return trips.when(
-      loading: () => Center(child: AppLoadingIndicator(label: l10n.loading)),
+      loading: () => Align(
+        alignment: AlignmentDirectional.topCenter,
+        child: TripListSkeleton(label: l10n.loading),
+      ),
       error: (error, _) => ListFailureView(
         message: messageForError(error, l10n),
         onRetry: () => ref.invalidate(driverMineTripsProvider(filter)),
@@ -53,7 +56,7 @@ class DriverPeriodTripList extends ConsumerWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 SizedBox(
-                  height: 360,
+                  height: 420,
                   child: DriverTripsEmptyState(message: emptyMessage),
                 ),
               ],

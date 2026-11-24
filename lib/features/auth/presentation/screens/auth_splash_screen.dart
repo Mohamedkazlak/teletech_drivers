@@ -5,6 +5,9 @@ import 'package:teletech_drivers/core/localization/generated/app_localizations.d
 import 'package:teletech_drivers/core/localization/language_toggle_button.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
 import 'package:teletech_drivers/core/theme/app_gradients.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
+import 'package:teletech_drivers/core/theme/app_theme.dart';
+import 'package:teletech_drivers/core/widgets/brand_mark.dart';
 import 'package:teletech_drivers/core/utils/failure_messages.dart';
 import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
 import 'package:teletech_drivers/core/widgets/app_button.dart';
@@ -60,35 +63,42 @@ class _SplashLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget logo = Container(
-      padding: const EdgeInsetsDirectional.all(28),
+      padding: const EdgeInsetsDirectional.symmetric(
+        horizontal: 28,
+        vertical: 22,
+      ),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(40),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.18),
-            blurRadius: 28,
-            offset: const Offset(0, 12),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(32),
+        boxShadow: AppTheme.floatingShadow(opacity: 0.3),
       ),
-      child: const AppLogo(height: 96, heroTag: AppLogo.defaultHeroTag),
+      // The vector logo builds itself in: ellipses, wordmark, rings.
+      child: const AppLogo(
+        height: 72,
+        animated: true,
+        delay: Duration(milliseconds: 180),
+        heroTag: AppLogo.defaultHeroTag,
+      ),
     );
 
     if (!reduceMotion) {
       logo = logo
           .animate()
-          .fadeIn(duration: 600.ms)
-          .scale(
-            begin: const Offset(0.85, 0.85),
-            end: const Offset(1, 1),
-            duration: 600.ms,
-            curve: Curves.easeOutBack,
-          )
-          .shimmer(delay: 200.ms, duration: 900.ms);
+          .fadeIn(duration: AppMotion.standard)
+          .scaleXY(
+            begin: 0.94,
+            end: 1,
+            duration: AppMotion.emphasized,
+            curve: AppMotion.easeOut,
+          );
     }
 
-    return Center(child: logo);
+    return Stack(
+      children: [
+        const Positioned.fill(child: RingField(opacity: 0.06, rings: 7)),
+        Center(child: logo),
+      ],
+    );
   }
 }
 
