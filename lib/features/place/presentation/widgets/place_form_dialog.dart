@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/utils/failure_messages.dart';
-import 'package:teletech_drivers/features/auth/presentation/widgets/auth_error_banner.dart';
+import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/widgets/form_section.dart';
+import 'package:teletech_drivers/core/widgets/form_sheet.dart';
 import 'package:teletech_drivers/features/place/domain/entities/place.dart';
 import 'package:teletech_drivers/features/place/presentation/controllers/place_form_controller.dart';
 import 'package:teletech_drivers/features/place/presentation/validation/place_validators.dart';
@@ -21,8 +23,8 @@ class PlaceFormDialog extends ConsumerStatefulWidget {
     required List<Place> existingPlaces,
     Place? place,
   }) {
-    return showDialog<bool>(
-      context: context,
+    return showFormSheet<bool>(
+      context,
       builder: (_) =>
           PlaceFormDialog(existingPlaces: existingPlaces, place: place),
     );
@@ -42,6 +44,7 @@ class _PlaceFormDialogState extends ConsumerState<PlaceFormDialog> {
   double? _latitude;
   double? _longitude;
   var _manualCoordsExpanded = false;
+  var _shake = 0;
 
   bool get _isEditing => widget.place != null;
 
@@ -145,7 +148,10 @@ class _PlaceFormDialogState extends ConsumerState<PlaceFormDialog> {
 
   Future<void> _submit() async {
     final formValid = _formKey.currentState?.validate() ?? false;
-    if (!formValid) return;
+    if (!formValid) {
+      setState(() => _shake++);
+      return;
+    }
 
     ref.read(placeFormControllerProvider.notifier).clearFailure();
 
@@ -180,188 +186,149 @@ class _PlaceFormDialogState extends ConsumerState<PlaceFormDialog> {
     final l10n = AppLocalizations.of(context);
     final formState = ref.watch(placeFormControllerProvider);
     final excludingId = widget.place?.id;
-    final media = MediaQuery.sizeOf(context);
-    final canSave = !formState.isLoading;
-
-    return AlertDialog(
-      title: Text(_isEditing ? l10n.editPlaceTitle : l10n.addPlaceTitle),
-      content: SizedBox(
-        width: media.width > 480 ? 420 : media.width * 0.92,
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (formState.failure != null) ...[
-                  AuthErrorBanner(message: formState.failure!.message(l10n)),
-                  const SizedBox(height: 16),
-                ],
-                TextFormField(
-                  controller: _nameEnController,
-                  enabled: !formState.isLoading,
-                  textInputAction: TextInputAction.next,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    labelText: l10n.placeNameEnLabel,
-                    border: const OutlineInputBorder(),
-                  ),
-                  validator: (value) => PlaceValidators.nameEn(
-                    value,
-                    l10n,
-                    existingPlaces: widget.existingPlaces,
-                    excludingPlaceId: excludingId,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _nameArController,
-                  enabled: !formState.isLoading,
-                  textInputAction: TextInputAction.next,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    labelText: l10n.placeNameArLabel,
-                    border: const OutlineInputBorder(),
-                  ),
-                  validator: (value) => PlaceValidators.nameAr(
-                    value,
-                    l10n,
-                    existingPlaces: widget.existingPlaces,
-                    excludingPlaceId: excludingId,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _addressController,
-                  enabled: !formState.isLoading,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    labelText: l10n.placeAddressLabel,
-                    border: const OutlineInputBorder(),
-                  ),
-                  validator: (value) => PlaceValidators.address(value, l10n),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  l10n.placeLocationOptionalHint,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).hintColor,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                PlaceCoordinatePicker(
-                  latitude: _latitude,
-                  longitude: _longitude,
-                  enabled: !formState.isLoading,
-                  onChanged: (picked) => _setPickedLocation(
-                    latitude: picked.lat,
-                    longitude: picked.lng,
-                  ),
-                ),
-                if (_hasLocation)
-                  Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: TextButton(
-                      onPressed: formState.isLoading ? null : _clearLocation,
-                      child: Text(l10n.clearPlaceLocation),
-                    ),
-                  ),
-                const SizedBox(height: 8),
-                ExpansionTile(
-                  initiallyExpanded: _manualCoordsExpanded,
-                  onExpansionChanged: (expanded) {
-                    setState(() => _manualCoordsExpanded = expanded);
-                  },
-                  tilePadding: EdgeInsets.zero,
-                  title: Text(
-                    l10n.enterCoordinatesManually,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _latController,
-                            enabled: !formState.isLoading,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                              signed: true,
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'[-0-9.]'),
-                              ),
-                            ],
-                            decoration: InputDecoration(
-                              labelText: l10n.latitudeLabel,
-                              border: const OutlineInputBorder(),
-                            ),
-                            onChanged: (_) => _onLatLngFieldsChanged(),
-                            validator: (value) => _coordinateFieldError(
-                              value,
-                              isLatitude: true,
-                              l10n: l10n,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: TextFormField(
-                            controller: _lngController,
-                            enabled: !formState.isLoading,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                              signed: true,
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'[-0-9.]'),
-                              ),
-                            ],
-                            decoration: InputDecoration(
-                              labelText: l10n.longitudeLabel,
-                              border: const OutlineInputBorder(),
-                            ),
-                            onChanged: (_) => _onLatLngFieldsChanged(),
-                            validator: (value) => _coordinateFieldError(
-                              value,
-                              isLatitude: false,
-                              l10n: l10n,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
+    final busy = formState.isLoading;
+    final textTheme = Theme.of(context).textTheme;
+    return FormSheet(
+      title: _isEditing ? l10n.editPlaceTitle : l10n.addPlaceTitle,
+      icon: _isEditing ? Icons.edit_location_alt_outlined : Icons.add_location_alt_outlined,
+      formKey: _formKey,
+      isLoading: busy,
+      shakeTrigger: _shake,
+      errorMessage: formState.failure?.message(l10n),
+      primaryLabel: _isEditing ? l10n.savePlace : l10n.addPlace,
+      onPrimary: _submit,
+      children: [
+        FormSection(
+          title: l10n.formSectionPlace,
+          icon: Icons.storefront_outlined,
+          children: [
+            TextFormField(
+              controller: _nameEnController,
+              enabled: !busy,
+              textInputAction: TextInputAction.next,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(labelText: l10n.placeNameEnLabel),
+              validator: (value) => PlaceValidators.nameEn(
+                value,
+                l10n,
+                existingPlaces: widget.existingPlaces,
+                excludingPlaceId: excludingId,
+              ),
             ),
-          ),
+            TextFormField(
+              controller: _nameArController,
+              enabled: !busy,
+              textInputAction: TextInputAction.next,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(labelText: l10n.placeNameArLabel),
+              validator: (value) => PlaceValidators.nameAr(
+                value,
+                l10n,
+                existingPlaces: widget.existingPlaces,
+                excludingPlaceId: excludingId,
+              ),
+            ),
+            TextFormField(
+              controller: _addressController,
+              enabled: !busy,
+              textInputAction: TextInputAction.next,
+              minLines: 1,
+              maxLines: 3,
+              decoration: InputDecoration(
+                labelText: l10n.placeAddressLabel,
+                prefixIcon: const Icon(Icons.signpost_outlined),
+              ),
+              validator: (value) => PlaceValidators.address(value, l10n),
+            ),
+          ],
         ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: formState.isLoading
-              ? null
-              : () => Navigator.of(context).pop(false),
-          child: Text(l10n.dialogCancel),
-        ),
-        FilledButton(
-          onPressed: canSave ? _submit : null,
-          child: formState.isLoading
-              ? SizedBox.square(
-                  dimension: 20,
-                  child: Semantics(
-                    label: l10n.loading,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Theme.of(context).colorScheme.onPrimary,
+        FormSection(
+          title: l10n.formSectionLocation,
+          icon: Icons.map_outlined,
+          children: [
+            Text(
+              l10n.placeLocationOptionalHint,
+              style: textTheme.bodySmall?.copyWith(color: AppColors.inkMuted),
+            ),
+            PlaceCoordinatePicker(
+              latitude: _latitude,
+              longitude: _longitude,
+              enabled: !busy,
+              onChanged: (picked) => _setPickedLocation(
+                latitude: picked.lat,
+                longitude: picked.lng,
+              ),
+            ),
+            if (_hasLocation)
+              FieldAction(
+                label: l10n.clearPlaceLocation,
+                icon: Icons.location_off_outlined,
+                onPressed: busy ? null : _clearLocation,
+              ),
+            Theme(
+              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                initiallyExpanded: _manualCoordsExpanded,
+                onExpansionChanged: (expanded) {
+                  setState(() => _manualCoordsExpanded = expanded);
+                },
+                tilePadding: EdgeInsets.zero,
+                childrenPadding: const EdgeInsets.only(bottom: 4),
+                title: Text(
+                  l10n.enterCoordinatesManually,
+                  style: textTheme.bodyMedium,
+                ),
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                  child: TextFormField(
+                    controller: _latController,
+                    enabled: !busy,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                      signed: true,
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[-0-9.]')),
+                    ],
+                    decoration: InputDecoration(labelText: l10n.latitudeLabel),
+                    onChanged: (_) => _onLatLngFieldsChanged(),
+                    validator: (value) => _coordinateFieldError(
+                      value,
+                      isLatitude: true,
+                      l10n: l10n,
                     ),
                   ),
-                )
-              : Text(_isEditing ? l10n.savePlace : l10n.addPlace),
+                ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                  child: TextFormField(
+                    controller: _lngController,
+                    enabled: !busy,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                      signed: true,
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[-0-9.]')),
+                    ],
+                    decoration: InputDecoration(labelText: l10n.longitudeLabel),
+                    onChanged: (_) => _onLatLngFieldsChanged(),
+                    validator: (value) => _coordinateFieldError(
+                      value,
+                      isLatitude: false,
+                      l10n: l10n,
+                    ),
+                  ),
+                ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );

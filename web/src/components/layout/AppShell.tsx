@@ -29,7 +29,7 @@ export function AppShell() {
     <div className="min-h-dvh bg-scaffold text-navy">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:start-3 focus:top-3 focus:z-50 focus:rounded-control focus:bg-white focus:px-3 focus:py-2 focus:text-navy"
+        className="sr-only focus:not-sr-only focus:absolute focus:start-3 focus:top-3 focus:z-50 focus:rounded-control focus:bg-white focus:px-3 focus:py-2 focus:text-navy focus:shadow-float"
       >
         {t('common.skip')}
       </a>
@@ -40,7 +40,7 @@ export function AppShell() {
         <div className="lg:hidden">
           <button
             type="button"
-            className="fixed inset-0 z-30 bg-navy/50"
+            className="fixed inset-0 z-30 bg-navy-deep/45 backdrop-blur-[2px] animate-fade"
             aria-label={t('common.close')}
             onClick={() => setMenuPath(null)}
           />
@@ -49,7 +49,7 @@ export function AppShell() {
             role="dialog"
             aria-modal="true"
             aria-label={t('common.menu')}
-            className="fixed inset-y-0 start-0 z-40 w-72 max-w-[85vw] shadow-xl"
+            className="fixed inset-y-0 start-0 z-40 w-72 max-w-[85vw] shadow-dialog drawer-panel"
           >
             <Sidebar role={user.role} onNavigate={() => setMenuPath(null)} />
           </div>
@@ -64,7 +64,11 @@ export function AppShell() {
             void signOut()
           }}
         />
-        <main id="main" className="px-4 py-5 sm:px-6">
+        <main
+          id="main"
+          key={location.pathname}
+          className="mx-auto w-full max-w-[1400px] px-4 py-6 animate-rise sm:px-6 lg:px-8"
+        >
           <Outlet />
         </main>
       </div>
@@ -74,8 +78,10 @@ export function AppShell() {
 
 export function PageHeading({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-      <h1 className="text-2xl font-bold text-navy">{title}</h1>
+    <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+      <h1 className="text-[26px] leading-tight font-semibold tracking-[-0.02em] text-balance text-navy">
+        {title}
+      </h1>
       {children}
     </div>
   )

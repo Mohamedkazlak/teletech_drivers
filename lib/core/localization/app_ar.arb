@@ -720,5 +720,22 @@
   "attendanceOffDay": "اليوم إجازة أسبوعية.",
   "locationPreciseRequired": "يلزم موقع دقيق.",
   "locationInaccurate": "قراءة الموقع غير دقيقة بما يكفي.",
-  "locationMocked": "المواقع الوهمية غير مسموحة."
+  "locationMocked": "المواقع الوهمية غير مسموحة.",
+  "slideToCheckIn": "اسحب لتسجيل الحضور",
+  "slideToCheckOut": "اسحب لتسجيل الانصراف",
+  "formSectionPersonal": "البيانات الشخصية",
+  "formSectionContact": "التواصل",
+  "formSectionVehicle": "المركبة والرخصة",
+  "formSectionAccess": "تسجيل الدخول",
+  "formSectionWork": "العمل",
+  "formSectionLocation": "الموقع",
+  "formSectionPlace": "بيانات المكان",
+  "formFixErrors": "راجع الحقول المحددة.",
+  "passwordStrengthWeak": "ضعيفة",
+  "passwordStrengthFair": "مقبولة",
+  "passwordStrengthGood": "جيدة",
+  "passwordStrengthStrong": "قوية",
+  "clearSearch": "مسح البحث",
+  "adminTripsWeekTitle": "رحلات هذا الأسبوع",
+  "adminTripsWeekSubtitle": "المجدولة يوميًا، آخر 7 أيام"
 }

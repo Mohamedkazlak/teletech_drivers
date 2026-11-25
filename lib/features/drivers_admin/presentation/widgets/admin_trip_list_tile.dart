@@ -19,8 +19,12 @@ class AdminTripListTile extends ConsumerWidget {
     required this.onTap,
     this.showLiveProgress = false,
     this.animateIndex,
+    this.enableHero = false,
     super.key,
   });
+
+  /// Fly this card into the details header when opened.
+  final bool enableHero;
 
   final Trip trip;
   final VoidCallback onTap;
@@ -35,16 +39,15 @@ class AdminTripListTile extends ConsumerWidget {
     final languageCode = locale.languageCode;
     final dateFormat = DateFormat.yMMMd(locale.toString()).add_jm();
     final resolver = ref.watch(placeNameResolverProvider);
-    final routeSummary = l10n.tripRouteSummary(
-      resolver.resolveSummary(
-        summary: trip.pickupSummary,
-        languageCode: languageCode,
-      ),
-      resolver.resolveSummary(
-        summary: trip.destinationSummary,
-        languageCode: languageCode,
-      ),
+    final pickup = resolver.resolveSummary(
+      summary: trip.pickupSummary,
+      languageCode: languageCode,
     );
+    final destination = resolver.resolveSummary(
+      summary: trip.destinationSummary,
+      languageCode: languageCode,
+    );
+    final routeSummary = l10n.tripRouteSummary(pickup, destination);
     final tracking = trip.tracking;
     final statusLabel = tracking == null
         ? tripStageLabel(trip, l10n)
@@ -56,7 +59,11 @@ class AdminTripListTile extends ConsumerWidget {
     return TripCard(
       animateIndex: animateIndex,
       onTap: onTap,
+      heroTripId: enableHero ? trip.id : null,
       title: routeSummary,
+      from: pickup,
+      to: destination,
+      live: trip.status.isInProgress,
       statusLabel: statusLabel,
       statusColor: statusColor,
       trailing: Column(

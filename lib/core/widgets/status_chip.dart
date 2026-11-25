@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
 import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
 import 'package:teletech_drivers/features/trip/domain/entities/trip_status.dart';
 import 'package:teletech_drivers/features/trip_request/domain/entities/trip_request_status.dart';
@@ -30,7 +31,7 @@ class StatusChip extends StatelessWidget {
       TripRequestStatus.pending => AppColors.statusPending,
       TripRequestStatus.approved => AppColors.statusApproved,
       TripRequestStatus.rejected => AppColors.statusRejected,
-      TripRequestStatus.cancelled => AppColors.navy.withValues(alpha: 0.45),
+      TripRequestStatus.cancelled => AppColors.inkMuted,
     };
   }
 
@@ -48,13 +49,14 @@ class StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final duration = AppAnimations.duration(
-      context,
-      const Duration(milliseconds: 220),
-    );
+    final duration = AppAnimations.duration(context, AppMotion.quick);
+    final ink = AppColors.inkOn(color);
 
     return AnimatedSwitcher(
       duration: duration,
+      reverseDuration: AppAnimations.duration(context, AppMotion.exit),
+      switchInCurve: AppMotion.easeOut,
+      switchOutCurve: AppMotion.easeOut,
       transitionBuilder: (child, animation) {
         return FadeTransition(
           opacity: animation,
@@ -64,16 +66,39 @@ class StatusChip extends StatelessWidget {
           ),
         );
       },
-      child: Chip(
+      child: Semantics(
         key: ValueKey('$label-${color.toARGB32()}'),
-        label: Text(label),
-        backgroundColor: color.withValues(alpha: 0.14),
-        side: BorderSide.none,
-        labelStyle: Theme.of(context).textTheme.labelLarge
-            ?.copyWith(color: color, fontWeight: FontWeight.w700),
-        visualDensity: VisualDensity.compact,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: EdgeInsets.zero,
+        label: label,
+        excludeSemantics: true,
+        child: Container(
+          padding: const EdgeInsetsDirectional.fromSTEB(8, 4, 10, 4),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(999),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 6,
+                height: 6,
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              ),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: ink,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

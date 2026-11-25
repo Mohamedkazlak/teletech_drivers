@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:teletech_drivers/core/localization/language_toggle_button.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
 import 'package:teletech_drivers/core/theme/app_theme.dart';
 import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
 import 'package:teletech_drivers/core/widgets/app_logo.dart';
 import 'package:teletech_drivers/core/widgets/app_scaffold.dart';
 import 'package:teletech_drivers/core/widgets/auth_gradient_header.dart';
+import 'package:teletech_drivers/core/widgets/shake.dart';
 import 'package:teletech_drivers/features/auth/presentation/widgets/sign_out_button.dart';
 
 /// Auth shell: gradient header, hero logo, overlapping white card.
@@ -16,8 +18,12 @@ class AuthPageScaffold extends StatelessWidget {
     required this.child,
     this.subtitle,
     this.showSignOut = false,
+    this.shakeTrigger = 0,
     super.key,
   });
+
+  /// Change to shake the form card (failed sign-in, invalid fields).
+  final int shakeTrigger;
 
   final String title;
   final String? subtitle;
@@ -66,11 +72,14 @@ class AuthPageScaffold extends StatelessWidget {
                         const SizedBox(height: 8),
                         _HeroLogo(reduceMotion: reduceMotion),
                         const SizedBox(height: 20),
-                        _AuthCard(
-                          title: title,
-                          subtitle: subtitle,
-                          reduceMotion: reduceMotion,
-                          child: child,
+                        Shake(
+                          trigger: shakeTrigger,
+                          child: _AuthCard(
+                            title: title,
+                            subtitle: subtitle,
+                            reduceMotion: reduceMotion,
+                            child: child,
+                          ),
                         ),
                       ],
                     ),
@@ -100,23 +109,22 @@ class _HeroLogo extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(40),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.deepBlue.withValues(alpha: 0.2),
-            blurRadius: 24,
-            offset: const Offset(0, 10),
-          ),
-        ],
+        boxShadow: AppTheme.floatingShadow(opacity: 0.22),
       ),
-      child: const AppLogo(height: 90, heroTag: AppLogo.defaultHeroTag),
+      child: const AppLogo(height: 72, heroTag: AppLogo.defaultHeroTag),
     );
 
     if (reduceMotion) return logo;
 
     return logo
         .animate()
-        .fadeIn(duration: 400.ms)
-        .slideY(begin: -0.08, end: 0, duration: 400.ms, curve: Curves.easeOut);
+        .fadeIn(duration: AppMotion.emphasized)
+        .scaleXY(
+          begin: 0.94,
+          end: 1,
+          duration: AppMotion.emphasized,
+          curve: AppMotion.easeOut,
+        );
   }
 }
 
@@ -149,33 +157,22 @@ class _AuthCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.deepBlue.withValues(alpha: 0.12),
-              blurRadius: 28,
-              offset: const Offset(0, 14),
-            ),
-          ],
+          boxShadow: AppTheme.floatingShadow(opacity: 0.1),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              title,
-              style: textTheme.headlineSmall,
-              textAlign: TextAlign.center,
-            ),
+            Text(title, style: textTheme.headlineSmall),
             if (subtitle != null && subtitle!.isNotEmpty) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 subtitle!,
-                style: textTheme.bodyLarge?.copyWith(
-                  color: AppColors.navy.withValues(alpha: 0.7),
+                style: textTheme.bodyMedium?.copyWith(
+                  color: AppColors.inkMuted,
                 ),
-                textAlign: TextAlign.center,
               ),
             ],
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
             child,
           ],
         ),
@@ -186,8 +183,14 @@ class _AuthCard extends StatelessWidget {
 
     return card
         .animate()
-        .fadeIn(duration: 400.ms)
-        .slideY(begin: 0.1, end: 0, duration: 400.ms, curve: Curves.easeOut);
+        .fadeIn(delay: 60.ms, duration: AppMotion.standard)
+        .moveY(
+          begin: 16,
+          end: 0,
+          delay: 60.ms,
+          duration: AppMotion.emphasized,
+          curve: AppMotion.easeOut,
+        );
   }
 }
 
@@ -213,15 +216,15 @@ class AuthStagger extends StatelessWidget {
           children[i]
               .animate()
               .fadeIn(
-                delay: Duration(milliseconds: 60 * i),
-                duration: 320.ms,
+                delay: 120.ms + AppMotion.staggerAt(i),
+                duration: AppMotion.standard,
               )
-              .slideY(
-                begin: 0.06,
+              .moveY(
+                begin: 8,
                 end: 0,
-                delay: Duration(milliseconds: 60 * i),
-                duration: 320.ms,
-                curve: Curves.easeOutCubic,
+                delay: 120.ms + AppMotion.staggerAt(i),
+                duration: AppMotion.standard,
+                curve: AppMotion.easeOut,
               ),
       ],
     );

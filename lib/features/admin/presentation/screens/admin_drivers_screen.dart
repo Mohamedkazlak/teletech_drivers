@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/widgets/search_field.dart';
+import 'package:teletech_drivers/core/widgets/brand_refresh.dart';
+import 'package:teletech_drivers/core/widgets/swipe_actions.dart';
+import 'package:teletech_drivers/core/widgets/success_moment.dart';
+import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/widgets/surface_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
@@ -63,18 +69,14 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
     final l10n = AppLocalizations.of(context);
     final succeeded = await AddDriverDialog.show(context);
     if (!context.mounted || succeeded != true) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(l10n.driverCreated)));
+    await showSuccessMoment(context, message: l10n.driverCreated);
   }
 
   Future<void> _openEdit(BuildContext context, DriverProfile driver) async {
     final l10n = AppLocalizations.of(context);
     final succeeded = await EditDriverDialog.show(context, driver: driver);
     if (!context.mounted || succeeded != true) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(l10n.driverUpdated)));
+    await showSuccessMoment(context, message: l10n.driverUpdated);
   }
 
   Future<void> _confirmSoftDelete(
@@ -143,13 +145,9 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: TextField(
+            child: SearchField(
               controller: _searchController,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: l10n.adminSearchHint,
-                border: const OutlineInputBorder(),
-              ),
+              hintText: l10n.adminSearchHint,
               onChanged: (_) => setState(() {}),
             ),
           ),
@@ -175,8 +173,7 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
           ),
           Expanded(
             child: driversAsync.when(
-              loading: () =>
-                  Center(child: AppLoadingIndicator(label: l10n.loading)),
+              loading: () => PeopleListSkeleton(label: l10n.loading),
               error: (error, _) => Center(
                 child: Padding(
                   padding: const EdgeInsets.all(24),
@@ -195,7 +192,17 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
                     icon: Icons.local_taxi_outlined,
                   );
                 }
-                return ListView.separated(
+                return BrandRefresh(
+                  onRefresh: () async {
+                    ref.invalidate(allDriverProfilesProvider);
+                    try {
+                      await ref.read(allDriverProfilesProvider.future);
+                    } on Object {
+                      // The error view replaces the list.
+                    }
+                  },
+                  child: ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(16),
                   itemCount: filtered.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 8),
@@ -204,17 +211,26 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
                     final name = languageCode == 'ar'
                         ? driver.nameAr
                         : driver.nameEn;
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                        ),
+                    return SwipeActions(
+                      itemKey: ValueKey(driver.id),
+                      editLabel: l10n.editDriver,
+                      onEdit: () => _openEdit(context, driver),
+                      destructiveLabel: l10n.adminSoftDeleteAction,
+                      onDestructive: driver.isActive
+                          ? () => _confirmSoftDelete(context, driver)
+                          : null,
+                      child: SurfaceCard(
+                      animateIndex: index,
+                      child: ListTile(
+                      contentPadding: const EdgeInsetsDirectional.fromSTEB(14, 8, 4, 8),
+                      leading: InitialsAvatar(
+                        name: name,
+                        statusColor: driver.isActive ? AppColors.success : AppColors.inkMuted,
                       ),
                       title: Text(name),
                       subtitle: Text(
-                        '${driver.email}\n${driver.phone} · '
-                        '${driver.isActive ? l10n.adminFilterActive : l10n.adminFilterInactive}',
+                        '${driver.email}\n'
+                        '${[driver.phone, driver.isActive ? l10n.adminFilterActive : l10n.adminFilterInactive].where((part) => part.trim().isNotEmpty).join(' · ')}',
                       ),
                       isThreeLine: true,
                       onTap: () => context.push(
@@ -255,8 +271,11 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
                             ),
                         ],
                       ),
+                    ),
+                    ),
                     );
                   },
+                ),
                 );
               },
             ),

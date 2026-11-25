@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
 import 'package:teletech_drivers/core/theme/app_theme.dart';
 import 'package:teletech_drivers/core/widgets/pressable_scale.dart';
 
@@ -26,9 +27,17 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final enabled = onPressed != null && !isLoading;
     final child = AnimatedSwitcher(
-      duration: const Duration(milliseconds: 220),
-      switchInCurve: Curves.easeOut,
-      switchOutCurve: Curves.easeIn,
+      duration: AppMotion.quick,
+      reverseDuration: AppMotion.exit,
+      switchInCurve: AppMotion.easeOut,
+      switchOutCurve: AppMotion.easeOut,
+      transitionBuilder: (child, animation) => FadeTransition(
+        opacity: animation,
+        child: ScaleTransition(
+          scale: Tween<double>(begin: 0.92, end: 1).animate(animation),
+          child: child,
+        ),
+      ),
       child: isLoading
           ? SizedBox.square(
               key: const ValueKey('loading'),
@@ -36,10 +45,12 @@ class AppButton extends StatelessWidget {
               child: Semantics(
                 label: loadingLabel ?? label,
                 child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: variant == AppButtonVariant.outlined
-                      ? AppColors.deepBlue
-                      : AppColors.white,
+                  strokeWidth: 2.2,
+                  color: switch (variant) {
+                    AppButtonVariant.filled => AppColors.white,
+                    AppButtonVariant.outlined => AppColors.deepBlue,
+                    AppButtonVariant.danger => AppColors.error,
+                  },
                 ),
               ),
             )
@@ -60,8 +71,8 @@ class AppButton extends StatelessWidget {
       ),
       AppButtonVariant.danger => FilledButton(
         style: FilledButton.styleFrom(
-          backgroundColor: AppColors.error.withValues(alpha: 0.12),
-          foregroundColor: AppColors.error,
+          backgroundColor: AppColors.error.withValues(alpha: 0.1),
+          foregroundColor: AppColors.inkOn(AppColors.error),
           disabledBackgroundColor: AppColors.error.withValues(alpha: 0.06),
           shadowColor: Colors.transparent,
           elevation: 0,
@@ -72,6 +83,10 @@ class AppButton extends StatelessWidget {
       ),
     };
 
-    return PressableScale(enabled: enabled, child: button);
+    return PressableScale(
+      enabled: enabled,
+      haptic: variant == AppButtonVariant.filled,
+      child: button,
+    );
   }
 }

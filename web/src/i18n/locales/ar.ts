@@ -209,6 +209,10 @@ const ar = {
     requestsRejected: 'طلبات مرفوضة',
     unconfirmed: 'رحلات غير مؤكدة',
     chart: 'الرحلات حسب الحالة',
+    attendanceToday: 'الحضور اليوم',
+    checkedInOf: '{{count}} من {{total}} سائقين حاضرون',
+    liveNow: 'على الطريق الآن',
+    waiting: 'بانتظار سائق',
   },
   errors: {
     forbidden: 'ليست لديك صلاحية الوصول.',

@@ -16,6 +16,8 @@ import 'package:teletech_drivers/features/drivers_admin/domain/entities/driver_p
 import 'package:teletech_drivers/features/drivers_admin/presentation/providers/driver_providers.dart';
 import 'package:teletech_drivers/features/place/domain/entities/place.dart';
 import 'package:teletech_drivers/features/place/presentation/providers/place_providers.dart';
+import 'package:teletech_drivers/features/trip/domain/entities/trip.dart';
+import 'package:teletech_drivers/features/trip/presentation/providers/trip_providers.dart';
 import 'package:teletech_drivers/features/trip_request/domain/entities/trip_request.dart';
 import 'package:teletech_drivers/features/trip_request/domain/entities/trip_request_status.dart';
 import 'package:teletech_drivers/features/trip_request/presentation/providers/trip_request_providers.dart';
@@ -97,6 +99,7 @@ void main() {
           employeeTripRequestsProvider.overrideWith(
             (ref) => Stream.value(<TripRequest>[myRequest]),
           ),
+          allTripsProvider.overrideWith((ref) => Stream.value(<Trip>[])),
         ],
         child: MaterialApp(
           theme: AppTheme.light,

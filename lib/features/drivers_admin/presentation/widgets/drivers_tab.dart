@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:teletech_drivers/core/widgets/success_moment.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/presentation/glass_bar_inset.dart';
 import 'package:teletech_drivers/core/presentation/app_loading_indicator.dart';
@@ -36,8 +37,7 @@ class _DriversTabState extends ConsumerState<DriversTab> {
     final succeeded = await AddDriverDialog.show(context);
     if (!context.mounted || succeeded != true) return;
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(l10n.driverCreated)));
+    await showSuccessMoment(context, message: l10n.driverCreated);
   }
 
   Future<void> _openEditForm(BuildContext context, DriverProfile driver) async {
@@ -45,8 +45,7 @@ class _DriversTabState extends ConsumerState<DriversTab> {
     final succeeded = await EditDriverDialog.show(context, driver: driver);
     if (!context.mounted || succeeded != true) return;
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(l10n.driverUpdated)));
+    await showSuccessMoment(context, message: l10n.driverUpdated);
   }
 
   Future<void> _confirmFixLegacy(BuildContext context, WidgetRef ref) async {
@@ -131,7 +130,7 @@ class _DriversTabState extends ConsumerState<DriversTab> {
     });
 
     return drivers.when(
-      loading: () => Center(child: AppLoadingIndicator(label: l10n.loading)),
+      loading: () => PeopleListSkeleton(label: l10n.loading),
       error: (error, _) => Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -189,10 +188,10 @@ class _DriversTabState extends ConsumerState<DriversTab> {
                   : ListView.separated(
                       padding: GlassBarInset.listPadding(
                         context,
-                        const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 88),
+                        const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 88),
                       ),
                       itemCount: items.length,
-                      separatorBuilder: (_, _) => const Divider(height: 1),
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
                       itemBuilder: (context, index) {
                         final driver = items[index];
                         final isToggling =

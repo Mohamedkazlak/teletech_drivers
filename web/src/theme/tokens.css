@@ -1,41 +1,102 @@
 /*
-  TeleTech tokens from lib/core/theme/app_colors.dart and app_theme.dart.
-  The Flutter app registers only AppTheme.light (lib/app.dart), so the site
-  stays on that light theme. The sidebar panel is left as it is; its active
-  and hover colors read these variables.
+  "Ring & Route" tokens, shared with the Flutter app
+  (lib/core/theme/app_colors.dart, app_motion.dart, DESIGN.md).
+  Tailwind utilities read these: bg-deep, text-navy, border-line, …
 */
 
 @theme {
-  --font-sans: 'Cairo', 'Segoe UI', 'Noto Naskh Arabic', 'Noto Sans Arabic', sans-serif;
+  --font-sans: 'Readex Pro', 'Cairo', 'Segoe UI', 'Noto Sans Arabic', sans-serif;
 
-  --color-deep: #0b4da2;
+  /* Brand */
+  --color-deep: #0b4da2; /* TeleTech blue: primary actions, active state */
+  --color-signal: #2f7bea; /* live / in-progress, focus glow */
   --color-mid: #4a78be;
   --color-light: #8ca6d9;
-  --color-pale: #e8eef9;
-  --color-navy: #062b5c;
-  --color-scaffold: #f6f9fe;
-  --color-success: #2e9e6b;
-  --color-warning: #e0a030;
-  --color-danger: #d64545;
+  --color-pale: #eaf0fa; /* tinted fills, hover */
+  --color-navy: #0b1f45; /* ink + the one dark hero surface */
+  --color-navy-deep: #071533;
+  --color-ink-muted: #5b6b86; /* secondary text, 5.3:1 on white */
+  --color-line: #e3e8f1; /* hairline borders */
+  --color-scaffold: #f4f6fa;
 
-  --radius-control: 14px;
+  /* State (text uses the -ink variants for contrast on tints) */
+  --color-success: #1f9d6b;
+  --color-success-ink: #13704a;
+  --color-warning: #e0a030;
+  --color-warning-ink: #8a5a00;
+  --color-danger: #d64545;
+  --color-danger-ink: #a62b2b;
+
+  --radius-control: 12px;
   --radius-card: 16px;
-  --radius-chip: 20px;
+  --radius-chip: 999px;
   --radius-auth: 24px;
 
-  --shadow-button: 0 2px 6px rgb(11 77 162 / 0.25);
-  --shadow-dialog: 0 8px 24px rgb(11 77 162 / 0.16);
-  --shadow-auth: 0 10px 24px rgb(11 77 162 / 0.2);
+  --shadow-button: 0 1px 2px rgb(11 31 69 / 0.08), 0 2px 8px rgb(11 77 162 / 0.18);
+  --shadow-dialog: 0 24px 60px -12px rgb(7 21 51 / 0.35), 0 2px 6px rgb(7 21 51 / 0.08);
+  --shadow-auth: 0 18px 40px -12px rgb(7 21 51 / 0.45);
+  --shadow-float: 0 12px 32px -8px rgb(11 31 69 / 0.22), 0 2px 6px rgb(11 31 69 / 0.06);
+
+  /* Motion (Emil Kowalski's curves, same as AppMotion) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --animate-rise: rise 420ms var(--ease-out) backwards;
+  --animate-fade: fade 260ms var(--ease-out) backwards;
+  --animate-pop: pop 220ms var(--ease-out) backwards;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out) infinite;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.97);
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+  @keyframes pulse-ring {
+    from {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    to {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
 }
 
 :root {
   color-scheme: light;
-  --control-height: 52px;
+  --control-height: 44px;
+  --dur-press: 120ms;
+  --dur-quick: 180ms;
+  --dur-standard: 260ms;
+  --dur-emphasized: 420ms;
   --status-pending: var(--color-warning);
   --status-approved: var(--color-mid);
   --status-assigned: var(--color-mid);
-  --status-in-progress: var(--color-deep);
+  --status-in-progress: var(--color-signal);
   --status-completed: var(--color-success);
   --status-rejected: var(--color-danger);
-  --focus-ring: var(--color-deep);
+  --focus-ring: var(--color-signal);
 }

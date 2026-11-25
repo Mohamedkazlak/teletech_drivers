@@ -1,11 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/navigation/nav_ids.dart';
 import 'package:teletech_drivers/core/navigation/nav_item.dart';
 import 'package:teletech_drivers/core/navigation/nav_label_key.dart';
 import 'package:teletech_drivers/core/navigation/nav_labels.dart';
+import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
+import 'package:teletech_drivers/core/theme/app_theme.dart';
 
 /// Floating frosted navigation pill. Role-agnostic: it only renders [items].
 class GlassBottomBar extends StatelessWidget {
@@ -45,64 +49,106 @@ class GlassBottomBar extends StatelessWidget {
     }
 
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final surface = theme.colorScheme.surface;
-    final fill = surface.withValues(alpha: isDark ? 0.45 : 0.55);
-    final borderColor = theme.colorScheme.outline.withValues(alpha: 0.35);
     final showMore = moreItems.isNotEmpty;
+    final entries = <({NavItem item, String label, bool selected, int badge, VoidCallback onTap})>[
+      for (var index = 0; index < items.length; index++)
+        (
+          item: items[index],
+          label: navLabel(l10n, items[index].labelKey),
+          selected: index == selectedIndex && !moreSelected,
+          badge: badgeCounts[items[index].id] ?? 0,
+          onTap: () => onSelected(index),
+        ),
+      if (showMore)
+        (
+          item: const NavItem(
+            id: NavIds.more,
+            icon: Icons.more_horiz_rounded,
+            labelKey: NavLabelKey.more,
+            route: '',
+          ),
+          label: navLabel(l10n, NavLabelKey.more),
+          selected: moreSelected,
+          badge: 0,
+          onTap: () => _openMore(context, l10n),
+        ),
+    ];
+    final anySelected = entries.any((e) => e.selected);
 
     return DecoratedBox(
       key: barKey,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: 0.16),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(barHeight / 2),
+        boxShadow: AppTheme.floatingShadow(opacity: 0.14),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.circular(barHeight / 2),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: fill,
-              borderRadius: BorderRadius.circular(28),
-              border: Border.all(color: borderColor),
+              color: AppColors.white.withValues(alpha: 0.86),
+              borderRadius: BorderRadius.circular(barHeight / 2),
+              border: Border.all(color: AppColors.line),
             ),
             child: SizedBox(
               height: barHeight,
-              child: Row(
-                children: [
-                  for (var index = 0; index < items.length; index++)
-                    Expanded(
-                      child: _BarButton(
-                        item: items[index],
-                        label: navLabel(l10n, items[index].labelKey),
-                        selected: index == selectedIndex,
-                        badgeCount: badgeCounts[items[index].id] ?? 0,
-                        onTap: () => onSelected(index),
-                      ),
-                    ),
-                  if (showMore)
-                    Expanded(
-                      child: _BarButton(
-                        item: const NavItem(
-                          id: NavIds.more,
-                          icon: Icons.more_horiz,
-                          labelKey: NavLabelKey.more,
-                          route: '',
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final count = entries.length;
+                    final total = constraints.maxWidth;
+                    // The active tab gets room for its label; the rest share
+                    // what is left (never under the 48 dp touch target).
+                    // Inactive icons keep a 44 dp column (the bar is 64 dp
+                    // tall, so the touch area stays comfortable); the
+                    // active pill gets the rest it needs for its label.
+                    const minNarrow = 44.0;
+                    const chrome = 22 + 8 + 24 + 8; // icon, gap, padding, air
+                    final roomForPill = total - minNarrow * (count - 1);
+                    double wide = total / count;
+                    if (anySelected && count > 1) {
+                      final active = entries.firstWhere((e) => e.selected);
+                      final maxLabel = (roomForPill - chrome).clamp(
+                        24.0,
+                        double.infinity,
+                      );
+                      final painter = TextPainter(
+                        text: TextSpan(
+                          text: active.label,
+                          style: _BarButton.labelStyle(context),
                         ),
-                        label: navLabel(l10n, NavLabelKey.more),
-                        selected: moreSelected,
-                        onTap: () => _openMore(context, l10n),
-                      ),
-                    ),
-                ],
+                        maxLines: 2,
+                        textDirection: Directionality.of(context),
+                        textScaler: MediaQuery.textScalerOf(context),
+                      )..layout(maxWidth: maxLabel.toDouble());
+                      // Long labels wrap to two lines instead of clipping.
+                      wide = (chrome + painter.width + 2)
+                          .clamp(minNarrow, roomForPill < minNarrow
+                              ? minNarrow
+                              : roomForPill)
+                          .toDouble();
+                      painter.dispose();
+                    }
+                    final narrow = !anySelected || count <= 1
+                        ? total / count
+                        : (total - wide) / (count - 1);
+                    return Row(
+                      children: [
+                        for (final entry in entries)
+                          _BarButton(
+                            item: entry.item,
+                            label: entry.label,
+                            selected: entry.selected,
+                            badgeCount: entry.badge,
+                            width: entry.selected ? wide : narrow,
+                            onTap: entry.onTap,
+                          ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -116,6 +162,12 @@ class GlassBottomBar extends StatelessWidget {
       context: context,
       useRootNavigator: true,
       backgroundColor: Colors.transparent,
+      showDragHandle: false,
+      sheetAnimationStyle: const AnimationStyle(
+        curve: AppMotion.drawer,
+        duration: Duration(milliseconds: 380),
+        reverseDuration: Duration(milliseconds: 240),
+      ),
       builder: (sheetContext) {
         return _GlassMoreSheet(
           items: moreItems,
@@ -129,11 +181,14 @@ class GlassBottomBar extends StatelessWidget {
   }
 }
 
+/// One destination. Inactive: just the icon. Active: a navy pill that grows
+/// to reveal the label while the neighbours shrink to make room.
 class _BarButton extends StatelessWidget {
   const _BarButton({
     required this.item,
     required this.label,
     required this.selected,
+    required this.width,
     required this.onTap,
     this.badgeCount = 0,
   });
@@ -141,67 +196,135 @@ class _BarButton extends StatelessWidget {
   final NavItem item;
   final String label;
   final bool selected;
+  final double width;
   final VoidCallback onTap;
   final int badgeCount;
+
+  /// Pill label: compact, tight leading so two lines fit the 44 dp pill.
+  static TextStyle? labelStyle(BuildContext context) {
+    return Theme.of(context).textTheme.labelMedium?.copyWith(
+      fontWeight: FontWeight.w600,
+      height: 1.15,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final disableAnimations = MediaQuery.disableAnimationsOf(context);
-    final color = selected
-        ? theme.colorScheme.primary
-        : theme.colorScheme.onSurfaceVariant;
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    final duration = reduceMotion ? Duration.zero : AppMotion.standard;
 
     return Semantics(
       button: true,
       selected: selected,
       label: label,
       excludeSemantics: true,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(22),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-          child: AnimatedContainer(
-            duration: disableAnimations
-                ? Duration.zero
-                : const Duration(milliseconds: 200),
-            curve: Curves.easeOut,
-            margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            decoration: BoxDecoration(
-              color: selected
-                  ? theme.colorScheme.primary.withValues(alpha: 0.16)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(22),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Badge(
-                  isLabelVisible: badgeCount > 0,
-                  backgroundColor: theme.colorScheme.error,
-                  label: Text(badgeCount > 99 ? '99+' : '$badgeCount'),
-                  child: Icon(item.icon, size: 22, color: color),
-                ),
-                const SizedBox(height: 2),
-                Flexible(
-                  child: Text(
-                    label,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: color,
-                      fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                    ),
+      child: AnimatedContainer(
+        duration: duration,
+        curve: AppMotion.easeInOut,
+        width: width,
+        height: GlassBottomBar.barHeight,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            HapticFeedback.selectionClick();
+            onTap();
+          },
+          child: Center(
+            child: TweenAnimationBuilder<double>(
+              tween: Tween<double>(end: selected ? 1 : 0),
+              duration: duration,
+              curve: AppMotion.easeInOut,
+              builder: (context, t, _) {
+                final fg = Color.lerp(AppColors.inkMuted, AppColors.white, t)!;
+                return Container(
+                  constraints: BoxConstraints(
+                    minHeight: 44,
+                    maxWidth: width - 2,
                   ),
-                ),
-              ],
+                  padding: EdgeInsetsDirectional.symmetric(
+                    horizontal: 10 + 2 * t,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.navy.withValues(alpha: t),
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Badge(
+                        isLabelVisible: badgeCount > 0,
+                        backgroundColor: theme.colorScheme.error,
+                        label: Text(badgeCount > 99 ? '99+' : '$badgeCount'),
+                        child: _PopIcon(
+                          icon: item.icon,
+                          color: fg,
+                          selected: selected,
+                          duration: duration,
+                        ),
+                      ),
+                      Flexible(
+                        child: ClipRect(
+                          child: Align(
+                            widthFactor: t,
+                            child: Opacity(
+                              opacity: t,
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.only(
+                                  start: 8,
+                                ),
+                                child: Text(
+                                  label,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: labelStyle(
+                                    context,
+                                  )?.copyWith(color: AppColors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Icon that gives a small pop when it becomes the active tab.
+class _PopIcon extends StatelessWidget {
+  const _PopIcon({
+    required this.icon,
+    required this.color,
+    required this.selected,
+    required this.duration,
+  });
+
+  final IconData icon;
+  final Color color;
+  final bool selected;
+  final Duration duration;
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      key: ValueKey(selected),
+      tween: Tween<double>(begin: selected ? 0.8 : 1, end: 1),
+      duration: duration == Duration.zero
+          ? Duration.zero
+          : const Duration(milliseconds: 420),
+      curve: Curves.easeOutBack,
+      builder: (context, scale, child) =>
+          Transform.scale(scale: scale, child: child),
+      child: Icon(icon, size: 22, color: color),
     );
   }
 }
@@ -220,51 +343,62 @@ class _GlassMoreSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final fill = theme.colorScheme.surface.withValues(
-      alpha: isDark ? 0.45 : 0.55,
-    );
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: fill,
-            border: Border(
-              top: BorderSide(
-                color: theme.colorScheme.outline.withValues(alpha: 0.35),
-              ),
-            ),
+            color: AppColors.white.withValues(alpha: 0.9),
+            border: const Border(top: BorderSide(color: AppColors.line)),
           ),
           child: Material(
             type: MaterialType.transparency,
             child: SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 8),
-                  for (final item in items)
-                    ListTile(
-                      leading: Badge(
-                        isLabelVisible: (badgeCounts[item.id] ?? 0) > 0,
-                        backgroundColor: theme.colorScheme.error,
-                        label: Text(
-                          (badgeCounts[item.id] ?? 0) > 99
-                              ? '99+'
-                              : '${badgeCounts[item.id] ?? 0}',
-                        ),
-                        child: Icon(item.icon),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 36,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: AppColors.line,
+                        borderRadius: BorderRadius.circular(2),
                       ),
-                      title: Text(
-                        navLabel(l10n, item.labelKey),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      onTap: () => Navigator.of(context).pop(item),
                     ),
-                ],
+                    const SizedBox(height: 12),
+                    for (final item in items)
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        leading: Badge(
+                          isLabelVisible: (badgeCounts[item.id] ?? 0) > 0,
+                          backgroundColor: theme.colorScheme.error,
+                          label: Text(
+                            (badgeCounts[item.id] ?? 0) > 99
+                                ? '99+'
+                                : '${badgeCounts[item.id] ?? 0}',
+                          ),
+                          child: Icon(item.icon, color: AppColors.deepBlue),
+                        ),
+                        title: Text(
+                          navLabel(l10n, item.labelKey),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.titleSmall,
+                        ),
+                        trailing: const Icon(
+                          Icons.chevron_right,
+                          color: AppColors.inkMuted,
+                        ),
+                        onTap: () => Navigator.of(context).pop(item),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),

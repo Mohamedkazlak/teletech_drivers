@@ -18,7 +18,7 @@ export function RequestTrackingPanel({ tracking }: RequestTrackingPanelProps) {
     <section aria-label={t('tracking.nowQuestion')} className="flex flex-col gap-3">
       {tracking.stage === 'rejected' ? (
         <div className="rounded-control bg-danger/14 px-3 py-3 text-danger">
-          <p className="text-sm font-bold">{t('tracking.rejectionTitle')}</p>
+          <p className="text-sm font-semibold">{t('tracking.rejectionTitle')}</p>
           {reason ? <p className="mt-1 text-base text-navy">{reason}</p> : null}
         </div>
       ) : null}
@@ -49,14 +49,14 @@ export function RequestTrackingPanel({ tracking }: RequestTrackingPanelProps) {
               className={`mt-1 size-3 shrink-0 rounded-full ${event.reached_at ? 'bg-success' : 'bg-pale'}`}
             />
             <div>
-              <p className={`text-sm font-bold ${event.reached_at ? 'text-navy' : 'text-navy/45'}`}>
+              <p className={`text-sm font-semibold ${event.reached_at ? 'text-navy' : 'text-navy/45'}`}>
                 {t(`tracking.${event.stage}`)}
               </p>
               {event.reached_at ? (
-                <p className="text-sm text-navy/75">{formatWhen(event.reached_at, i18n.language)}</p>
+                <p className="text-sm text-ink-muted">{formatWhen(event.reached_at, i18n.language)}</p>
               ) : null}
               {event.actor_role ? (
-                <p className="text-sm text-navy/75">{t(`role.${event.actor_role}`)}</p>
+                <p className="text-sm text-ink-muted">{t(`role.${event.actor_role}`)}</p>
               ) : null}
             </div>
           </li>
@@ -69,7 +69,7 @@ export function RequestTrackingPanel({ tracking }: RequestTrackingPanelProps) {
 function Answer({ question, answer }: { question: string; answer: string }) {
   return (
     <div>
-      <p className="text-sm font-bold text-navy">{question}</p>
+      <p className="text-sm font-semibold text-navy">{question}</p>
       <p className="text-base text-navy">{answer}</p>
     </div>
   )

@@ -8,12 +8,12 @@ export function SettingsPage() {
   return (
     <section className="mx-auto flex max-w-2xl flex-col gap-5">
       <PageHeading title={t('settings.title')} />
-      <section className="rounded-card border border-pale bg-white p-5">
-        <h2 className="mb-3 text-base font-bold text-navy">{t('settings.language')}</h2>
+      <section className="rounded-card border border-line bg-white p-5">
+        <h2 className="mb-3 text-base font-semibold text-navy">{t('settings.language')}</h2>
         <LanguageToggle />
       </section>
-      <section className="rounded-card border border-pale bg-white p-5">
-        <h2 className="mb-4 text-base font-bold text-navy">{t('settings.password')}</h2>
+      <section className="rounded-card border border-line bg-white p-5">
+        <h2 className="mb-4 text-base font-semibold text-navy">{t('settings.password')}</h2>
         <ChangePasswordForm />
       </section>
     </section>

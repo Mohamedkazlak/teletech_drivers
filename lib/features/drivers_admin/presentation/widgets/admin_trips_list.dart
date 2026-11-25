@@ -28,7 +28,7 @@ class AdminTripsList extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     return trips.when(
-      loading: () => Center(child: AppLoadingIndicator(label: l10n.loading)),
+      loading: () => TripListSkeleton(label: l10n.loading),
       error: (error, _) => Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -55,6 +55,7 @@ class AdminTripsList extends ConsumerWidget {
             return AdminTripListTile(
               trip: trip,
               animateIndex: index,
+              enableHero: true,
               showLiveProgress: showLiveProgress,
               onTap: () {
                 if (trip.status.isInProgress && trip.driverId != null) {

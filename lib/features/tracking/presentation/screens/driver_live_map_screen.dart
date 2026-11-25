@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
+import 'package:teletech_drivers/core/widgets/map_pins.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/presentation/app_loading_indicator.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
@@ -446,7 +448,12 @@ class _DriverLiveMapScreenState extends ConsumerState<DriverLiveMapScreen>
                   onPressed: () {
                     setState(() => _followDriver = true);
                     if (driverPoint != null) {
-                      _mapController.move(driverPoint, 15);
+                      animateMapMove(
+                        controller: _mapController,
+                        target: driverPoint,
+                        zoom: 15,
+                        instant: AppAnimations.disabled(context),
+                      );
                     }
                   },
                   tooltip: l10n.recenterMap,
@@ -669,14 +676,15 @@ class _LabeledPin extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: color, size: 32),
+        BrandPin(size: 28, color: color),
+        const SizedBox(height: 2),
         if (label.trim().isNotEmpty)
           Container(
             constraints: const BoxConstraints(maxWidth: 110),
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
             decoration: BoxDecoration(
               color: AppColors.white,
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(999),
               border: Border.all(color: color.withValues(alpha: 0.4)),
             ),
             child: Text(

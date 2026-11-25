@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:teletech_drivers/core/widgets/form_section.dart';
+import 'package:teletech_drivers/core/widgets/segmented_switch.dart';
 import 'package:teletech_drivers/core/constants/api_json_keys.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/localization/locale_controller.dart';
@@ -16,6 +18,8 @@ import 'package:teletech_drivers/features/auth/presentation/controllers/change_p
 import 'package:teletech_drivers/features/auth/presentation/logout_confirmation.dart';
 import 'package:teletech_drivers/features/auth/presentation/providers/auth_providers.dart';
 import 'package:teletech_drivers/features/auth/presentation/validation/auth_validators.dart';
+import 'package:teletech_drivers/features/auth/presentation/widgets/account_header.dart';
+import 'package:teletech_drivers/features/auth/presentation/widgets/password_strength_meter.dart';
 import 'package:teletech_drivers/features/auth/presentation/widgets/password_visibility_button.dart';
 import 'package:teletech_drivers/features/trip/presentation/providers/trip_providers.dart';
 
@@ -91,40 +95,33 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 24),
         ),
         children: [
-          Text(
-            l10n.languageSection,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 8),
-          RadioGroup<String>(
-            groupValue: locale.languageCode,
-            onChanged: (code) {
-              if (code == null) return;
-              unawaited(
-                ref
-                    .read(localeControllerProvider.notifier)
-                    .setLocale(Locale(code)),
-              );
-            },
-            child: Column(
-              children: [
-                RadioListTile<String>(
-                  value: 'en',
-                  title: Text(l10n.languageEnglish),
+          if (user != null) ...[
+            AccountHeader(user: user),
+            const SizedBox(height: 16),
+          ],
+          FormSection(
+            title: l10n.languageSection,
+            icon: Icons.translate_rounded,
+            children: [
+              SegmentedSwitch<String>(
+                options: [
+                  SegmentOption(value: 'en', label: l10n.languageEnglish),
+                  SegmentOption(value: 'ar', label: l10n.languageArabic),
+                ],
+                selected: locale.languageCode,
+                onChanged: (code) => unawaited(
+                  ref
+                      .read(localeControllerProvider.notifier)
+                      .setLocale(Locale(code)),
                 ),
-                RadioListTile<String>(
-                  value: 'ar',
-                  title: Text(l10n.languageArabic),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(height: 24),
-          Text(
-            l10n.changePasswordTitle,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
+          FormSection(
+            title: l10n.changePasswordTitle,
+            icon: Icons.lock_outline_rounded,
+            children: [
           Form(
             key: _formKey,
             autovalidateMode: passwordState.fieldErrors.isNotEmpty
@@ -174,13 +171,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             () => _obscurePassword = !_obscurePassword,
                           ),
                   ),
-                  onChanged: (_) => ref
-                      .read(changePasswordControllerProvider.notifier)
-                      .clearFailure(),
+                  onChanged: (_) {
+                    ref
+                        .read(changePasswordControllerProvider.notifier)
+                        .clearFailure();
+                    setState(() {});
+                  },
                   validator: (value) =>
                       AuthValidators.password(value, l10n) ??
                       passwordState.fieldErrors[ApiJsonKeys.password],
                 ),
+                PasswordStrengthMeter(password: _passwordController.text),
                 const SizedBox(height: 16),
                 AppTextField(
                   controller: _confirmController,
@@ -214,14 +215,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           AnimatedErrorBanner(message: banner),
-          const SizedBox(height: 16),
           AppButton(
             label: l10n.changePasswordAction,
             loadingLabel: l10n.loading,
             isLoading: passwordState.isLoading,
             onPressed: () => unawaited(_changePassword()),
           ),
-          const SizedBox(height: 32),
+            ],
+          ),
+          const SizedBox(height: 24),
           AppButton(
             label: l10n.signOut,
             variant: AppButtonVariant.outlined,

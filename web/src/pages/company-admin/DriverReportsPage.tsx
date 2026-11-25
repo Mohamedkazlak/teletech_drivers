@@ -61,7 +61,7 @@ export function DriverReportsPage() {
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('driverAdmin.driverReports')} />
-      <p className="text-sm text-navy/75">{t('driverAdmin.driverReportsHint')}</p>
+      <p className="text-sm text-ink-muted">{t('driverAdmin.driverReportsHint')}</p>
       <FormField id="driver-report-search" label={t('driverAdmin.search')}>
         <input
           id="driver-report-search"

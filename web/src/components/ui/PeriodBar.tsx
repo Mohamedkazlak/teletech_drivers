@@ -10,6 +10,7 @@ import {
   type PeriodKind,
   type PeriodSelection,
 } from '../../lib/period'
+import { ChevronEndIcon, ChevronStartIcon } from '../icons'
 import { FilterSelect } from './FilterSelect'
 
 const DEFAULT_PERIODS: PeriodKind[] = ['week', 'month', 'year', 'all']
@@ -48,25 +49,30 @@ export function PeriodBar({ value, onChange, periods = DEFAULT_PERIODS }: Period
         onChange={(next) => select(next as PeriodKind)}
         options={periods.map((period) => ({ value: period, label: t(`period.${period}`) }))}
       />
-      <div className="flex min-w-64 flex-1 items-center gap-2 pb-0.5">
+      <div className="flex h-[var(--control-height)] min-w-64 flex-1 items-center gap-1 rounded-control border border-line bg-white p-1">
         <button
           type="button"
-          className="h-10 rounded-control border-[1.5px] border-deep bg-white px-3 text-sm font-bold text-deep disabled:opacity-40"
+          className="inline-flex h-full w-9 shrink-0 items-center justify-center rounded-[9px] text-deep transition-[background-color,transform] duration-150 hover:bg-pale active:scale-90 disabled:opacity-30 disabled:hover:bg-transparent"
           aria-label={t('period.previous')}
           disabled={value.period === 'all'}
           onClick={() => move(-1)}
         >
-          {t('common.previous')}
+          <ChevronStartIcon size={18} />
         </button>
-        <p className="min-w-0 flex-1 text-center text-sm text-navy/75">{range}</p>
+        <p
+          key={range}
+          className="min-w-0 flex-1 truncate text-center text-sm font-medium text-navy tabular animate-fade"
+        >
+          {range || t('period.all')}
+        </p>
         <button
           type="button"
-          className="h-10 rounded-control border-[1.5px] border-deep bg-white px-3 text-sm font-bold text-deep disabled:opacity-40"
+          className="inline-flex h-full w-9 shrink-0 items-center justify-center rounded-[9px] text-deep transition-[background-color,transform] duration-150 hover:bg-pale active:scale-90 disabled:opacity-30 disabled:hover:bg-transparent"
           aria-label={t('period.next')}
           disabled={value.period === 'all'}
           onClick={() => move(1)}
         >
-          {t('common.next')}
+          <ChevronEndIcon size={18} />
         </button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:teletech_drivers/core/widgets/map_pins.dart';
 import 'package:teletech_drivers/features/tracking/domain/constants/map_defaults.dart';
 
 /// Shared OSM tile layer + attribution used by driver and admin maps.
@@ -37,6 +38,7 @@ class _OsmTileLayerState extends State<OsmTileLayer> {
       urlTemplate: MapDefaults.osmTileUrl,
       userAgentPackageName: MapDefaults.userAgentPackageName,
       tileProvider: _tiles,
+      tileBuilder: brandTileBuilder,
     );
   }
 }

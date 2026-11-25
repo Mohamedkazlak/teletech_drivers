@@ -49,6 +49,8 @@ class MyRequestCard extends ConsumerWidget {
       animateIndex: animateIndex,
       onTap: onTap,
       title: l10n.tripRouteSummary(pickupName, destinationName),
+      from: pickupName,
+      to: destinationName,
       statusLabel: request.status.label(l10n),
       statusColor: StatusChip.colorForTripRequest(request.status),
       leadingIcon: Icons.route_outlined,

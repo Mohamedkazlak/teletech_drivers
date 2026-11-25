@@ -14,14 +14,14 @@ export function DriverAttendanceSection({ driverId }: { driverId: string }) {
   const totals = history.data?.totals
 
   return (
-    <section className="rounded-card border border-pale bg-white p-4">
+    <section className="rounded-card border border-line bg-white p-4">
       <h2 className="text-lg font-semibold text-navy">{t('nav.attendance')}</h2>
       <div className="mt-3 flex gap-2">
         {periods.map((item) => (
           <button
             key={item}
             type="button"
-            className={item === period ? 'font-semibold text-deep' : 'text-navy/70'}
+            className={item === period ? 'font-semibold text-deep' : 'text-ink-muted'}
             onClick={() => setPeriod(item)}
           >
             {t(`period.${item}`)}

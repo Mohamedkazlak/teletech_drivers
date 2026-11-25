@@ -112,23 +112,23 @@ export function TripDetailDialog({
             ]}
           />
           <section>
-            <h3 className="text-sm font-bold text-navy">{t('trips.people')}</h3>
+            <h3 className="text-sm font-semibold text-navy">{t('trips.people')}</h3>
             {trip.passengers.length === 0 ? (
-              <p className="mt-2 text-sm text-navy/75">{t('common.empty')}</p>
+              <p className="mt-2 text-sm text-ink-muted">{t('common.empty')}</p>
             ) : (
               <ul className="mt-2 flex flex-col gap-3">
                 {trip.passengers.map((passenger) => (
-                  <li key={passenger.request_id} className="rounded-control border border-pale p-3">
+                  <li key={passenger.request_id} className="rounded-control border border-line p-3">
                     <p className="font-medium text-navy">
                       {localizedName(i18n.language, passenger.name_en, passenger.name_ar) ||
                         t('common.dash')}
                     </p>
-                    <p className="text-sm text-navy/75">
+                    <p className="text-sm text-ink-muted">
                       {passenger.phone || t('common.dash')}
                       {' · '}
                       <BranchText value={passenger.branch} />
                     </p>
-                    <p className="text-sm text-navy/75">
+                    <p className="text-sm text-ink-muted">
                       {t('requests.routeValue', {
                         from: passenger.pickup.name,
                         to: passenger.destination.name,
@@ -141,13 +141,13 @@ export function TripDetailDialog({
           </section>
           {showLive ? (
             <section aria-label={t('drivers.live')}>
-              <h3 className="text-sm font-bold text-navy">{t('drivers.live')}</h3>
-              <p className="mt-1 text-sm text-navy/75">{t(`status.${trip.status}`)}</p>
+              <h3 className="text-sm font-semibold text-navy">{t('drivers.live')}</h3>
+              <p className="mt-1 text-sm text-ink-muted">{t(`status.${trip.status}`)}</p>
               {driverLocation ? null : (
-                <p className="mt-1 text-sm text-navy/75">{t('drivers.waitingLocation')}</p>
+                <p className="mt-1 text-sm text-ink-muted">{t('drivers.waitingLocation')}</p>
               )}
               {liveMarkers.length > 0 ? (
-                <div className="mt-3 overflow-hidden rounded-control border border-pale">
+                <div className="mt-3 overflow-hidden rounded-control border border-line">
                   <MapView markers={liveMarkers} className="h-64 w-full" />
                 </div>
               ) : null}
@@ -155,9 +155,9 @@ export function TripDetailDialog({
           ) : null}
           {showReport ? (
             <section>
-              <h3 className="text-sm font-bold text-navy">{t('trips.report')}</h3>
+              <h3 className="text-sm font-semibold text-navy">{t('trips.report')}</h3>
               {reportQuery.isPending ? (
-                <p role="status" className="mt-2 text-sm text-navy/75">
+                <p role="status" className="mt-2 text-sm text-ink-muted">
                   {t('common.loading')}
                 </p>
               ) : null}
@@ -220,13 +220,13 @@ export function TripDetailDialog({
                 </div>
               ) : null}
               {drivenPath ? (
-                <div className="mt-3 overflow-hidden rounded-control border border-pale">
-                  <p className="px-3 py-2 text-xs text-navy/60">{t('trips.drivenRoute')}</p>
+                <div className="mt-3 overflow-hidden rounded-control border border-line">
+                  <p className="px-3 py-2 text-xs text-ink-muted">{t('trips.drivenRoute')}</p>
                   <MapView markers={markers} paths={[drivenPath]} className="h-64 w-full" />
                 </div>
               ) : markers.length > 0 ? (
-                <div className="mt-3 overflow-hidden rounded-control border border-pale">
-                  <p className="px-3 py-2 text-xs text-navy/60">{t('trips.pinMap')}</p>
+                <div className="mt-3 overflow-hidden rounded-control border border-line">
+                  <p className="px-3 py-2 text-xs text-ink-muted">{t('trips.pinMap')}</p>
                   <MapView markers={markers} className="h-64 w-full" />
                 </div>
               ) : null}

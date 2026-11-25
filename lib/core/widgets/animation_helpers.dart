@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
 
 /// Accessibility-aware animation helpers.
 abstract final class AppAnimations {
@@ -16,6 +17,6 @@ abstract final class AppAnimations {
 
   static Duration stagger(BuildContext context, int index, {int cap = 8}) {
     if (disabled(context) || index >= cap) return Duration.zero;
-    return Duration(milliseconds: 60 * index);
+    return AppMotion.staggerAt(index);
   }
 }

@@ -64,7 +64,7 @@ export function FavoritePlacesField({
               <li key={id}>
                 <button
                   type="button"
-                  className="inline-flex h-8 items-center gap-2 rounded-chip bg-pale px-3 text-sm font-bold text-navy"
+                  className="inline-flex h-8 items-center gap-2 rounded-chip bg-pale px-3 text-sm font-semibold text-navy"
                   aria-label={t('driverAdmin.removeFavorite', { name })}
                   onClick={() => remove(id)}
                   disabled={disabled}

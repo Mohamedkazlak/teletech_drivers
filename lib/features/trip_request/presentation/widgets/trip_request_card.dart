@@ -62,6 +62,8 @@ class TripRequestCard extends ConsumerWidget {
       animateIndex: animateIndex,
       onTap: onOpen,
       title: l10n.tripRouteSummary(pickupName, destinationName),
+      from: pickupName,
+      to: destinationName,
       statusLabel: statusLabel,
       statusColor: statusColor,
       leadingIcon: Icons.route_outlined,

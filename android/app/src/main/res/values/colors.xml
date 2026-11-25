@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#FFFFFF</color>
+    <!-- TeleCars navy (AppColors.navy). Launch surfaces match the Flutter
+         splash so there is no white flash on cold start. -->
+    <color name="splash_navy">#0B1F45</color>
 </resources>

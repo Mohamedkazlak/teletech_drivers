@@ -60,11 +60,11 @@ export function GroupingPanel({ suggestions, actions, hint }: GroupingPanelProps
 
   return (
     <section
-      className="rounded-card border border-pale bg-white p-4"
+      className="rounded-card border border-line bg-white p-4"
       aria-label={t('requests.groups')}
     >
-      <h2 className="text-base font-bold text-navy">{t('requests.groups')}</h2>
-      <p className="mt-1 text-sm text-navy/75">{hint ?? t('requests.groupsHint')}</p>
+      <h2 className="text-base font-semibold text-navy">{t('requests.groups')}</h2>
+      <p className="mt-1 text-sm text-ink-muted">{hint ?? t('requests.groupsHint')}</p>
       <div className="mt-4 flex flex-col gap-3">
         {visible.map((suggestion) => {
           const selected = selection(suggestion)
@@ -72,19 +72,19 @@ export function GroupingPanel({ suggestions, actions, hint }: GroupingPanelProps
             <article
               key={suggestion.cluster_id}
               aria-labelledby={`group-${suggestion.cluster_id}`}
-              className="rounded-control border border-pale p-3"
+              className="rounded-control border border-line p-3"
             >
               <h3 id={`group-${suggestion.cluster_id}`} className="font-medium text-navy">
                 {suggestion.route_label}
               </h3>
-              <p className="mt-1 text-sm text-navy/75">
+              <p className="mt-1 text-sm text-ink-muted">
                 {suggestion.destination_label}
                 {' · '}
                 {formatWhen(suggestion.earliest_requested_at, i18n.language)}
                 {' – '}
                 {formatWhen(suggestion.latest_requested_at, i18n.language)}
               </p>
-              <p className="mt-1 text-sm text-navy/75">
+              <p className="mt-1 text-sm text-ink-muted">
                 {t('requests.requestCount', { count: suggestion.request_ids.length })}
               </p>
               <ul className="mt-3 flex flex-col gap-2">
@@ -98,7 +98,7 @@ export function GroupingPanel({ suggestions, actions, hint }: GroupingPanelProps
                       />
                       {memberName(member, i18n.language)}
                     </label>
-                    <p className="ms-6 text-sm text-navy/75">
+                    <p className="ms-6 text-sm text-ink-muted">
                       <BranchText value={member.branch} />
                       {' · '}
                       {t('requests.routeValue', {

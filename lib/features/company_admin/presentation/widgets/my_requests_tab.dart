@@ -54,8 +54,7 @@ class _MyRequestsTabState extends ConsumerState<MyRequestsTab> {
         ),
         Expanded(
           child: requestsAsync.when(
-            loading: () =>
-                Center(child: AppLoadingIndicator(label: l10n.loading)),
+            loading: () => TripListSkeleton(label: l10n.loading),
             error: (error, _) => Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -76,8 +75,7 @@ class _MyRequestsTabState extends ConsumerState<MyRequestsTab> {
               }
 
               return tripsAsync.when(
-                loading: () =>
-                    Center(child: AppLoadingIndicator(label: l10n.loading)),
+                loading: () => TripListSkeleton(label: l10n.loading),
                 error: (error, _) => Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),

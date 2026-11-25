@@ -22,6 +22,7 @@ class PlaceSearchDropdown extends StatefulWidget {
     this.includeOtherOption = true,
     this.requireCoordinates = true,
     this.excludePlaceIds = const {},
+    this.icon = Icons.place_outlined,
     super.key,
   });
 
@@ -44,6 +45,9 @@ class PlaceSearchDropdown extends StatefulWidget {
   /// Place ids already chosen elsewhere (hidden from the list).
   final Set<String> excludePlaceIds;
   final ValueChanged<PlaceSelection?> onSelected;
+
+  /// Leading icon (pickup and destination use different marks).
+  final IconData icon;
 
   @override
   State<PlaceSearchDropdown> createState() => _PlaceSearchDropdownState();
@@ -264,7 +268,7 @@ class _PlaceSearchDropdownState extends State<PlaceSearchDropdown> {
               labelText: widget.label,
               hintText: widget.searchHint,
               errorText: widget.errorText,
-              prefixIcon: const Icon(Icons.place_outlined),
+              prefixIcon: Icon(widget.icon),
               suffixIcon: IconButton(
                 tooltip: widget.label,
                 onPressed: widget.enabled ? _toggleList : null,

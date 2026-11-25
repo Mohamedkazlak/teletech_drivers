@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TeleTech ring mark: blue disc with the logo's two white rings. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+  <path android:fillColor="#2F7BEA" android:pathData="M27.000,54.000a27.000,27.000 0 1,0 54.000,0a27.000,27.000 0 1,0 -54.000,0"/>
+  <path android:strokeColor="#FFFFFF" android:strokeWidth="4.021" android:pathData="M35.548,54.000a19.532,19.532 0 1,0 39.064,0a19.532,19.532 0 1,0 -39.064,0"/>
+  <path android:strokeColor="#FFFFFF" android:strokeWidth="2.585" android:pathData="M42.508,54.270a13.787,13.787 0 1,0 27.574,0a13.787,13.787 0 1,0 -27.574,0"/>
+</vector>

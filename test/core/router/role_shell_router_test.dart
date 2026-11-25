@@ -21,6 +21,7 @@ import 'package:teletech_drivers/features/attendance/domain/entities/attendance_
 import 'package:teletech_drivers/features/attendance/domain/entities/attendance_today.dart';
 import 'package:teletech_drivers/features/attendance/presentation/providers/attendance_providers.dart';
 import 'package:teletech_drivers/features/company_admin/presentation/screens/company_admin_request_details_screen.dart';
+import 'package:teletech_drivers/features/auth/presentation/providers/splash_gate.dart';
 import 'package:teletech_drivers/features/auth/presentation/screens/forced_change_password_screen.dart';
 import 'package:teletech_drivers/features/driver/presentation/screens/driver_home_screen.dart';
 import 'package:teletech_drivers/features/driver/presentation/screens/driver_trip_details_screen.dart';
@@ -172,6 +173,7 @@ Future<ProviderContainer> _pumpRole(
 
   final container = ProviderContainer(
     overrides: [
+      splashMinimumDurationProvider.overrideWithValue(Duration.zero),
       authRepositoryProvider.overrideWithValue(
         auth ?? _RouterAuth(_user(role)),
       ),

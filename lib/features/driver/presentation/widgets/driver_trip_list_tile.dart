@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/presentation/branch_chip.dart';
 import 'package:teletech_drivers/core/router/app_routes.dart';
+import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/theme/app_typography.dart';
 import 'package:teletech_drivers/core/utils/failure_messages.dart';
 import 'package:teletech_drivers/core/widgets/animated_error_banner.dart';
 import 'package:teletech_drivers/core/widgets/app_button.dart';
@@ -38,21 +40,19 @@ class DriverTripListTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
     final locale = Localizations.localeOf(context);
     final languageCode = locale.languageCode;
-    final dateFormat = DateFormat.yMMMd(locale.toString()).add_jm();
+    final dateFormat = DateFormat.MMMd(locale.toString()).add_jm();
     final resolver = ref.watch(placeNameResolverProvider);
-    final routeSummary = l10n.tripRouteSummary(
-      resolver.resolveSummary(
-        summary: trip.pickupSummary,
-        languageCode: languageCode,
-      ),
-      resolver.resolveSummary(
-        summary: trip.destinationSummary,
-        languageCode: languageCode,
-      ),
+    final pickup = resolver.resolveSummary(
+      summary: trip.pickupSummary,
+      languageCode: languageCode,
     );
+    final destination = resolver.resolveSummary(
+      summary: trip.destinationSummary,
+      languageCode: languageCode,
+    );
+    final routeSummary = l10n.tripRouteSummary(pickup, destination);
     final statusLabel = trip.status.label(l10n);
     final statusColor = StatusChip.colorForTrip(trip.status);
     final actionState = ref.watch(driverTripLifecycleControllerProvider);
@@ -76,38 +76,42 @@ class DriverTripListTile extends ConsumerWidget {
         TripCard(
           animateIndex: animateIndex,
           onTap: () => context.push(AppRoutes.driverTripDetailsPath(trip.id)),
+          heroTripId: trip.id,
           title: routeSummary,
+          from: pickup,
+          to: destination,
+          live: trip.status.isInProgress,
+          meta: dateFormat.format(trip.scheduledAt.toLocal()),
           statusLabel: statusLabel,
           statusColor: statusColor,
           trailing: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (trip.branches.isNotEmpty)
+              if (trip.branches.isNotEmpty) ...[
                 BranchChips(branches: trip.branches),
-              if (trip.branches.isNotEmpty) const SizedBox(height: 8),
-              Text(
-                l10n.tripScheduledValue(
-                  dateFormat.format(trip.scheduledAt.toLocal()),
-                ),
-                style: textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 8),
+                const SizedBox(height: 10),
+              ],
               TripRequestersSection(
                 requesters: trip.requesters,
                 passengerCount: trip.passengerCount,
               ),
-              if (distance != null) ...[
-                const SizedBox(height: 4),
-                Text(
-                  l10n.tripDistanceValue(distance),
-                  style: textTheme.bodyMedium,
-                ),
-              ],
-              if (duration != null) ...[
-                const SizedBox(height: 4),
-                Text(
-                  l10n.tripDurationValue(duration),
-                  style: textTheme.bodyMedium,
+              if (distance != null || duration != null) ...[
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 16,
+                  runSpacing: 8,
+                  children: [
+                    if (distance != null)
+                      _Metric(
+                        icon: Icons.straighten_rounded,
+                        text: l10n.tripDistanceValue(distance),
+                      ),
+                    if (duration != null)
+                      _Metric(
+                        icon: Icons.schedule_rounded,
+                        text: l10n.tripDurationValue(duration),
+                      ),
+                  ],
                 ),
               ],
             ],
@@ -134,6 +138,32 @@ class DriverTripListTile extends ConsumerWidget {
                   ],
                 )
               : null,
+        ),
+      ],
+    );
+  }
+}
+
+class _Metric extends StatelessWidget {
+  const _Metric({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 16, color: AppColors.inkMuted),
+        const SizedBox(width: 6),
+        Text(
+          text,
+          style: AppTypography.tabular(
+            Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: AppColors.navy,
+            ),
+          ),
         ),
       ],
     );

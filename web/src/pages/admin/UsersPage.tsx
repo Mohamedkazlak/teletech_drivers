@@ -73,7 +73,7 @@ export function UsersPage() {
           <span className="inline-flex flex-wrap gap-1">
             <StatusBadge status={row.is_active ? 'active' : 'inactive'} />
             {row.must_change_password ? (
-              <span className="rounded-full bg-warning/14 px-2 py-0.5 text-xs font-bold text-warning">
+              <span className="rounded-full bg-warning/14 px-2 py-0.5 text-xs font-semibold text-warning">
                 {t('users.temporary')}
               </span>
             ) : null}

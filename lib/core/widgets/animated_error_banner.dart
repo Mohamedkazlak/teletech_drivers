@@ -49,8 +49,11 @@ class _BannerBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.error.withValues(alpha: 0.1),
-      borderRadius: BorderRadius.circular(12),
+      color: AppColors.error.withValues(alpha: 0.08),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: AppColors.error.withValues(alpha: 0.24)),
+      ),
       child: Padding(
         padding: const EdgeInsetsDirectional.all(12),
         child: Row(
@@ -62,7 +65,7 @@ class _BannerBody extends StatelessWidget {
               child: Text(
                 message,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.error,
+                  color: AppColors.inkOn(AppColors.error),
                 ),
                 textAlign: TextAlign.start,
               ),

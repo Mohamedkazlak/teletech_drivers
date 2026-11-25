@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:teletech_drivers/core/widgets/brand_refresh.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/presentation/app_loading_indicator.dart';
 import 'package:teletech_drivers/core/presentation/glass_bar_inset.dart';
@@ -40,27 +41,30 @@ class DriverPeriodTripList extends ConsumerWidget {
     }
 
     return trips.when(
-      loading: () => Center(child: AppLoadingIndicator(label: l10n.loading)),
+      loading: () => Align(
+        alignment: AlignmentDirectional.topCenter,
+        child: TripListSkeleton(label: l10n.loading),
+      ),
       error: (error, _) => ListFailureView(
         message: messageForError(error, l10n),
         onRetry: () => ref.invalidate(driverMineTripsProvider(filter)),
       ),
       data: (items) {
         if (items.isEmpty) {
-          return RefreshIndicator(
+          return BrandRefresh(
             onRefresh: refresh,
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 SizedBox(
-                  height: 360,
+                  height: 420,
                   child: DriverTripsEmptyState(message: emptyMessage),
                 ),
               ],
             ),
           );
         }
-        return RefreshIndicator(
+        return BrandRefresh(
           onRefresh: refresh,
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),

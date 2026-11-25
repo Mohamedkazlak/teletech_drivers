@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 13+ themed icon: the ring mark alone, tinted by the system. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+  <path android:strokeColor="#FFFFFF" android:strokeWidth="4.423" android:pathData="M35.548,54.000a19.532,19.532 0 1,0 39.064,0a19.532,19.532 0 1,0 -39.064,0"/>
+  <path android:strokeColor="#FFFFFF" android:strokeWidth="2.844" android:pathData="M42.508,54.270a13.787,13.787 0 1,0 27.574,0a13.787,13.787 0 1,0 -27.574,0"/>
+  <path android:fillColor="#FFFFFF" android:pathData="M51.975,54.270a4.320,4.320 0 1,0 8.640,0a4.320,4.320 0 1,0 -8.640,0"/>
+</vector>

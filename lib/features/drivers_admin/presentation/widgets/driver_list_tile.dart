@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
 import 'package:teletech_drivers/core/widgets/status_chip.dart';
+import 'package:teletech_drivers/core/widgets/surface_card.dart';
 import 'package:teletech_drivers/features/drivers_admin/domain/entities/driver_profile.dart';
 
 /// One row in the drivers list with masked national ID and actions.
@@ -37,27 +38,45 @@ class DriverListTile extends StatelessWidget {
         ? l10n.nationalIdNotSet
         : l10n.nationalIdMaskedValue(driver.maskedNationalId);
 
-    return ListTile(
+    final name = driver.localizedName(languageCode);
+    final muted = textTheme.bodySmall?.copyWith(color: AppColors.inkMuted);
+
+    return SurfaceCard(
+      child: ListTile(
       onTap: onOpenDetails,
-      contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 4, 8, 4),
+      contentPadding: const EdgeInsetsDirectional.fromSTEB(14, 8, 6, 8),
+      leading: InitialsAvatar(
+        name: name,
+        statusColor: !driver.isActive
+            ? AppColors.inkMuted
+            : onTrip
+            ? AppColors.signal
+            : driver.isAvailable
+            ? AppColors.success
+            : AppColors.warning,
+      ),
       title: Row(
         children: [
           Expanded(
             child: Text(
-              driver.localizedName(languageCode),
-              style: textTheme.titleMedium,
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: textTheme.titleSmall,
             ),
           ),
-          _availabilityChip(l10n),
         ],
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(driver.email, style: textTheme.bodyMedium),
-          Text(driver.phone, style: textTheme.bodySmall),
-          Text(nationalIdLine, style: textTheme.bodySmall),
-          Text(statusLabel, style: textTheme.bodySmall),
+          const SizedBox(height: 4),
+          _availabilityChip(l10n),
+          const SizedBox(height: 6),
+          Text(driver.email, style: muted),
+          Text(driver.phone, style: muted),
+          Text(nationalIdLine, style: muted),
+          Text(statusLabel, style: muted),
         ],
       ),
       isThreeLine: true,
@@ -77,6 +96,7 @@ class DriverListTile extends StatelessWidget {
           else
             Switch.adaptive(value: driver.isActive, onChanged: onActiveChanged),
         ],
+      ),
       ),
     );
   }

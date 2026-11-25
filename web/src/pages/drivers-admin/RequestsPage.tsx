@@ -175,7 +175,7 @@ export function RequestsPage() {
               t('common.dash')}
           </span>
           {row.suggested_group_id ? (
-            <span className="inline-flex rounded-chip bg-mid/20 px-2 py-0.5 text-xs font-bold text-navy">
+            <span className="inline-flex rounded-chip bg-mid/20 px-2 py-0.5 text-xs font-semibold text-navy">
               {t('requests.groupBadge')}
             </span>
           ) : null}
@@ -283,9 +283,9 @@ export function RequestsPage() {
         <div
           role="region"
           aria-label={t('requests.selection')}
-          className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-pale bg-white px-4 py-3"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-line bg-white px-4 py-3"
         >
-          <p className="text-sm text-navy/75">
+          <p className="text-sm text-ink-muted">
             {t('requests.selectedCount', { count: selectedIds.length })}
           </p>
           <button

@@ -32,8 +32,7 @@ class NotificationsScreen extends ConsumerWidget {
           Expanded(
             child: inbox.when(
               skipLoadingOnReload: true,
-              loading: () =>
-                  Center(child: AppLoadingIndicator(label: l10n.loading)),
+              loading: () => PeopleListSkeleton(label: l10n.loading),
               error: (error, _) => ListFailureView(
                 message: messageForError(error, l10n),
                 onRetry: () => ref.invalidate(notificationInboxProvider),

@@ -26,7 +26,7 @@ export function AttendanceQrPage() {
       {qr.isPending ? <p>{t('common.loading')}</p> : null}
       {qr.isError ? <p className="text-danger">{messageForApiError(qr.error, t)}</p> : null}
       {qr.data ? (
-        <div className="flex flex-col items-start gap-4 rounded-card border border-pale bg-white p-6">
+        <div className="flex flex-col items-start gap-4 rounded-card border border-line bg-white p-6">
           <h2 className="text-xl font-semibold text-navy">{qr.data.hq_name}</h2>
           <div ref={canvasHost}>
             <QRCodeCanvas value={qr.data.payload} size={240} includeMargin />

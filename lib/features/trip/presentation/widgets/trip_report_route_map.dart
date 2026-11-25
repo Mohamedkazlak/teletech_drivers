@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:teletech_drivers/core/widgets/map_pins.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
 import 'package:teletech_drivers/core/theme/app_theme.dart';
 import 'package:teletech_drivers/features/tracking/domain/constants/map_defaults.dart';
@@ -102,26 +103,17 @@ class _TripReportRouteMapState extends State<TripReportRouteMap> {
                       if (start != null)
                         Marker(
                           point: start,
-                          width: 36,
-                          height: 36,
-                          alignment: Alignment.topCenter,
-                          child: const Icon(
-                            Icons.trip_origin,
-                            color: AppColors.success,
-                            size: 28,
-                          ),
+                          width: 22,
+                          height: 22,
+                          child: const OriginDot(color: AppColors.success),
                         ),
                       if (destination != null)
                         Marker(
                           point: destination,
-                          width: 40,
-                          height: 40,
+                          width: 34,
+                          height: 42.5,
                           alignment: Alignment.topCenter,
-                          child: const Icon(
-                            Icons.location_on,
-                            color: AppColors.error,
-                            size: 36,
-                          ),
+                          child: const BrandPin(size: 34, color: AppColors.navy),
                         ),
                     ],
                   ),

@@ -96,8 +96,7 @@ class _TripsTabState extends ConsumerState<TripsTab> {
         ),
         Expanded(
           child: trips.when(
-            loading: () =>
-                Center(child: AppLoadingIndicator(label: l10n.loading)),
+            loading: () => TripListSkeleton(label: l10n.loading),
             error: (error, _) => Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),

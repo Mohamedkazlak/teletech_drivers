@@ -3247,5 +3247,73 @@
   "attendanceOffDay": "Today is a weekly day off.",
   "locationPreciseRequired": "Precise location is required.",
   "locationInaccurate": "The location reading is not accurate enough.",
-  "locationMocked": "Mock locations are not allowed."
+  "locationMocked": "Mock locations are not allowed.",
+  "slideToCheckIn": "Slide to check in",
+  "@slideToCheckIn": {
+    "description": "Slide-to-confirm track label for attendance check-in"
+  },
+  "slideToCheckOut": "Slide to check out",
+  "@slideToCheckOut": {
+    "description": "Slide-to-confirm track label for attendance check-out"
+  },
+  "formSectionPersonal": "Personal details",
+  "@formSectionPersonal": {
+    "description": "Form section title for name fields"
+  },
+  "formSectionContact": "Contact",
+  "@formSectionContact": {
+    "description": "Form section title for email and phone"
+  },
+  "formSectionVehicle": "Vehicle & license",
+  "@formSectionVehicle": {
+    "description": "Form section title for car plate and licenses"
+  },
+  "formSectionAccess": "Sign-in",
+  "@formSectionAccess": {
+    "description": "Form section title for password fields"
+  },
+  "formSectionWork": "Work",
+  "@formSectionWork": {
+    "description": "Form section title for branch and work places"
+  },
+  "formSectionLocation": "Location",
+  "@formSectionLocation": {
+    "description": "Form section title for map coordinates"
+  },
+  "formSectionPlace": "Place details",
+  "@formSectionPlace": {
+    "description": "Form section title for place names and address"
+  },
+  "formFixErrors": "Check the highlighted fields.",
+  "@formFixErrors": {
+    "description": "Shown when a form fails validation"
+  },
+  "passwordStrengthWeak": "Weak",
+  "@passwordStrengthWeak": {
+    "description": "Password strength label"
+  },
+  "passwordStrengthFair": "Fair",
+  "@passwordStrengthFair": {
+    "description": "Password strength label"
+  },
+  "passwordStrengthGood": "Good",
+  "@passwordStrengthGood": {
+    "description": "Password strength label"
+  },
+  "passwordStrengthStrong": "Strong",
+  "@passwordStrengthStrong": {
+    "description": "Password strength label"
+  },
+  "clearSearch": "Clear search",
+  "@clearSearch": {
+    "description": "Tooltip for the clear button in a search field"
+  },
+  "adminTripsWeekTitle": "Trips this week",
+  "@adminTripsWeekTitle": {
+    "description": "Dashboard chart title"
+  },
+  "adminTripsWeekSubtitle": "Scheduled per day, last 7 days",
+  "@adminTripsWeekSubtitle": {
+    "description": "Dashboard chart subtitle"
+  }
 }

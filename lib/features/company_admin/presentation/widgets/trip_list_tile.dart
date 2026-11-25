@@ -47,7 +47,10 @@ class TripListTile extends ConsumerWidget {
     return TripCard(
       animateIndex: animateIndex,
       onTap: onTap,
+      heroTripId: trip.id,
       title: l10n.tripRouteSummary(pickupName, destinationName),
+      from: pickupName,
+      to: destinationName,
       statusLabel: statusLabel,
       statusColor: statusColor,
       trailing: Column(

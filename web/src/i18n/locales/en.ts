@@ -209,6 +209,10 @@ const en = {
     requestsRejected: 'Rejected requests',
     unconfirmed: 'Unconfirmed trips',
     chart: 'Trips by status',
+    attendanceToday: 'Attendance today',
+    checkedInOf: '{{count}} of {{total}} drivers checked in',
+    liveNow: 'On the road now',
+    waiting: 'Waiting for a driver',
   },
   errors: {
     forbidden: 'You do not have access to this.',

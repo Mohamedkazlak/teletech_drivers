@@ -28,6 +28,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   var _autovalidateMode = AutovalidateMode.disabled;
+  var _shake = 0;
   var _obscurePassword = true;
 
   @override
@@ -44,7 +45,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
-      setState(() => _autovalidateMode = AutovalidateMode.onUserInteraction);
+      setState(() {
+        _autovalidateMode = AutovalidateMode.onUserInteraction;
+        _shake++;
+      });
       return;
     }
 
@@ -58,6 +62,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (!mounted) return;
     if (ref.read(signInControllerProvider).failure == null) {
       TextInput.finishAutofillContext();
+    } else {
+      setState(() => _shake++);
     }
   }
 
@@ -68,6 +74,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final failure = state.failure ?? ref.watch(authSessionFailureProvider);
 
     return AuthPageScaffold(
+      shakeTrigger: _shake,
       title: l10n.loginTitle,
       subtitle: l10n.loginSubtitle,
       child: AutofillGroup(
