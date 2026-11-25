@@ -2496,4 +2496,181 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminTripsWeekSubtitle => 'Scheduled per day, last 7 days';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingGetStarted => 'Get started';
+
+  @override
+  String get onboardingBack => 'Back';
+
+  @override
+  String get onboardingWelcomeTitle => 'Welcome to TeleCars';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'A quick tour of how your day will work. It takes about a minute.';
+
+  @override
+  String get onboardingDoneTitle => 'You\'re all set';
+
+  @override
+  String get onboardingDoneBody =>
+      'You can replay this guide any time from Settings.';
+
+  @override
+  String get onboardingEmployee1Title => 'Request a ride in seconds';
+
+  @override
+  String get onboardingEmployee1Body =>
+      'Choose where you are going and when. We take care of finding a driver.';
+
+  @override
+  String get onboardingEmployee2Title => 'Follow your driver live';
+
+  @override
+  String get onboardingEmployee2Body =>
+      'Once a trip is assigned, watch the car arrive on the map.';
+
+  @override
+  String get onboardingEmployee3Title => 'Everything in one place';
+
+  @override
+  String get onboardingEmployee3Body =>
+      'Your trips, status updates and notifications are right on your home screen.';
+
+  @override
+  String get onboardingDriver1Title => 'Check in to start your day';
+
+  @override
+  String get onboardingDriver1Body =>
+      'Slide to check in when you arrive. Your attendance is recorded for you.';
+
+  @override
+  String get onboardingDriver2Title => 'Your trips, step by step';
+
+  @override
+  String get onboardingDriver2Body =>
+      'Start, arrive and return with a single tap. Your location is shared only during a trip.';
+
+  @override
+  String get onboardingDriver3Title => 'See how you are doing';
+
+  @override
+  String get onboardingDriver3Body =>
+      'Completed trips and your stats are always one tab away.';
+
+  @override
+  String get onboardingCompanyAdmin1Title => 'Review trip requests';
+
+  @override
+  String get onboardingCompanyAdmin1Body =>
+      'Approve or reject employee requests and group them into trips.';
+
+  @override
+  String get onboardingCompanyAdmin2Title => 'Manage your places';
+
+  @override
+  String get onboardingCompanyAdmin2Body =>
+      'Add the locations your teams travel to, so requests are quick and accurate.';
+
+  @override
+  String get onboardingCompanyAdmin3Title => 'Stay on top of trips';
+
+  @override
+  String get onboardingCompanyAdmin3Body =>
+      'Follow every trip from request to completion, and request trips yourself.';
+
+  @override
+  String get onboardingDriversAdmin1Title => 'Assign the right driver';
+
+  @override
+  String get onboardingDriversAdmin1Body =>
+      'See who is available and assign a trip with one tap.';
+
+  @override
+  String get onboardingDriversAdmin2Title => 'Watch the fleet live';
+
+  @override
+  String get onboardingDriversAdmin2Body =>
+      'The live map shows every driver and trip as it happens.';
+
+  @override
+  String get onboardingDriversAdmin3Title => 'Attendance and reports';
+
+  @override
+  String get onboardingDriversAdmin3Body =>
+      'Check who is in today, adjust attendance and export reports.';
+
+  @override
+  String get onboardingAdmin1Title => 'Your dashboard';
+
+  @override
+  String get onboardingAdmin1Body =>
+      'A live view of drivers, trips and requests across the company.';
+
+  @override
+  String get onboardingAdmin2Title => 'People and places';
+
+  @override
+  String get onboardingAdmin2Body =>
+      'Create drivers and employees, and manage the places everyone uses.';
+
+  @override
+  String get onboardingAdmin3Title => 'Always in control';
+
+  @override
+  String get onboardingAdmin3Body =>
+      'Reset passwords, review activity and step in on any trip.';
+
+  @override
+  String get settingsReplayGuide => 'Replay the app guide';
+
+  @override
+  String get settingsReplayGuideHint => 'A short tour of what you can do here.';
+
+  @override
+  String get placeChooseOnMap => 'Choose on map';
+
+  @override
+  String get placeChangeLocation => 'Change';
+
+  @override
+  String get placeContinue => 'Continue';
+
+  @override
+  String get placeSkipLocation => 'Skip for now';
+
+  @override
+  String get placeLocationEmptyTitle => 'Where is this place?';
+
+  @override
+  String get placeLocationEmptyBody =>
+      'Search for an address or drop a pin on the map. Staff see it when they request trips.';
+
+  @override
+  String get placeLocationSetTitle => 'Location set';
+
+  @override
+  String get placeStepLocation => 'Location';
+
+  @override
+  String get placeStepDetails => 'Details';
+
+  @override
+  String get placeAddressFilled => 'Address filled in from the map';
+
+  @override
+  String get placePickerHint => 'Move the map to place the pin';
+
+  @override
+  String get adminFilterStatusLabel => 'Status';
+
+  @override
+  String get adminFilterBranchLabel => 'Branch';
 }

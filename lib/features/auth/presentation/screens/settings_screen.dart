@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:teletech_drivers/core/router/app_routes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/widgets/form_section.dart';
 import 'package:teletech_drivers/core/widgets/segmented_switch.dart';
@@ -224,6 +226,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ],
           ),
           const SizedBox(height: 24),
+          AppButton(
+            label: l10n.settingsReplayGuide,
+            variant: AppButtonVariant.tonal,
+            icon: Icons.slideshow_rounded,
+            onPressed: () => context.push(AppRoutes.onboarding),
+          ),
+          const SizedBox(height: 12),
           AppButton(
             label: l10n.signOut,
             variant: AppButtonVariant.outlined,

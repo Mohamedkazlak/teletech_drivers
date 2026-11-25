@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/presentation/glass_bar_inset.dart';
+import 'package:teletech_drivers/core/widgets/brand_fab.dart';
 import 'package:teletech_drivers/core/widgets/search_field.dart';
 import 'package:teletech_drivers/core/widgets/brand_refresh.dart';
 import 'package:teletech_drivers/core/widgets/swipe_actions.dart';
@@ -142,12 +144,12 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
 
     return AppScaffold(
       title: l10n.adminEmployeesSection,
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'admin-add-employee',
-        tooltip: l10n.adminAddEmployee,
-        onPressed: () => _openForm(context),
-        child: const Icon(Icons.person_add_alt_1),
-      ),
+      floatingActionButton: BrandFab(
+ heroTag: 'admin-add-employee',
+ tooltip: l10n.adminAddEmployee,
+ icon: Icons.person_add_alt_1,
+ onPressed: () => _openForm(context),
+ ),
       body: Column(
         children: [
           Padding(
@@ -158,40 +160,36 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
               onChanged: (_) => setState(() {}),
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
-            child: Row(
-              children: [
-                for (final entry in [
-                  (_ActiveFilter.all, l10n.adminFilterAll),
-                  (_ActiveFilter.active, l10n.adminFilterActive),
-                  (_ActiveFilter.inactive, l10n.adminFilterInactive),
-                ]) ...[
-                  if (entry.$1 != _ActiveFilter.all) const SizedBox(width: 8),
-                  FilterChip(
-                    label: Text(entry.$2),
-                    selected: _activeFilter == entry.$1,
-                    onSelected: (_) =>
-                        setState(() => _activeFilter = entry.$1),
-                  ),
-                ],
-                const SizedBox(width: 8),
+          _FilterRow(
+            label: l10n.adminFilterStatusLabel,
+            children: [
+              for (final entry in [
+                (_ActiveFilter.all, l10n.adminFilterAll),
+                (_ActiveFilter.active, l10n.adminFilterActive),
+                (_ActiveFilter.inactive, l10n.adminFilterInactive),
+              ])
                 FilterChip(
-                  label: Text(l10n.adminFilterAllBranches),
-                  selected: _branchFilter == null,
-                  onSelected: (_) => setState(() => _branchFilter = null),
+                  label: Text(entry.$2),
+                  selected: _activeFilter == entry.$1,
+                  onSelected: (_) => setState(() => _activeFilter = entry.$1),
                 ),
-                for (final branch in Branch.values) ...[
-                  const SizedBox(width: 8),
-                  FilterChip(
-                    label: Text(branchLabel(branch, l10n)),
-                    selected: _branchFilter == branch,
-                    onSelected: (_) => setState(() => _branchFilter = branch),
-                  ),
-                ],
-              ],
-            ),
+            ],
+          ),
+          _FilterRow(
+            label: l10n.adminFilterBranchLabel,
+            children: [
+              FilterChip(
+                label: Text(l10n.adminFilterAllBranches),
+                selected: _branchFilter == null,
+                onSelected: (_) => setState(() => _branchFilter = null),
+              ),
+              for (final branch in Branch.values)
+                FilterChip(
+                  label: Text(branchLabel(branch, l10n)),
+                  selected: _branchFilter == branch,
+                  onSelected: (_) => setState(() => _branchFilter = branch),
+                ),
+            ],
           ),
           Expanded(
             child: employeesAsync.when(
@@ -225,7 +223,10 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
                   },
                   child: ListView.separated(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(16),
+                  padding: GlassBarInset.listPadding(
+                    context,
+                    const EdgeInsetsDirectional.all(16),
+                  ),
                   itemCount: filtered.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {
@@ -296,6 +297,54 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
                 ),
                 );
               },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// One labelled row of filter chips, so each row reads as its own filter.
+class _FilterRow extends StatelessWidget {
+  const _FilterRow({required this.label, required this.children});
+
+  final String label;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(top: 8),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 64,
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(start: 16),
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: AppColors.inkMuted,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsetsDirectional.only(end: 16),
+              child: Row(
+                children: [
+                  for (var i = 0; i < children.length; i++) ...[
+                    if (i > 0) const SizedBox(width: 8),
+                    children[i],
+                  ],
+                ],
+              ),
             ),
           ),
         ],

@@ -4545,6 +4545,324 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scheduled per day, last 7 days'**
   String get adminTripsWeekSubtitle;
+
+  /// Skip button on onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// Next button on onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// Final onboarding button
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get onboardingGetStarted;
+
+  /// Back button on onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get onboardingBack;
+
+  /// Onboarding welcome title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to TeleCars'**
+  String get onboardingWelcomeTitle;
+
+  /// Onboarding welcome body
+  ///
+  /// In en, this message translates to:
+  /// **'A quick tour of how your day will work. It takes about a minute.'**
+  String get onboardingWelcomeBody;
+
+  /// Onboarding last page title
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all set'**
+  String get onboardingDoneTitle;
+
+  /// Onboarding last page body
+  ///
+  /// In en, this message translates to:
+  /// **'You can replay this guide any time from Settings.'**
+  String get onboardingDoneBody;
+
+  /// Employee onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'Request a ride in seconds'**
+  String get onboardingEmployee1Title;
+
+  /// Employee onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'Choose where you are going and when. We take care of finding a driver.'**
+  String get onboardingEmployee1Body;
+
+  /// Employee onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'Follow your driver live'**
+  String get onboardingEmployee2Title;
+
+  /// Employee onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'Once a trip is assigned, watch the car arrive on the map.'**
+  String get onboardingEmployee2Body;
+
+  /// Employee onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'Everything in one place'**
+  String get onboardingEmployee3Title;
+
+  /// Employee onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'Your trips, status updates and notifications are right on your home screen.'**
+  String get onboardingEmployee3Body;
+
+  /// Driver onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'Check in to start your day'**
+  String get onboardingDriver1Title;
+
+  /// Driver onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'Slide to check in when you arrive. Your attendance is recorded for you.'**
+  String get onboardingDriver1Body;
+
+  /// Driver onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'Your trips, step by step'**
+  String get onboardingDriver2Title;
+
+  /// Driver onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'Start, arrive and return with a single tap. Your location is shared only during a trip.'**
+  String get onboardingDriver2Body;
+
+  /// Driver onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'See how you are doing'**
+  String get onboardingDriver3Title;
+
+  /// Driver onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'Completed trips and your stats are always one tab away.'**
+  String get onboardingDriver3Body;
+
+  /// Company admin onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'Review trip requests'**
+  String get onboardingCompanyAdmin1Title;
+
+  /// Company admin onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'Approve or reject employee requests and group them into trips.'**
+  String get onboardingCompanyAdmin1Body;
+
+  /// Company admin onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your places'**
+  String get onboardingCompanyAdmin2Title;
+
+  /// Company admin onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'Add the locations your teams travel to, so requests are quick and accurate.'**
+  String get onboardingCompanyAdmin2Body;
+
+  /// Company admin onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'Stay on top of trips'**
+  String get onboardingCompanyAdmin3Title;
+
+  /// Company admin onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'Follow every trip from request to completion, and request trips yourself.'**
+  String get onboardingCompanyAdmin3Body;
+
+  /// Drivers admin onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'Assign the right driver'**
+  String get onboardingDriversAdmin1Title;
+
+  /// Drivers admin onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'See who is available and assign a trip with one tap.'**
+  String get onboardingDriversAdmin1Body;
+
+  /// Drivers admin onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'Watch the fleet live'**
+  String get onboardingDriversAdmin2Title;
+
+  /// Drivers admin onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'The live map shows every driver and trip as it happens.'**
+  String get onboardingDriversAdmin2Body;
+
+  /// Drivers admin onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance and reports'**
+  String get onboardingDriversAdmin3Title;
+
+  /// Drivers admin onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'Check who is in today, adjust attendance and export reports.'**
+  String get onboardingDriversAdmin3Body;
+
+  /// Admin onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'Your dashboard'**
+  String get onboardingAdmin1Title;
+
+  /// Admin onboarding page 1
+  ///
+  /// In en, this message translates to:
+  /// **'A live view of drivers, trips and requests across the company.'**
+  String get onboardingAdmin1Body;
+
+  /// Admin onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'People and places'**
+  String get onboardingAdmin2Title;
+
+  /// Admin onboarding page 2
+  ///
+  /// In en, this message translates to:
+  /// **'Create drivers and employees, and manage the places everyone uses.'**
+  String get onboardingAdmin2Body;
+
+  /// Admin onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'Always in control'**
+  String get onboardingAdmin3Title;
+
+  /// Admin onboarding page 3
+  ///
+  /// In en, this message translates to:
+  /// **'Reset passwords, review activity and step in on any trip.'**
+  String get onboardingAdmin3Body;
+
+  /// Settings tile to replay onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Replay the app guide'**
+  String get settingsReplayGuide;
+
+  /// Settings tile subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'A short tour of what you can do here.'**
+  String get settingsReplayGuideHint;
+
+  /// Button to open the map location picker
+  ///
+  /// In en, this message translates to:
+  /// **'Choose on map'**
+  String get placeChooseOnMap;
+
+  /// Button to change the chosen place location
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get placeChangeLocation;
+
+  /// Continue to next step of the place form
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get placeContinue;
+
+  /// Continue the place form without a location
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get placeSkipLocation;
+
+  /// Empty state title in place location step
+  ///
+  /// In en, this message translates to:
+  /// **'Where is this place?'**
+  String get placeLocationEmptyTitle;
+
+  /// Empty state body in place location step
+  ///
+  /// In en, this message translates to:
+  /// **'Search for an address or drop a pin on the map. Staff see it when they request trips.'**
+  String get placeLocationEmptyBody;
+
+  /// Title when a place location is chosen
+  ///
+  /// In en, this message translates to:
+  /// **'Location set'**
+  String get placeLocationSetTitle;
+
+  /// Place form step 1 label
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get placeStepLocation;
+
+  /// Place form step 2 label
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get placeStepDetails;
+
+  /// Hint under address field
+  ///
+  /// In en, this message translates to:
+  /// **'Address filled in from the map'**
+  String get placeAddressFilled;
+
+  /// Hint on the map picker card
+  ///
+  /// In en, this message translates to:
+  /// **'Move the map to place the pin'**
+  String get placePickerHint;
+
+  /// Label of the status filter row
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get adminFilterStatusLabel;
+
+  /// Label of the branch filter row
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get adminFilterBranchLabel;
 }
 
 class _AppLocalizationsDelegate

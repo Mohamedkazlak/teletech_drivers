@@ -12,6 +12,9 @@ import 'package:teletech_drivers/features/auth/presentation/screens/complete_pro
 import 'package:teletech_drivers/features/auth/presentation/screens/forced_change_password_screen.dart';
 import 'package:teletech_drivers/features/auth/presentation/screens/login_screen.dart';
 import 'package:teletech_drivers/features/auth/presentation/screens/register_employee_screen.dart';
+import 'package:teletech_drivers/features/onboarding/presentation/providers/onboarding_providers.dart';
+import 'package:teletech_drivers/features/onboarding/presentation/screens/onboarding_screen.dart';
+
 const _roleRoutes = AppRoleRouteStrategy();
 
 /// Dependency Injection: Riverpod. Redirects follow auth state and role.
@@ -25,6 +28,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   });
   // Re-run redirects once the splash animation has had its moment.
   ref.listen(splashGateProvider, (_, _) {
+    refresh.value++;
+  });
+  ref.listen(onboardingSeenProvider, (_, _) {
     refresh.value++;
   });
   ref.onDispose(refresh.dispose);
@@ -57,6 +63,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const CompleteProfileScreen(),
       ),
       GoRoute(
+        path: AppRoutes.onboarding,
+        name: 'onboarding',
+        builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.changePasswordRequired,
         name: 'changePasswordRequired',
         builder: (context, state) => const ForcedChangePasswordScreen(),
@@ -79,7 +90,11 @@ String? _redirect({required Ref ref, required GoRouterState state}) {
   return auth.when(
     loading: () => _splashUnless(location),
     error: (_, _) => _splashUnless(location),
-    data: (user) => _redirectForUser(user: user, location: location),
+    data: (user) => _redirectForUser(
+      user: user,
+      location: location,
+      onboardingSeen: ref.read(onboardingSeenProvider).value ?? true,
+    ),
   );
 }
 
@@ -87,7 +102,11 @@ String? _splashUnless(String location) {
   return location == AppRoutes.splash ? null : AppRoutes.splash;
 }
 
-String? _redirectForUser({required AppUser? user, required String location}) {
+String? _redirectForUser({
+  required AppUser? user,
+  required String location,
+  required bool onboardingSeen,
+}) {
   final isPublic =
       location == AppRoutes.login || location == AppRoutes.register;
 
@@ -106,6 +125,12 @@ String? _redirectForUser({required AppUser? user, required String location}) {
         ? null
         : AppRoutes.completeProfile;
   }
+
+  // First sign-in after setup: show the guide once. Settings can replay it.
+  if (!onboardingSeen) {
+    return location == AppRoutes.onboarding ? null : AppRoutes.onboarding;
+  }
+  if (location == AppRoutes.onboarding) return null;
 
   if (location == AppRoutes.completeProfile) {
     return _roleRoutes.homeLocation(user.role);

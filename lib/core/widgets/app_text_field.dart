@@ -50,6 +50,7 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final effectiveMaxLines = obscureText ? 1 : maxLines;
     final effectiveMinLines = obscureText ? 1 : minLines;
+    final multiline = (effectiveMaxLines ?? 1) > 1;
     return TextFormField(
       controller: controller,
       enabled: enabled,
@@ -72,8 +73,23 @@ class AppTextField extends StatelessWidget {
         labelText: label,
         hintText: hintText,
         helperText: helperText,
-        alignLabelWithHint: (effectiveMaxLines ?? 1) > 1,
-        prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
+        alignLabelWithHint: multiline,
+        // Tall fields keep the label on top so the hint shows straight away,
+        // and the icon sits with the first line, not in the middle.
+        floatingLabelBehavior: multiline ? FloatingLabelBehavior.always : null,
+        prefixIcon: prefixIcon == null
+            ? null
+            : multiline
+            ? Align(
+                alignment: Alignment.topCenter,
+                widthFactor: 1,
+                heightFactor: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Icon(prefixIcon),
+                ),
+              )
+            : Icon(prefixIcon),
         suffixIcon: suffix,
       ),
     );

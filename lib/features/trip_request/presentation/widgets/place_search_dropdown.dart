@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
+import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
+import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
 import 'package:teletech_drivers/features/place/domain/entities/place.dart';
 import 'package:teletech_drivers/features/place/presentation/widgets/place_preview_map.dart';
 import 'package:teletech_drivers/features/trip_request/presentation/models/place_selection.dart';
 
-/// Searchable list of approved places, plus an "Other" custom option.
+/// Place field that opens a searchable sheet of approved places.
 ///
-/// Mobile interaction (Strategy: browse-then-search):
-/// 1. First tap opens the list without the keyboard so options stay readable.
-/// 2. Second tap on the field enables typing and shows the keyboard to filter.
-class PlaceSearchDropdown extends StatefulWidget {
+/// One tap opens the sheet with the keyboard already up, so people can type
+/// to filter or just scroll and tap. Each row shows the place name and its
+/// address; places without a map location are marked and cannot be chosen
+/// for trips. An "Other" row lets people enter or pick a custom place.
+class PlaceSearchDropdown extends StatelessWidget {
   const PlaceSearchDropdown({
     required this.places,
     required this.label,
@@ -49,355 +53,378 @@ class PlaceSearchDropdown extends StatefulWidget {
   /// Leading icon (pickup and destination use different marks).
   final IconData icon;
 
-  @override
-  State<PlaceSearchDropdown> createState() => _PlaceSearchDropdownState();
-}
-
-class _PlaceSearchDropdownState extends State<PlaceSearchDropdown> {
-  late final TextEditingController _searchController;
-  late final FocusNode _focusNode;
-  var _didSyncInitialLabel = false;
-  var _listOpen = false;
-  var _searchActive = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController = TextEditingController();
-    _focusNode = FocusNode(canRequestFocus: false);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_didSyncInitialLabel) {
-      _didSyncInitialLabel = true;
-      _searchController.text = _labelFor(widget.selected);
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant PlaceSearchDropdown oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (!widget.enabled && _listOpen) {
-      _closeList();
-      return;
-    }
-    final selectionChanged =
-        (widget.selected == null) != (oldWidget.selected == null) ||
-        (widget.selected != null &&
-            oldWidget.selected != null &&
-            !PlaceSelection.isSame(widget.selected, oldWidget.selected));
-    if (selectionChanged && !_searchActive) {
-      final next = _labelFor(widget.selected);
-      if (_searchController.text != next) {
-        _searchController.text = next;
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  String _labelFor(PlaceSelection? selection) {
+  String _labelFor(BuildContext context, PlaceSelection? selection) {
     if (selection is ApprovedPlaceSelection) {
       final languageCode = Localizations.localeOf(context).languageCode;
-      final place = selection.place;
-      if (widget.requireCoordinates && !place.hasCoordinates) {
-        final l10n = AppLocalizations.of(context);
-        return '${place.displayName(languageCode)} (${l10n.noLocationBadge})';
-      }
-      return place.displayName(languageCode);
+      return selection.place.displayName(languageCode);
     }
-    if (selection is CustomPlaceSelection) {
-      return widget.otherOptionLabel ?? '';
-    }
+    if (selection is CustomPlaceSelection) return otherOptionLabel ?? '';
     return '';
   }
 
-  List<_PlaceOption> _buildOptions(AppLocalizations l10n, String languageCode) {
-    return [
-      for (final place in widget.places)
-        if (!widget.excludePlaceIds.contains(place.id))
-          _PlaceOption(
-            value: ApprovedPlaceSelection(place),
-            label: place.hasCoordinates || !widget.requireCoordinates
-                ? place.displayName(languageCode)
-                : '${place.displayName(languageCode)} (${l10n.noLocationBadge})',
-            enabled: !widget.requireCoordinates || place.hasCoordinates,
-            nameEn: place.nameEn,
-            nameAr: place.nameAr,
-          ),
-      if (widget.includeOtherOption)
-        _PlaceOption(
-          value: const CustomPlaceSelection(),
-          label: widget.otherOptionLabel ?? '',
-          enabled: true,
-          leadingIcon: Icons.edit_outlined,
-          alwaysVisible: true,
-        ),
-    ];
-  }
-
-  List<_PlaceOption> _filterOptions(List<_PlaceOption> options, String filter) {
-    final query = filter.trim().toLowerCase();
-    if (query.isEmpty || !_searchActive) return options;
-
-    return [
-      for (final option in options)
-        if (option.alwaysVisible || option.matches(query)) option,
-    ];
-  }
-
-  double _menuMaxHeight(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final keyboard = MediaQuery.viewInsetsOf(context).bottom;
-    return ((size.height - keyboard) * 0.42).clamp(180.0, 360.0);
-  }
-
-  void _openList() {
-    _focusNode.canRequestFocus = false;
-    _focusNode.unfocus();
-    setState(() {
-      _listOpen = true;
-      _searchActive = false;
-    });
-  }
-
-  void _enableSearch() {
-    _focusNode.canRequestFocus = true;
-    setState(() {
-      _searchActive = true;
-      _searchController.clear();
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && _searchActive) {
-        _focusNode.requestFocus();
-      }
-    });
-  }
-
-  void _closeList() {
-    _focusNode.canRequestFocus = false;
-    _focusNode.unfocus();
-    setState(() {
-      _listOpen = false;
-      _searchActive = false;
-      _searchController.text = _labelFor(widget.selected);
-    });
-  }
-
-  void _onFieldTap() {
-    if (!widget.enabled) return;
-    if (!_listOpen) {
-      _openList();
-      return;
-    }
-    if (!_searchActive) {
-      _enableSearch();
-    }
-  }
-
-  void _toggleList() {
-    if (!widget.enabled) return;
-    if (_listOpen) {
-      _closeList();
-    } else {
-      _openList();
-    }
-  }
-
-  void _onOptionSelected(_PlaceOption option, AppLocalizations l10n) {
-    if (widget.requireCoordinates &&
-        option.value is ApprovedPlaceSelection &&
-        !(option.value as ApprovedPlaceSelection).place.hasCoordinates) {
-      widget.onSelected(null);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.placeCannotSelectWithoutLocation)),
-      );
-      return;
-    }
-    widget.onSelected(option.value);
-    _focusNode.canRequestFocus = false;
-    _focusNode.unfocus();
-    setState(() {
-      _listOpen = false;
-      _searchActive = false;
-      _searchController.text = option.label;
-    });
+  Future<void> _open(BuildContext context) async {
+    if (!enabled) return;
+    FocusManager.instance.primaryFocus?.unfocus();
+    final result = await showModalBottomSheet<PlaceSelection>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: AppColors.white,
+      clipBehavior: Clip.antiAlias,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      sheetAnimationStyle: const AnimationStyle(
+        curve: AppMotion.drawer,
+        duration: Duration(milliseconds: 420),
+        reverseDuration: Duration(milliseconds: 260),
+      ),
+      builder: (_) => _PlacePickerSheet(
+        title: label,
+        searchHint: searchHint,
+        places: places,
+        selected: selected,
+        otherOptionLabel: includeOtherOption ? otherOptionLabel : null,
+        requireCoordinates: requireCoordinates,
+        excludePlaceIds: excludePlaceIds,
+        icon: icon,
+      ),
+    );
+    if (result != null) onSelected(result);
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final languageCode = Localizations.localeOf(context).languageCode;
     final theme = Theme.of(context);
-    final selectedApproved = widget.selected is ApprovedPlaceSelection
-        ? (widget.selected! as ApprovedPlaceSelection).place
+    final selectedApproved = selected is ApprovedPlaceSelection
+        ? (selected! as ApprovedPlaceSelection).place
         : null;
     final selectedMissingCoords =
-        widget.requireCoordinates &&
+        requireCoordinates &&
         selectedApproved != null &&
         !selectedApproved.hasCoordinates;
-    final options = _filterOptions(
-      _buildOptions(l10n, languageCode),
-      _searchController.text,
-    );
+    final text = _labelFor(context, selected);
 
-    return TapRegion(
-      onTapOutside: (_) {
-        if (_listOpen) _closeList();
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextField(
-            controller: _searchController,
-            focusNode: _focusNode,
-            enabled: widget.enabled,
-            readOnly: !_searchActive,
-            enableInteractiveSelection: _searchActive,
-            textInputAction: TextInputAction.search,
-            onTap: _onFieldTap,
-            onChanged: _searchActive ? (_) => setState(() {}) : null,
-            decoration: InputDecoration(
-              labelText: widget.label,
-              hintText: widget.searchHint,
-              errorText: widget.errorText,
-              prefixIcon: Icon(widget.icon),
-              suffixIcon: IconButton(
-                tooltip: widget.label,
-                onPressed: widget.enabled ? _toggleList : null,
-                icon: Icon(
-                  _listOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Semantics(
+          button: true,
+          enabled: enabled,
+          label: label,
+          value: text.isEmpty ? searchHint : text,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(14),
+            onTap: enabled ? () => _open(context) : null,
+            child: InputDecorator(
+              isEmpty: text.isEmpty,
+              decoration: InputDecoration(
+                labelText: label,
+                errorText: errorText,
+                enabled: enabled,
+                prefixIcon: Icon(icon),
+                suffixIcon: const Icon(Icons.unfold_more_rounded),
+              ),
+              child: AnimatedSwitcher(
+                duration: AppAnimations.duration(context, AppMotion.quick),
+                child: Text(
+                  text,
+                  key: ValueKey(text),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyLarge,
                 ),
               ),
-              border: const OutlineInputBorder(),
             ),
           ),
-          if (_listOpen) ...[
-            const SizedBox(height: 6),
-            Material(
-              elevation: 3,
-              shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.35),
-              borderRadius: BorderRadius.circular(12),
-              clipBehavior: Clip.antiAlias,
-              color: theme.colorScheme.surfaceContainerHigh,
-              // SingleChildScrollView (not shrinkWrap ListView) so parents that
-              // measure intrinsic height (dialogs, Column min) do not crash.
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: _menuMaxHeight(context)),
-                child: options.isEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 20,
-                        ),
-                        child: Text(
-                          widget.searchHint,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.hintColor,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      )
-                    : SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            for (
-                              var index = 0;
-                              index < options.length;
-                              index++
-                            ) ...[
-                              if (index > 0)
-                                Divider(
-                                  height: 1,
-                                  indent: 16,
-                                  endIndent: 16,
-                                  color: theme.dividerColor.withValues(
-                                    alpha: 0.5,
-                                  ),
-                                ),
-                              ListTile(
-                                enabled: options[index].enabled,
-                                leading: options[index].leadingIcon == null
-                                    ? null
-                                    : Icon(options[index].leadingIcon),
-                                title: Text(
-                                  options[index].label,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                contentPadding:
-                                    const EdgeInsetsDirectional.fromSTEB(
-                                      16,
-                                      4,
-                                      16,
-                                      4,
-                                    ),
-                                onTap: options[index].enabled
-                                    ? () => _onOptionSelected(
-                                        options[index],
-                                        l10n,
-                                      )
-                                    : null,
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-              ),
+        ),
+        if (selectedMissingCoords) ...[
+          const SizedBox(height: 6),
+          Text(
+            l10n.placeCannotSelectWithoutLocation,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.error,
             ),
-          ],
-          if (selectedMissingCoords) ...[
-            const SizedBox(height: 6),
-            Text(
-              l10n.placeCannotSelectWithoutLocation,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.error,
-              ),
-            ),
-          ],
-          if (selectedApproved != null && selectedApproved.hasCoordinates)
-            OptionalPlacePreviewMap(
-              latitude: selectedApproved.latitude,
-              longitude: selectedApproved.longitude,
-              height: 120,
-            ),
+          ),
         ],
-      ),
+        AnimatedSize(
+          duration: AppAnimations.duration(context, AppMotion.emphasized),
+          curve: AppMotion.easeOut,
+          alignment: Alignment.topCenter,
+          child: selectedApproved != null && selectedApproved.hasCoordinates
+              ? OptionalPlacePreviewMap(
+                  latitude: selectedApproved.latitude,
+                  longitude: selectedApproved.longitude,
+                  height: 120,
+                )
+              : const SizedBox(width: double.infinity),
+        ),
+      ],
     );
   }
 }
 
-class _PlaceOption {
-  const _PlaceOption({
-    required this.value,
-    required this.label,
-    required this.enabled,
-    this.nameEn = '',
-    this.nameAr = '',
-    this.leadingIcon,
-    this.alwaysVisible = false,
+class _PlacePickerSheet extends StatefulWidget {
+  const _PlacePickerSheet({
+    required this.title,
+    required this.searchHint,
+    required this.places,
+    required this.selected,
+    required this.otherOptionLabel,
+    required this.requireCoordinates,
+    required this.excludePlaceIds,
+    required this.icon,
   });
 
-  final PlaceSelection value;
-  final String label;
-  final bool enabled;
-  final String nameEn;
-  final String nameAr;
-  final IconData? leadingIcon;
-  final bool alwaysVisible;
+  final String title;
+  final String searchHint;
+  final List<Place> places;
+  final PlaceSelection? selected;
+  final String? otherOptionLabel;
+  final bool requireCoordinates;
+  final Set<String> excludePlaceIds;
+  final IconData icon;
 
-  bool matches(String query) {
-    return label.toLowerCase().contains(query) ||
-        nameEn.toLowerCase().contains(query) ||
-        nameAr.toLowerCase().contains(query);
+  @override
+  State<_PlacePickerSheet> createState() => _PlacePickerSheetState();
+}
+
+class _PlacePickerSheetState extends State<_PlacePickerSheet> {
+  final _query = TextEditingController();
+
+  @override
+  void dispose() {
+    _query.dispose();
+    super.dispose();
+  }
+
+  bool _matches(Place place, String q) {
+    return place.nameEn.toLowerCase().contains(q) ||
+        place.nameAr.toLowerCase().contains(q) ||
+        (place.address ?? '').toLowerCase().contains(q);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final media = MediaQuery.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final q = _query.text.trim().toLowerCase();
+    final selectedId = widget.selected is ApprovedPlaceSelection
+        ? (widget.selected! as ApprovedPlaceSelection).place.id
+        : null;
+    final visible = [
+      for (final p in widget.places)
+        if (!widget.excludePlaceIds.contains(p.id) && (q.isEmpty || _matches(p, q)))
+          p,
+    ];
+    final animate = !AppAnimations.disabled(context);
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: media.viewInsets.bottom),
+      child: SizedBox(
+        height: media.size.height * 0.82,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                width: 36,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.line,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(20, 14, 8, 4),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(widget.title, style: theme.textTheme.titleLarge),
+                  ),
+                  IconButton(
+                    tooltip: l10n.dialogCancel,
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    icon: const Icon(Icons.close_rounded),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+              child: TextField(
+                controller: _query,
+                autofocus: true,
+                textInputAction: TextInputAction.search,
+                onChanged: (_) => setState(() {}),
+                decoration: InputDecoration(
+                  hintText: widget.searchHint,
+                  prefixIcon: const Icon(Icons.search_rounded),
+                  suffixIcon: q.isEmpty
+                      ? null
+                      : IconButton(
+                          tooltip: l10n.dialogCancel,
+                          onPressed: () => setState(_query.clear),
+                          icon: const Icon(Icons.close_rounded),
+                        ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 16),
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                children: [
+                  if (visible.isEmpty && widget.otherOptionLabel == null)
+                    Padding(
+                      padding: const EdgeInsets.all(32),
+                      child: Text(
+                        widget.searchHint,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.inkMuted,
+                        ),
+                      ),
+                    ),
+                  for (var i = 0; i < visible.length; i++)
+                    _stagger(
+                      animate,
+                      i,
+                      _PlaceRow(
+                        place: visible[i],
+                        languageCode: languageCode,
+                        selected: visible[i].id == selectedId,
+                        usable:
+                            !widget.requireCoordinates ||
+                            visible[i].hasCoordinates,
+                        onTap: () {
+                          final place = visible[i];
+                          if (widget.requireCoordinates &&
+                              !place.hasCoordinates) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  l10n.placeCannotSelectWithoutLocation,
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+                          Navigator.of(
+                            context,
+                          ).pop(ApprovedPlaceSelection(place));
+                        },
+                      ),
+                    ),
+                  if (widget.otherOptionLabel != null) ...[
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      child: Divider(height: 1),
+                    ),
+                    ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      leading: const CircleAvatar(
+                        backgroundColor: AppColors.paleBlue,
+                        foregroundColor: AppColors.deepBlue,
+                        child: Icon(Icons.edit_location_alt_outlined),
+                      ),
+                      title: Text(widget.otherOptionLabel!),
+                      trailing: widget.selected is CustomPlaceSelection
+                          ? const Icon(
+                              Icons.check_circle_rounded,
+                              color: AppColors.deepBlue,
+                            )
+                          : null,
+                      onTap: () => Navigator.of(
+                        context,
+                      ).pop(const CustomPlaceSelection()),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _stagger(bool animate, int i, Widget child) {
+    if (!animate || i > 7) return child;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppMotion.emphasized + AppMotion.staggerAt(i),
+      curve: AppMotion.easeOut,
+      builder: (context, v, child) => Opacity(
+        opacity: v,
+        child: Transform.translate(offset: Offset(0, 12 * (1 - v)), child: child),
+      ),
+      child: child,
+    );
+  }
+}
+
+class _PlaceRow extends StatelessWidget {
+  const _PlaceRow({
+    required this.place,
+    required this.languageCode,
+    required this.selected,
+    required this.usable,
+    required this.onTap,
+  });
+
+  final Place place;
+  final String languageCode;
+  final bool selected;
+  final bool usable;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final address = place.address?.trim();
+    return Opacity(
+      opacity: usable ? 1 : 0.55,
+      child: ListTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        selected: selected,
+        selectedTileColor: AppColors.paleBlue,
+        leading: CircleAvatar(
+          backgroundColor: selected ? AppColors.deepBlue : AppColors.paleBlue,
+          foregroundColor: selected ? AppColors.white : AppColors.deepBlue,
+          child: Icon(
+            usable ? Icons.place_outlined : Icons.location_off_outlined,
+          ),
+        ),
+        title: Text(
+          place.displayName(languageCode),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: (address != null && address.isNotEmpty) || !usable
+            ? Text(
+                usable ? address! : l10n.noLocationBadge,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: AppColors.inkMuted,
+                ),
+              )
+            : null,
+        trailing: selected
+            ? const Icon(Icons.check_circle_rounded, color: AppColors.deepBlue)
+            : null,
+        onTap: onTap,
+      ),
+    );
   }
 }
