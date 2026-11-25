@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/widgets/brand_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/localization/language_toggle_button.dart';
@@ -25,12 +26,12 @@ class DriversAdminTripsScreen extends ConsumerWidget {
       ],
       floatingActionButton: user == null
           ? null
-          : FloatingActionButton(
-              heroTag: 'drivers-admin-trips-request',
-              tooltip: l10n.requestATrip,
-              onPressed: () => openNewTripRequest(context, user: user),
-              child: const Icon(Icons.add),
-            ),
+          : BrandFab(
+ heroTag: 'drivers-admin-trips-request',
+ tooltip: l10n.requestATrip,
+ icon: Icons.add,
+ onPressed: () => openNewTripRequest(context, user: user),
+ ),
       body: const AdminTripsTab(),
     );
   }

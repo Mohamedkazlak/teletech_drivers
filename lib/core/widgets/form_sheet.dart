@@ -50,6 +50,10 @@ class FormSheet extends StatelessWidget {
     this.isLoading = false,
     this.errorMessage,
     this.shakeTrigger = 0,
+    this.headerBottom,
+    this.stepKey,
+    this.secondaryLabel,
+    this.onSecondary,
     super.key,
   });
 
@@ -68,6 +72,16 @@ class FormSheet extends StatelessWidget {
   /// Change this value to shake the form (e.g. after a failed validation).
   final int shakeTrigger;
 
+  /// Optional strip under the title, such as a step indicator.
+  final Widget? headerBottom;
+
+  /// Changing this replays the entrance of [children] (multi-step forms).
+  final Object? stepKey;
+
+  /// Replaces the default Cancel button (for example "Back").
+  final String? secondaryLabel;
+  final VoidCallback? onSecondary;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -76,6 +90,7 @@ class FormSheet extends StatelessWidget {
     final animate = !AppAnimations.disabled(context);
 
     Widget body = ListView(
+      key: stepKey == null ? null : ValueKey(stepKey),
       shrinkWrap: true,
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
       children: [
@@ -166,6 +181,7 @@ class FormSheet extends StatelessWidget {
                 ],
               ),
             ),
+            if (headerBottom != null) headerBottom!,
             Flexible(
               child: Shake(trigger: shakeTrigger, child: body),
             ),
@@ -174,11 +190,12 @@ class FormSheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: AppButton(
-                      label: l10n.dialogCancel,
+                      label: secondaryLabel ?? l10n.dialogCancel,
                       variant: AppButtonVariant.outlined,
                       onPressed: isLoading
                           ? null
-                          : () => Navigator.of(context).maybePop(),
+                          : (onSecondary ??
+                                () => Navigator.of(context).maybePop()),
                     ),
                   ),
                   const SizedBox(width: 12),

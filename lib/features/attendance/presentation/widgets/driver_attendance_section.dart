@@ -65,6 +65,7 @@ class _DriverAttendanceSectionState
       AttendanceScanStep.permissionDenied =>
         l10n.locationPermissionDeniedMessage,
       AttendanceScanStep.gpsOff => l10n.locationServicesDisabledMessage,
+      AttendanceScanStep.locationUnavailable => l10n.locationUnavailable,
       AttendanceScanStep.cancelled => l10n.attendanceScanCancelled,
       AttendanceScanStep.success =>
         today.isCheckedIn

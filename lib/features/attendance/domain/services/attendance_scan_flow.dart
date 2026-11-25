@@ -33,7 +33,19 @@ final class AttendanceLocateGpsOff extends AttendanceLocateResult {
   const AttendanceLocateGpsOff();
 }
 
-enum AttendanceScanStep { permissionDenied, gpsOff, cancelled, success, failed }
+/// No fix arrived in time and none was cached (indoors, emulator, weak GPS).
+final class AttendanceLocateUnavailable extends AttendanceLocateResult {
+  const AttendanceLocateUnavailable();
+}
+
+enum AttendanceScanStep {
+  permissionDenied,
+  gpsOff,
+  locationUnavailable,
+  cancelled,
+  success,
+  failed,
+}
 
 class AttendanceScanResult {
   const AttendanceScanResult({
@@ -66,6 +78,10 @@ class AttendanceScanFlow {
         );
       case AttendanceLocateGpsOff():
         return const AttendanceScanResult(step: AttendanceScanStep.gpsOff);
+      case AttendanceLocateUnavailable():
+        return const AttendanceScanResult(
+          step: AttendanceScanStep.locationUnavailable,
+        );
       case AttendanceLocateReady(:final fix):
         final payload = await scan();
         if (payload == null || payload.trim().isEmpty) {

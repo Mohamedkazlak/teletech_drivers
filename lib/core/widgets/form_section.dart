@@ -95,6 +95,11 @@ class PickerField extends StatelessWidget {
           isEmpty: !hasValue,
           decoration: InputDecoration(
             labelText: label,
+            // Keep the label above the field when a placeholder is shown, so
+            // the two never draw on top of each other.
+            floatingLabelBehavior: placeholder == null
+                ? null
+                : FloatingLabelBehavior.always,
             prefixIcon: icon == null ? null : Icon(icon),
             suffixIcon: const Icon(
               Icons.expand_more_rounded,

@@ -30,9 +30,21 @@ class GeolocatorAttendanceLocator {
       return const AttendanceLocateDenied();
     }
 
-    final position = await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
-    );
+    // A fresh fix can take a long time indoors (or never arrive on an
+    // emulator), so cap the wait and fall back to the last known position.
+    Position? position;
+    try {
+      position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 8),
+        ),
+      );
+    } on Object {
+      position = null;
+    }
+    position ??= await _lastKnown();
+    if (position == null) return const AttendanceLocateUnavailable();
     return AttendanceLocateReady(
       AttendanceFix(
         lat: position.latitude,
@@ -41,5 +53,13 @@ class GeolocatorAttendanceLocator {
         isMocked: position.isMocked,
       ),
     );
+  }
+
+  Future<Position?> _lastKnown() async {
+    try {
+      return await Geolocator.getLastKnownPosition();
+    } on Object {
+      return null;
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/widgets/brand_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/router/app_routes.dart';
@@ -20,12 +21,12 @@ class AdminMyTripsScreen extends ConsumerWidget {
       title: l10n.adminMyTripsSection,
       floatingActionButton: user == null
           ? null
-          : FloatingActionButton(
-              heroTag: 'admin-request-trip',
-              tooltip: l10n.requestATrip,
-              onPressed: () => openNewTripRequest(context, user: user),
-              child: const Icon(Icons.add),
-            ),
+          : BrandFab(
+ heroTag: 'admin-request-trip',
+ tooltip: l10n.requestATrip,
+ icon: Icons.add,
+ onPressed: () => openNewTripRequest(context, user: user),
+ ),
       body: MyRequestsTab(
         requestDetailsPath: AppRoutes.adminMyRequestDetailsPath,
       ),

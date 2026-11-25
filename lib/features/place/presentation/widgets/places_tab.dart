@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/widgets/brand_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/widgets/brand_refresh.dart';
 import 'package:teletech_drivers/core/widgets/search_field.dart';
@@ -122,14 +123,14 @@ class PlacesTab extends ConsumerWidget {
 
         return AppScaffold(
           showAppBar: false,
-          floatingActionButton: FloatingActionButton(
-            heroTag: 'places-tab-add-place',
-            tooltip: l10n.addPlace,
-            onPressed: deletionState.isLoading
+          floatingActionButton: BrandFab(
+ heroTag: 'places-tab-add-place',
+ tooltip: l10n.addPlace,
+ icon: Icons.add,
+ onPressed: deletionState.isLoading
                 ? null
                 : () => _openForm(context, existingPlaces: items),
-            child: const Icon(Icons.add),
-          ),
+ ),
           body: _SearchablePlaceList(
             places: items,
             onRefresh: () async {

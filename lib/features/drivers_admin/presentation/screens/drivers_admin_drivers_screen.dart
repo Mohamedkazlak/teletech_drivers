@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/widgets/brand_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/widgets/success_moment.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
@@ -28,12 +29,12 @@ class DriversAdminDriversScreen extends ConsumerWidget {
         LanguageToggleButton(),
         SignOutButton(style: SignOutButtonStyle.icon),
       ],
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'drivers-admin-add-driver',
-        tooltip: l10n.addDriver,
-        onPressed: () => _openAddDriver(context),
-        child: const Icon(Icons.person_add_outlined),
-      ),
+      floatingActionButton: BrandFab(
+ heroTag: 'drivers-admin-add-driver',
+ tooltip: l10n.addDriver,
+ icon: Icons.person_add_outlined,
+ onPressed: () => _openAddDriver(context),
+ ),
       body: const DriversTab(),
     );
   }

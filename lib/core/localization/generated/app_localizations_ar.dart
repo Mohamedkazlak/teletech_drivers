@@ -2488,4 +2488,181 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get adminTripsWeekSubtitle => 'المجدولة يوميًا، آخر 7 أيام';
+
+  @override
+  String get onboardingSkip => 'تخطي';
+
+  @override
+  String get onboardingNext => 'التالي';
+
+  @override
+  String get onboardingGetStarted => 'هيا نبدأ';
+
+  @override
+  String get onboardingBack => 'السابق';
+
+  @override
+  String get onboardingWelcomeTitle => 'مرحبًا بك في TeleCars';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'جولة سريعة لنعرّفك على طريقة العمل. تستغرق دقيقة تقريبًا.';
+
+  @override
+  String get onboardingDoneTitle => 'كل شيء جاهز';
+
+  @override
+  String get onboardingDoneBody =>
+      'يمكنك إعادة هذا الدليل في أي وقت من الإعدادات.';
+
+  @override
+  String get onboardingEmployee1Title => 'اطلب رحلة في ثوانٍ';
+
+  @override
+  String get onboardingEmployee1Body =>
+      'اختر وجهتك وموعدك، ونحن نتولى إيجاد السائق.';
+
+  @override
+  String get onboardingEmployee2Title => 'تابع سائقك مباشرة';
+
+  @override
+  String get onboardingEmployee2Body =>
+      'بعد تعيين الرحلة، شاهد السيارة تقترب على الخريطة.';
+
+  @override
+  String get onboardingEmployee3Title => 'كل شيء في مكان واحد';
+
+  @override
+  String get onboardingEmployee3Body =>
+      'رحلاتك وتحديثات حالتها وإشعاراتك في شاشتك الرئيسية.';
+
+  @override
+  String get onboardingDriver1Title => 'سجّل حضورك لتبدأ يومك';
+
+  @override
+  String get onboardingDriver1Body =>
+      'اسحب لتسجيل الحضور عند وصولك، ويُسجَّل حضورك تلقائيًا.';
+
+  @override
+  String get onboardingDriver2Title => 'رحلاتك خطوة بخطوة';
+
+  @override
+  String get onboardingDriver2Body =>
+      'ابدأ ووصّل وعُد بلمسة واحدة. يُشارَك موقعك أثناء الرحلة فقط.';
+
+  @override
+  String get onboardingDriver3Title => 'تابع أداءك';
+
+  @override
+  String get onboardingDriver3Body =>
+      'رحلاتك المكتملة وإحصاءاتك على بُعد تبويب واحد.';
+
+  @override
+  String get onboardingCompanyAdmin1Title => 'راجع طلبات الرحلات';
+
+  @override
+  String get onboardingCompanyAdmin1Body =>
+      'وافق على طلبات الموظفين أو ارفضها وجمّعها في رحلات.';
+
+  @override
+  String get onboardingCompanyAdmin2Title => 'أدر أماكنك';
+
+  @override
+  String get onboardingCompanyAdmin2Body =>
+      'أضف الأماكن التي يسافر إليها فريقك لتصبح الطلبات أسرع وأدق.';
+
+  @override
+  String get onboardingCompanyAdmin3Title => 'تابع الرحلات أولًا بأول';
+
+  @override
+  String get onboardingCompanyAdmin3Body =>
+      'تابع كل رحلة من الطلب حتى الانتهاء، ويمكنك طلب رحلات بنفسك.';
+
+  @override
+  String get onboardingDriversAdmin1Title => 'عيّن السائق المناسب';
+
+  @override
+  String get onboardingDriversAdmin1Body =>
+      'اعرف من المتاح وعيّن الرحلة بلمسة واحدة.';
+
+  @override
+  String get onboardingDriversAdmin2Title => 'راقب الأسطول مباشرة';
+
+  @override
+  String get onboardingDriversAdmin2Body =>
+      'تعرض الخريطة المباشرة كل سائق ورحلة لحظة بلحظة.';
+
+  @override
+  String get onboardingDriversAdmin3Title => 'الحضور والتقارير';
+
+  @override
+  String get onboardingDriversAdmin3Body =>
+      'اعرف من حضر اليوم، وعدّل الحضور، وصدّر التقارير.';
+
+  @override
+  String get onboardingAdmin1Title => 'لوحة المعلومات';
+
+  @override
+  String get onboardingAdmin1Body =>
+      'نظرة مباشرة على السائقين والرحلات والطلبات في الشركة.';
+
+  @override
+  String get onboardingAdmin2Title => 'الأشخاص والأماكن';
+
+  @override
+  String get onboardingAdmin2Body =>
+      'أنشئ السائقين والموظفين، وأدر الأماكن التي يستخدمها الجميع.';
+
+  @override
+  String get onboardingAdmin3Title => 'تحكّم كامل دائمًا';
+
+  @override
+  String get onboardingAdmin3Body =>
+      'أعد تعيين كلمات المرور وراجع النشاط وتدخّل في أي رحلة.';
+
+  @override
+  String get settingsReplayGuide => 'إعادة دليل التطبيق';
+
+  @override
+  String get settingsReplayGuideHint => 'جولة قصيرة في ما يمكنك فعله هنا.';
+
+  @override
+  String get placeChooseOnMap => 'اختر من الخريطة';
+
+  @override
+  String get placeChangeLocation => 'تغيير';
+
+  @override
+  String get placeContinue => 'متابعة';
+
+  @override
+  String get placeSkipLocation => 'تخطَّ الآن';
+
+  @override
+  String get placeLocationEmptyTitle => 'أين يقع هذا المكان؟';
+
+  @override
+  String get placeLocationEmptyBody =>
+      'ابحث عن عنوان أو ضع دبوسًا على الخريطة. يراه الموظفون عند طلب الرحلات.';
+
+  @override
+  String get placeLocationSetTitle => 'تم تحديد الموقع';
+
+  @override
+  String get placeStepLocation => 'الموقع';
+
+  @override
+  String get placeStepDetails => 'التفاصيل';
+
+  @override
+  String get placeAddressFilled => 'تمت تعبئة العنوان من الخريطة';
+
+  @override
+  String get placePickerHint => 'حرّك الخريطة لوضع الدبوس';
+
+  @override
+  String get adminFilterStatusLabel => 'الحالة';
+
+  @override
+  String get adminFilterBranchLabel => 'الفرع';
 }

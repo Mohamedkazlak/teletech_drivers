@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/widgets/brand_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/localization/language_toggle_button.dart';
@@ -26,12 +27,12 @@ class CompanyAdminMyTripsScreen extends ConsumerWidget {
       ],
       floatingActionButton: user == null
           ? null
-          : FloatingActionButton(
-              heroTag: 'company-admin-my-trips-new',
-              tooltip: l10n.newTripRequest,
-              onPressed: () => openNewTripRequest(context, user: user),
-              child: const Icon(Icons.add),
-            ),
+          : BrandFab(
+ heroTag: 'company-admin-my-trips-new',
+ tooltip: l10n.newTripRequest,
+ icon: Icons.add,
+ onPressed: () => openNewTripRequest(context, user: user),
+ ),
       body: MyTripsPanel(
         detailsPath: AppRoutes.companyAdminMyTripRequestPath,
         cancelledTabLabel: l10n.myTripsTabCancelledRejected,

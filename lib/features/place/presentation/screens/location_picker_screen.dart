@@ -9,7 +9,9 @@ import 'package:teletech_drivers/core/widgets/map_pins.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
 import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
+import 'package:teletech_drivers/core/widgets/app_button.dart';
 import 'package:teletech_drivers/core/widgets/app_scaffold.dart';
+import 'package:teletech_drivers/core/theme/app_motion.dart';
 import 'package:teletech_drivers/features/place/data/services/address_resolver.dart';
 import 'package:teletech_drivers/features/place/data/services/nominatim_geocoding_service.dart';
 import 'package:teletech_drivers/features/place/domain/entities/picked_location.dart';
@@ -60,6 +62,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
   String? _searchError;
   List<NominatimSearchResult> _searchResults = const [];
   Timer? _addressDebounce;
+  Timer? _searchDebounce;
   int _addressRequestId = 0;
 
   @override
@@ -90,6 +93,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
   @override
   void dispose() {
     _addressDebounce?.cancel();
+    _searchDebounce?.cancel();
     _searchController.dispose();
     _searchFocus.dispose();
     _pinController.dispose();
@@ -290,12 +294,30 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
     );
   }
 
-  Future<void> _submitSearch() async {
+  /// Search as you type, after a short pause (the arrow still searches now).
+  void _onSearchChanged(String value) {
+    _searchDebounce?.cancel();
+    if (value.trim().length < 3) {
+      if (_searchResults.isNotEmpty || _searchError != null) {
+        setState(() {
+          _searchResults = const [];
+          _searchError = null;
+        });
+      }
+      return;
+    }
+    _searchDebounce = Timer(const Duration(milliseconds: 550), () {
+      if (mounted) unawaited(_submitSearch(keepFocus: true));
+    });
+  }
+
+  Future<void> _submitSearch({bool keepFocus = false}) async {
+    _searchDebounce?.cancel();
     final query = _searchController.text.trim();
     if (query.isEmpty || _searching) return;
 
     final l10n = AppLocalizations.of(context);
-    FocusScope.of(context).unfocus();
+    if (!keepFocus) FocusScope.of(context).unfocus();
     setState(() {
       _searching = true;
       _searchError = null;
@@ -330,6 +352,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
       _address = result.displayName;
       _resolvingAddress = false;
     });
+    FocusScope.of(context).unfocus();
     _searchController.text = result.displayName;
     unawaited(
       animateMapMove(
@@ -382,16 +405,32 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Padding(
         padding: EdgeInsetsDirectional.only(bottom: 148 + bottomPadding),
-        child: FloatingActionButton.small(
-          heroTag: 'location-picker-my-location',
-          tooltip: l10n.myLocationButton,
-          onPressed: _locating ? null : _goToMyLocation,
-          child: _locating
-              ? const SizedBox.square(
-                  dimension: 18,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Icon(Icons.my_location),
+        child: Tooltip(
+          message: l10n.myLocationButton,
+          child: Material(
+            color: AppColors.white,
+            elevation: 4,
+            shadowColor: AppColors.navy.withValues(alpha: 0.4),
+            shape: const CircleBorder(),
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: _locating ? null : _goToMyLocation,
+              child: SizedBox.square(
+                dimension: 48,
+                child: Center(
+                  child: _locating
+                      ? const SizedBox.square(
+                          dimension: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(
+                          Icons.my_location,
+                          color: AppColors.deepBlue,
+                        ),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
       body: Stack(
@@ -479,6 +518,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
                         ),
                         filled: true,
                       ),
+                      onChanged: _onSearchChanged,
                       onSubmitted: (_) => _submitSearch(),
                     ),
                   ),
@@ -585,12 +625,36 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      _displayAddress,
+                                      l10n.placePickerHint,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .titleSmall,
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
+                                          .labelSmall
+                                          ?.copyWith(
+                                            color: AppColors.signal,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    AnimatedSwitcher(
+                                      duration: AppAnimations.duration(
+                                        context,
+                                        AppMotion.standard,
+                                      ),
+                                      switchInCurve: AppMotion.easeOut,
+                                      transitionBuilder: (child, animation) =>
+                                          FadeTransition(
+                                            opacity: animation,
+                                            child: child,
+                                          ),
+                                      child: Text(
+                                        _displayAddress,
+                                        key: ValueKey(_displayAddress),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
@@ -615,9 +679,10 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
                             ],
                           ),
                           const SizedBox(height: 12),
-                          FilledButton(
+                          AppButton(
+                            label: l10n.confirmLocation,
+                            icon: Icons.check_rounded,
                             onPressed: _confirm,
-                            child: Text(l10n.confirmLocation),
                           ),
                         ],
                       ),

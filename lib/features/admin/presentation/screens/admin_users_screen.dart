@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/presentation/glass_bar_inset.dart';
 import 'package:teletech_drivers/core/widgets/search_field.dart';
 import 'package:teletech_drivers/core/widgets/success_moment.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
@@ -127,7 +128,10 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
                   );
                 }
                 return ListView.separated(
-                  padding: const EdgeInsets.all(16),
+                  padding: GlassBarInset.listPadding(
+                    context,
+                    const EdgeInsetsDirectional.all(16),
+                  ),
                   itemCount: filtered.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {

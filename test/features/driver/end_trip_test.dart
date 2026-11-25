@@ -1,3 +1,4 @@
+import 'package:teletech_drivers/core/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -108,14 +109,14 @@ void main() {
     await tester.pumpWidget(_app(trips, _trip(TripStatus.returning)));
     await tester.pumpAndSettle();
 
-    final button = tester.widget<FilledButton>(
-      find.widgetWithText(FilledButton, 'End trip'),
+    final button = tester.widget<AppButton>(
+      find.widgetWithText(AppButton, 'End trip'),
     );
     expect(button.onPressed, isNotNull);
 
     await tester.tap(find.text('End trip'));
     await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(FilledButton, 'End trip').last);
+    await tester.tap(find.text('End trip').last);
     await tester.pumpAndSettle();
 
     expect(trips.endCalls, 1);
@@ -129,8 +130,8 @@ void main() {
     await tester.pumpWidget(_app(_Trips(), _trip(TripStatus.going)));
     await tester.pumpAndSettle();
 
-    final button = tester.widget<FilledButton>(
-      find.widgetWithText(FilledButton, 'Arrived at destination'),
+    final button = tester.widget<AppButton>(
+      find.widgetWithText(AppButton, 'Arrived at destination'),
     );
     expect(button.onPressed, isNotNull);
   });

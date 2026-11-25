@@ -3315,5 +3315,217 @@
   "adminTripsWeekSubtitle": "Scheduled per day, last 7 days",
   "@adminTripsWeekSubtitle": {
     "description": "Dashboard chart subtitle"
+  },
+  "onboardingSkip": "Skip",
+  "@onboardingSkip": {
+    "description": "Skip button on onboarding"
+  },
+  "onboardingNext": "Next",
+  "@onboardingNext": {
+    "description": "Next button on onboarding"
+  },
+  "onboardingGetStarted": "Get started",
+  "@onboardingGetStarted": {
+    "description": "Final onboarding button"
+  },
+  "onboardingBack": "Back",
+  "@onboardingBack": {
+    "description": "Back button on onboarding"
+  },
+  "onboardingWelcomeTitle": "Welcome to TeleCars",
+  "@onboardingWelcomeTitle": {
+    "description": "Onboarding welcome title"
+  },
+  "onboardingWelcomeBody": "A quick tour of how your day will work. It takes about a minute.",
+  "@onboardingWelcomeBody": {
+    "description": "Onboarding welcome body"
+  },
+  "onboardingDoneTitle": "You're all set",
+  "@onboardingDoneTitle": {
+    "description": "Onboarding last page title"
+  },
+  "onboardingDoneBody": "You can replay this guide any time from Settings.",
+  "@onboardingDoneBody": {
+    "description": "Onboarding last page body"
+  },
+  "onboardingEmployee1Title": "Request a ride in seconds",
+  "@onboardingEmployee1Title": {
+    "description": "Employee onboarding page 1"
+  },
+  "onboardingEmployee1Body": "Choose where you are going and when. We take care of finding a driver.",
+  "@onboardingEmployee1Body": {
+    "description": "Employee onboarding page 1"
+  },
+  "onboardingEmployee2Title": "Follow your driver live",
+  "@onboardingEmployee2Title": {
+    "description": "Employee onboarding page 2"
+  },
+  "onboardingEmployee2Body": "Once a trip is assigned, watch the car arrive on the map.",
+  "@onboardingEmployee2Body": {
+    "description": "Employee onboarding page 2"
+  },
+  "onboardingEmployee3Title": "Everything in one place",
+  "@onboardingEmployee3Title": {
+    "description": "Employee onboarding page 3"
+  },
+  "onboardingEmployee3Body": "Your trips, status updates and notifications are right on your home screen.",
+  "@onboardingEmployee3Body": {
+    "description": "Employee onboarding page 3"
+  },
+  "onboardingDriver1Title": "Check in to start your day",
+  "@onboardingDriver1Title": {
+    "description": "Driver onboarding page 1"
+  },
+  "onboardingDriver1Body": "Slide to check in when you arrive. Your attendance is recorded for you.",
+  "@onboardingDriver1Body": {
+    "description": "Driver onboarding page 1"
+  },
+  "onboardingDriver2Title": "Your trips, step by step",
+  "@onboardingDriver2Title": {
+    "description": "Driver onboarding page 2"
+  },
+  "onboardingDriver2Body": "Start, arrive and return with a single tap. Your location is shared only during a trip.",
+  "@onboardingDriver2Body": {
+    "description": "Driver onboarding page 2"
+  },
+  "onboardingDriver3Title": "See how you are doing",
+  "@onboardingDriver3Title": {
+    "description": "Driver onboarding page 3"
+  },
+  "onboardingDriver3Body": "Completed trips and your stats are always one tab away.",
+  "@onboardingDriver3Body": {
+    "description": "Driver onboarding page 3"
+  },
+  "onboardingCompanyAdmin1Title": "Review trip requests",
+  "@onboardingCompanyAdmin1Title": {
+    "description": "Company admin onboarding page 1"
+  },
+  "onboardingCompanyAdmin1Body": "Approve or reject employee requests and group them into trips.",
+  "@onboardingCompanyAdmin1Body": {
+    "description": "Company admin onboarding page 1"
+  },
+  "onboardingCompanyAdmin2Title": "Manage your places",
+  "@onboardingCompanyAdmin2Title": {
+    "description": "Company admin onboarding page 2"
+  },
+  "onboardingCompanyAdmin2Body": "Add the locations your teams travel to, so requests are quick and accurate.",
+  "@onboardingCompanyAdmin2Body": {
+    "description": "Company admin onboarding page 2"
+  },
+  "onboardingCompanyAdmin3Title": "Stay on top of trips",
+  "@onboardingCompanyAdmin3Title": {
+    "description": "Company admin onboarding page 3"
+  },
+  "onboardingCompanyAdmin3Body": "Follow every trip from request to completion, and request trips yourself.",
+  "@onboardingCompanyAdmin3Body": {
+    "description": "Company admin onboarding page 3"
+  },
+  "onboardingDriversAdmin1Title": "Assign the right driver",
+  "@onboardingDriversAdmin1Title": {
+    "description": "Drivers admin onboarding page 1"
+  },
+  "onboardingDriversAdmin1Body": "See who is available and assign a trip with one tap.",
+  "@onboardingDriversAdmin1Body": {
+    "description": "Drivers admin onboarding page 1"
+  },
+  "onboardingDriversAdmin2Title": "Watch the fleet live",
+  "@onboardingDriversAdmin2Title": {
+    "description": "Drivers admin onboarding page 2"
+  },
+  "onboardingDriversAdmin2Body": "The live map shows every driver and trip as it happens.",
+  "@onboardingDriversAdmin2Body": {
+    "description": "Drivers admin onboarding page 2"
+  },
+  "onboardingDriversAdmin3Title": "Attendance and reports",
+  "@onboardingDriversAdmin3Title": {
+    "description": "Drivers admin onboarding page 3"
+  },
+  "onboardingDriversAdmin3Body": "Check who is in today, adjust attendance and export reports.",
+  "@onboardingDriversAdmin3Body": {
+    "description": "Drivers admin onboarding page 3"
+  },
+  "onboardingAdmin1Title": "Your dashboard",
+  "@onboardingAdmin1Title": {
+    "description": "Admin onboarding page 1"
+  },
+  "onboardingAdmin1Body": "A live view of drivers, trips and requests across the company.",
+  "@onboardingAdmin1Body": {
+    "description": "Admin onboarding page 1"
+  },
+  "onboardingAdmin2Title": "People and places",
+  "@onboardingAdmin2Title": {
+    "description": "Admin onboarding page 2"
+  },
+  "onboardingAdmin2Body": "Create drivers and employees, and manage the places everyone uses.",
+  "@onboardingAdmin2Body": {
+    "description": "Admin onboarding page 2"
+  },
+  "onboardingAdmin3Title": "Always in control",
+  "@onboardingAdmin3Title": {
+    "description": "Admin onboarding page 3"
+  },
+  "onboardingAdmin3Body": "Reset passwords, review activity and step in on any trip.",
+  "@onboardingAdmin3Body": {
+    "description": "Admin onboarding page 3"
+  },
+  "settingsReplayGuide": "Replay the app guide",
+  "@settingsReplayGuide": {
+    "description": "Settings tile to replay onboarding"
+  },
+  "settingsReplayGuideHint": "A short tour of what you can do here.",
+  "@settingsReplayGuideHint": {
+    "description": "Settings tile subtitle"
+  },
+  "placeChooseOnMap": "Choose on map",
+  "@placeChooseOnMap": {
+    "description": "Button to open the map location picker"
+  },
+  "placeChangeLocation": "Change",
+  "@placeChangeLocation": {
+    "description": "Button to change the chosen place location"
+  },
+  "placeContinue": "Continue",
+  "@placeContinue": {
+    "description": "Continue to next step of the place form"
+  },
+  "placeSkipLocation": "Skip for now",
+  "@placeSkipLocation": {
+    "description": "Continue the place form without a location"
+  },
+  "placeLocationEmptyTitle": "Where is this place?",
+  "@placeLocationEmptyTitle": {
+    "description": "Empty state title in place location step"
+  },
+  "placeLocationEmptyBody": "Search for an address or drop a pin on the map. Staff see it when they request trips.",
+  "@placeLocationEmptyBody": {
+    "description": "Empty state body in place location step"
+  },
+  "placeLocationSetTitle": "Location set",
+  "@placeLocationSetTitle": {
+    "description": "Title when a place location is chosen"
+  },
+  "placeStepLocation": "Location",
+  "@placeStepLocation": {
+    "description": "Place form step 1 label"
+  },
+  "placeStepDetails": "Details",
+  "@placeStepDetails": {
+    "description": "Place form step 2 label"
+  },
+  "placeAddressFilled": "Address filled in from the map",
+  "@placeAddressFilled": {
+    "description": "Hint under address field"
+  },
+  "placePickerHint": "Move the map to place the pin",
+  "@placePickerHint": {
+    "description": "Hint on the map picker card"
+  },
+  "adminFilterStatusLabel": "Status",
+  "@adminFilterStatusLabel": {
+    "description": "Label of the status filter row"
+  },
+  "adminFilterBranchLabel": "Branch",
+  "@adminFilterBranchLabel": {
+    "description": "Label of the branch filter row"
   }
 }

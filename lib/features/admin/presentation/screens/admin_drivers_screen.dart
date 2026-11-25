@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/presentation/glass_bar_inset.dart';
+import 'package:teletech_drivers/core/widgets/brand_fab.dart';
 import 'package:teletech_drivers/core/widgets/search_field.dart';
 import 'package:teletech_drivers/core/widgets/brand_refresh.dart';
 import 'package:teletech_drivers/core/widgets/swipe_actions.dart';
@@ -135,12 +137,12 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
 
     return AppScaffold(
       title: l10n.adminDriversSection,
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'admin-add-driver',
-        tooltip: l10n.addDriver,
-        onPressed: () => _openAdd(context),
-        child: const Icon(Icons.person_add_alt_1),
-      ),
+      floatingActionButton: BrandFab(
+ heroTag: 'admin-add-driver',
+ tooltip: l10n.addDriver,
+ icon: Icons.person_add_alt_1,
+ onPressed: () => _openAdd(context),
+ ),
       body: Column(
         children: [
           Padding(
@@ -203,7 +205,10 @@ class _AdminDriversScreenState extends ConsumerState<AdminDriversScreen> {
                   },
                   child: ListView.separated(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(16),
+                  padding: GlassBarInset.listPadding(
+                    context,
+                    const EdgeInsetsDirectional.all(16),
+                  ),
                   itemCount: filtered.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {

@@ -27,6 +27,7 @@ final class AppRoleRouteStrategy implements RoleRouteStrategy {
   @override
   bool canAccess(UserRole role, String location) {
     if (location == AppRoutes.completeProfile) return true;
+    if (location == AppRoutes.onboarding) return true;
     if (role == UserRole.admin) {
       return location == _adminPrefix || location.startsWith('$_adminPrefix/');
     }
