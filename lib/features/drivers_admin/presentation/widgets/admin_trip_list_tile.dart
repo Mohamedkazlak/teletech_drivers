@@ -19,8 +19,12 @@ class AdminTripListTile extends ConsumerWidget {
     required this.onTap,
     this.showLiveProgress = false,
     this.animateIndex,
+    this.enableHero = false,
     super.key,
   });
+
+  /// Fly this card into the details header when opened.
+  final bool enableHero;
 
   final Trip trip;
   final VoidCallback onTap;
@@ -55,6 +59,7 @@ class AdminTripListTile extends ConsumerWidget {
     return TripCard(
       animateIndex: animateIndex,
       onTap: onTap,
+      heroTripId: enableHero ? trip.id : null,
       title: routeSummary,
       from: pickup,
       to: destination,

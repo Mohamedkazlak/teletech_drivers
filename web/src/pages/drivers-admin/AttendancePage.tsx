@@ -92,7 +92,7 @@ export function AttendancePage() {
           <input
             id="attendance-date"
             type="date"
-            className="w-full rounded-control border border-pale px-3 py-2"
+            className="w-full rounded-control border border-line px-3 py-2"
             value={date}
             onChange={(event) => set({ date: event.target.value || null })}
           />
@@ -115,14 +115,14 @@ export function AttendancePage() {
         <FormField id="attendance-driver" label={t('attendance.driver')}>
           <input
             id="attendance-driver"
-            className="w-full rounded-control border border-pale px-3 py-2"
+            className="w-full rounded-control border border-line px-3 py-2"
             value={driverId}
             onChange={(event) => set({ driver: event.target.value || null })}
           />
         </FormField>
       </div>
       {list.data?.totals ? (
-        <p className="text-sm text-navy/70">
+        <p className="text-sm text-ink-muted">
           {t('attendance.totals', {
             present: list.data.totals.days_present,
             absent: list.data.totals.days_absent,
@@ -157,8 +157,8 @@ export function AttendancePage() {
 
 function Count({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-card border border-pale bg-white px-4 py-3">
-      <p className="text-sm text-navy/60">{label}</p>
+    <div className="rounded-card border border-line bg-white px-4 py-3">
+      <p className="text-sm text-ink-muted">{label}</p>
       <p className="text-2xl font-semibold text-navy">{value}</p>
     </div>
   )
@@ -216,7 +216,7 @@ function AdjustDialog({
             <input
               id="adjust-driver"
               required
-              className="w-full rounded-control border border-pale px-3 py-2"
+              className="w-full rounded-control border border-line px-3 py-2"
               value={form.driver_id}
               onChange={(event) => setForm({ ...form, driver_id: event.target.value })}
             />
@@ -226,7 +226,7 @@ function AdjustDialog({
               id="adjust-date"
               required
               type="date"
-              className="w-full rounded-control border border-pale px-3 py-2"
+              className="w-full rounded-control border border-line px-3 py-2"
               value={form.work_date}
               onChange={(event) => setForm({ ...form, work_date: event.target.value })}
             />
@@ -236,7 +236,7 @@ function AdjustDialog({
               id="adjust-in"
               required
               type="time"
-              className="w-full rounded-control border border-pale px-3 py-2"
+              className="w-full rounded-control border border-line px-3 py-2"
               value={form.check_in}
               onChange={(event) => setForm({ ...form, check_in: event.target.value })}
             />
@@ -245,7 +245,7 @@ function AdjustDialog({
             <input
               id="adjust-out"
               type="time"
-              className="w-full rounded-control border border-pale px-3 py-2"
+              className="w-full rounded-control border border-line px-3 py-2"
               value={form.check_out}
               onChange={(event) => setForm({ ...form, check_out: event.target.value })}
             />
@@ -254,7 +254,7 @@ function AdjustDialog({
             <textarea
               id="adjust-reason"
               required
-              className="w-full rounded-control border border-pale px-3 py-2"
+              className="w-full rounded-control border border-line px-3 py-2"
               value={form.reason}
               onChange={(event) => setForm({ ...form, reason: event.target.value })}
             />

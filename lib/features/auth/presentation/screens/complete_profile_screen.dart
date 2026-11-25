@@ -27,6 +27,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
   final _phoneController = TextEditingController();
   Branch? _branch;
   var _autovalidateMode = AutovalidateMode.disabled;
+  var _shake = 0;
 
   @override
   void dispose() {
@@ -36,7 +37,10 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
-      setState(() => _autovalidateMode = AutovalidateMode.onUserInteraction);
+      setState(() {
+        _autovalidateMode = AutovalidateMode.onUserInteraction;
+        _shake++;
+      });
       return;
     }
     final branch = _branch;
@@ -46,7 +50,11 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
         .read(completeProfileControllerProvider.notifier)
         .submit(phone: _phoneController.text, branch: branch);
 
-    if (!mounted || !succeeded) return;
+    if (!mounted) return;
+    if (!succeeded) {
+      setState(() => _shake++);
+      return;
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(AppLocalizations.of(context).completeProfileSaved),
@@ -61,6 +69,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
     final failure = state.failure;
 
     return AuthPageScaffold(
+      shakeTrigger: _shake,
       title: l10n.completeProfileTitle,
       showSignOut: true,
       child: Form(
@@ -78,6 +87,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
             DropdownButtonFormField<Branch>(
               // ignore: deprecated_member_use
               value: _branch,
+              isExpanded: true,
               decoration: InputDecoration(
                 labelText: l10n.branchLabel,
                 prefixIcon: const Icon(Icons.apartment_outlined),

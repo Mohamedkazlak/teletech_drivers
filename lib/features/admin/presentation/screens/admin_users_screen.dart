@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/widgets/search_field.dart';
+import 'package:teletech_drivers/core/widgets/success_moment.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
 import 'package:teletech_drivers/core/widgets/surface_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,8 +62,7 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
     final l10n = AppLocalizations.of(context);
     final succeeded = await ResetPasswordDialog.show(context, user: user);
     if (!context.mounted || succeeded != true) return;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(l10n.adminResetPasswordSuccess)));
+    await showSuccessMoment(context, message: l10n.adminResetPasswordSuccess);
   }
 
   @override
@@ -77,13 +78,9 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: TextField(
+            child: SearchField(
               controller: _searchController,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: l10n.adminUsersSearchHint,
-                border: const OutlineInputBorder(),
-              ),
+              hintText: l10n.adminUsersSearchHint,
               onChanged: (_) => setState(() {}),
             ),
           ),
@@ -110,8 +107,7 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
           ),
           Expanded(
             child: usersAsync.when(
-              loading: () =>
-                  Center(child: AppLoadingIndicator(label: l10n.loading)),
+              loading: () => PeopleListSkeleton(label: l10n.loading),
               error: (error, _) => Center(
                 child: Padding(
                   padding: const EdgeInsets.all(24),

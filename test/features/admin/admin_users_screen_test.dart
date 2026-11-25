@@ -85,6 +85,9 @@ void main() {
     expect(repository.resetUserId, 'emp-1');
     expect(repository.resetPasswordValue, 'temporary1');
     expect(find.text(l10n.adminResetPasswordSuccess), findsOneWidget);
+    // Let the success moment dismiss itself.
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
   });
 }
 

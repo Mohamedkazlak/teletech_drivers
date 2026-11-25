@@ -75,7 +75,7 @@ export function ProfilePage() {
   return (
     <section className="mx-auto max-w-2xl">
       <PageHeading title={t('profile.title')} />
-      <div className="mb-4 flex flex-wrap items-center gap-2 text-sm text-navy/75">
+      <div className="mb-4 flex flex-wrap items-center gap-2 text-sm text-ink-muted">
         <span>{t('profile.role')}</span>
         <span className="font-medium text-navy">{t(`role.${user.role}`)}</span>
         {user.role === 'driver' ? (
@@ -83,7 +83,7 @@ export function ProfilePage() {
         ) : null}
       </div>
       <form
-        className="flex flex-col gap-4 rounded-card border border-pale bg-white p-5"
+        className="flex flex-col gap-4 rounded-card border border-line bg-white p-5"
         onSubmit={(event) => void handleSubmit(onSubmit)(event)}
         noValidate
       >
@@ -122,7 +122,7 @@ export function ProfilePage() {
               <p id="branch" className="text-sm font-medium text-navy">
                 {user.branch ? t(`branch.${user.branch}`) : t('profile.none')}
               </p>
-              <p className="text-sm text-navy/75">{t('profile.branchLocked')}</p>
+              <p className="text-sm text-ink-muted">{t('profile.branchLocked')}</p>
             </div>
           )}
         </FormField>

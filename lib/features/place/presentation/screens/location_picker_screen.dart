@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
+import 'package:teletech_drivers/core/widgets/map_pins.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
 import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
@@ -244,7 +245,14 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
       if (!mounted) return;
       final point = LatLng(position.latitude, position.longitude);
       setState(() => _center = point);
-      _mapController.move(point, 15);
+      unawaited(
+        animateMapMove(
+          controller: _mapController,
+          target: point,
+          zoom: 15,
+          instant: AppAnimations.disabled(context),
+        ),
+      );
       _scheduleAddressResolve();
     } on Object {
       if (!mounted) return;
@@ -323,7 +331,14 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
       _resolvingAddress = false;
     });
     _searchController.text = result.displayName;
-    _mapController.move(point, 15);
+    unawaited(
+      animateMapMove(
+        controller: _mapController,
+        target: point,
+        zoom: 15,
+        instant: AppAnimations.disabled(context),
+      ),
+    );
     _addressDebounce?.cancel();
   }
 
@@ -409,18 +424,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.location_on,
-                      color: AppColors.deepBlue,
-                      size: 48,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black.withValues(alpha: 0.25),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
+                    const BrandPin(size: 42, animate: false),
                     AnimatedContainer(
                       duration: disableAnimations
                           ? Duration.zero

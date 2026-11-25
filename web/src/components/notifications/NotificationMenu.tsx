@@ -1,5 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { BellIcon } from '../icons'
+import { iconButtonClass, menuPanelClass } from '../ui/styles'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   useMarkNotificationRead,
@@ -53,16 +55,16 @@ export function NotificationMenu() {
     <div ref={rootRef} className="relative">
       <button
         type="button"
-        className="relative inline-flex h-10 w-10 items-center justify-center rounded-control border-[1.5px] border-mid text-deep"
+        className={iconButtonClass}
         aria-label={t('notifications.title')}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={menuId}
         onClick={() => setOpen((current) => !current)}
       >
-        <span aria-hidden="true">🔔</span>
+        <BellIcon size={19} />
         {count > 0 ? (
-          <span className="absolute -end-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-white">
+          <span className="absolute -end-1.5 -top-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-semibold text-white ring-2 ring-white animate-pop tabular">
             {count > 99 ? '99+' : count}
           </span>
         ) : null}
@@ -71,17 +73,17 @@ export function NotificationMenu() {
         <div
           id={menuId}
           role="menu"
-          className="absolute end-0 z-20 mt-1 w-80 max-w-[85vw] rounded-control border border-pale bg-white py-1 shadow-dialog"
+          className={`${menuPanelClass} w-[22rem] max-w-[85vw]`}
         >
           <div className="max-h-96 overflow-y-auto">
             {list.isPending ? (
-              <p className="px-3 py-3 text-sm text-navy/70">{t('common.loading')}</p>
+              <p className="px-3 py-3 text-sm text-ink-muted">{t('common.loading')}</p>
             ) : list.isError ? (
               <p role="alert" className="px-3 py-3 text-sm text-danger">
                 {t('common.error')}
               </p>
             ) : (list.data?.data.length ?? 0) === 0 ? (
-              <p className="px-3 py-3 text-sm text-navy/70">{t('notifications.empty')}</p>
+              <p className="px-3 py-3 text-sm text-ink-muted">{t('notifications.empty')}</p>
             ) : (
               list.data?.data.map((item) => {
                 const values = notificationValues(item.params, i18n.language)
@@ -91,20 +93,23 @@ export function NotificationMenu() {
                     key={item.id}
                     type="button"
                     role="menuitem"
-                    className={`block w-full px-3 py-2 text-start hover:bg-pale ${
-                      item.read_at ? 'bg-white' : 'bg-pale'
+                    className={`relative block w-full rounded-[10px] px-3 py-2.5 text-start transition-colors duration-150 hover:bg-pale ${
+                      item.read_at ? 'bg-white' : 'bg-pale/60'
                     }`}
                     onClick={() => {
                       void openItem(item.id, href)
                     }}
                   >
-                    <span className="block text-sm font-bold text-navy">
+                    <span className="flex items-center gap-2 text-sm font-semibold text-navy">
+                      {item.read_at ? null : (
+                        <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-signal" />
+                      )}
                       {t(item.title_key, values)}
                     </span>
                     <span className="mt-0.5 block text-sm text-navy/80">
                       {t(item.body_key, values)}
                     </span>
-                    <span className="mt-1 block text-xs text-navy/60">
+                    <span className="mt-1 block text-xs text-ink-muted">
                       {formatWhen(item.created_at, i18n.language)}
                     </span>
                   </button>
@@ -115,7 +120,7 @@ export function NotificationMenu() {
           <Link
             to="/notifications"
             role="menuitem"
-            className="block border-t border-pale px-3 py-2 text-sm font-bold text-deep hover:bg-pale"
+            className="mt-1 block rounded-[10px] border-t border-line px-3 py-2.5 text-sm font-semibold text-deep hover:bg-pale"
             onClick={() => setOpen(false)}
           >
             {t('notifications.viewAll')}

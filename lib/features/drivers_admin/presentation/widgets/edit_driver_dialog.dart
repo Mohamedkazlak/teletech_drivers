@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/presentation/app_loading_indicator.dart';
 import 'package:teletech_drivers/core/utils/failure_messages.dart';
-import 'package:teletech_drivers/features/auth/presentation/widgets/auth_error_banner.dart';
+import 'package:teletech_drivers/core/widgets/form_section.dart';
+import 'package:teletech_drivers/core/widgets/form_sheet.dart';
 import 'package:teletech_drivers/features/drivers_admin/domain/egyptian_car_plate.dart';
 import 'package:teletech_drivers/features/drivers_admin/domain/entities/driver_profile.dart';
 import 'package:teletech_drivers/features/drivers_admin/presentation/controllers/update_driver_controller.dart';
@@ -24,8 +25,8 @@ class EditDriverDialog extends ConsumerStatefulWidget {
     BuildContext context, {
     required DriverProfile driver,
   }) {
-    return showDialog<bool>(
-      context: context,
+    return showFormSheet<bool>(
+      context,
       builder: (_) => EditDriverDialog(driver: driver),
     );
   }
@@ -44,6 +45,7 @@ class _EditDriverDialogState extends ConsumerState<EditDriverDialog> {
   late final TextEditingController _plateNumbersController;
   late final TextEditingController _personalLicenseController;
   late List<String> _favoritePlaceIds;
+  var _shake = 0;
 
   @override
   void initState() {
@@ -82,7 +84,10 @@ class _EditDriverDialogState extends ConsumerState<EditDriverDialog> {
       _plateLettersController.text,
       _plateNumbersController.text,
     );
-    if (!formValid || plate == null) return;
+    if (!formValid || plate == null) {
+      setState(() => _shake++);
+      return;
+    }
 
     ref.read(updateDriverControllerProvider.notifier).clearFailure();
 
@@ -109,127 +114,107 @@ class _EditDriverDialogState extends ConsumerState<EditDriverDialog> {
     final formState = ref.watch(updateDriverControllerProvider);
     final placesAsync = ref.watch(activePlacesProvider);
 
-    return AlertDialog(
-      title: Text(l10n.editDriverTitle),
-      content: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (formState.failure != null) ...[
-                AuthErrorBanner(message: formState.failure!.message(l10n)),
-                const SizedBox(height: 16),
+    final busy = formState.isLoading;
+    return FormSheet(
+      title: l10n.editDriverTitle,
+      subtitle: widget.driver.email,
+      icon: Icons.edit_outlined,
+      formKey: _formKey,
+      isLoading: busy,
+      shakeTrigger: _shake,
+      errorMessage: formState.failure?.message(l10n),
+      primaryLabel: l10n.saveDriver,
+      onPrimary: _submit,
+      children: [
+        FormSection(
+          title: l10n.formSectionPersonal,
+          icon: Icons.badge_outlined,
+          children: [
+            TextFormField(
+              controller: _nameEnController,
+              enabled: !busy,
+              textInputAction: TextInputAction.next,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(labelText: l10n.driverNameEnLabel),
+              validator: (value) => DriverValidators.nameEn(value, l10n),
+            ),
+            TextFormField(
+              controller: _nameArController,
+              enabled: !busy,
+              textInputAction: TextInputAction.next,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(labelText: l10n.driverNameArLabel),
+              validator: (value) => DriverValidators.nameAr(value, l10n),
+            ),
+            TextFormField(
+              controller: _nationalIdController,
+              enabled: !busy,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.next,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(
+                  DriverValidators.egyptNationalIdLength,
+                ),
               ],
-              TextFormField(
-                controller: _nameEnController,
-                enabled: !formState.isLoading,
-                textInputAction: TextInputAction.next,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  labelText: l10n.driverNameEnLabel,
-                  border: const OutlineInputBorder(),
-                ),
-                validator: (value) => DriverValidators.nameEn(value, l10n),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _nameArController,
-                enabled: !formState.isLoading,
-                textInputAction: TextInputAction.next,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  labelText: l10n.driverNameArLabel,
-                  border: const OutlineInputBorder(),
-                ),
-                validator: (value) => DriverValidators.nameAr(value, l10n),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _phoneController,
-                enabled: !formState.isLoading,
-                keyboardType: TextInputType.phone,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: l10n.phoneLabel,
-                  border: const OutlineInputBorder(),
-                ),
-                validator: (value) => DriverValidators.phone(value, l10n),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _nationalIdController,
-                enabled: !formState.isLoading,
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(
-                    DriverValidators.egyptNationalIdLength,
-                  ),
-                ],
-                decoration: InputDecoration(
-                  labelText: l10n.nationalIdLabel,
-                  border: const OutlineInputBorder(),
-                ),
-                validator: (value) => DriverValidators.nationalId(value, l10n),
-              ),
-              const SizedBox(height: 12),
-              CarPlateFields(
-                lettersController: _plateLettersController,
-                numbersController: _plateNumbersController,
-                enabled: !formState.isLoading,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _personalLicenseController,
-                enabled: !formState.isLoading,
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                  labelText: l10n.personalLicenseLabel,
-                  border: const OutlineInputBorder(),
-                ),
-                validator: (value) =>
-                    DriverValidators.personalLicense(value, l10n),
-              ),
-              const SizedBox(height: 12),
-              placesAsync.when(
-                loading: () => AppLoadingIndicator(label: l10n.loading),
-                error: (error, _) => Text(messageForError(error, l10n)),
-                data: (List<Place> places) => FavoritePlacesField(
-                  places: places,
-                  selectedPlaceIds: _favoritePlaceIds,
-                  enabled: !formState.isLoading,
-                  onChanged: (ids) => setState(() => _favoritePlaceIds = ids),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(
-                  widget.driver.email,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ),
-            ],
-          ),
+              decoration: InputDecoration(labelText: l10n.nationalIdLabel),
+              validator: (value) => DriverValidators.nationalId(value, l10n),
+            ),
+          ],
         ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: formState.isLoading
-              ? null
-              : () => Navigator.of(context).pop(false),
-          child: Text(l10n.dialogCancel),
+        FormSection(
+          title: l10n.formSectionContact,
+          icon: Icons.alternate_email_rounded,
+          children: [
+            TextFormField(
+              controller: _phoneController,
+              enabled: !busy,
+              keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.phoneLabel,
+                prefixIcon: const Icon(Icons.phone_outlined),
+              ),
+              validator: (value) => DriverValidators.phone(value, l10n),
+            ),
+          ],
         ),
-        FilledButton(
-          onPressed: formState.isLoading ? null : _submit,
-          child: formState.isLoading
-              ? const SizedBox.square(
-                  dimension: 18,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(l10n.saveDriver),
+        FormSection(
+          title: l10n.formSectionVehicle,
+          icon: Icons.directions_car_outlined,
+          children: [
+            CarPlateFields(
+              lettersController: _plateLettersController,
+              numbersController: _plateNumbersController,
+              enabled: !busy,
+            ),
+            TextFormField(
+              controller: _personalLicenseController,
+              enabled: !busy,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                labelText: l10n.personalLicenseLabel,
+              ),
+              validator: (value) =>
+                  DriverValidators.personalLicense(value, l10n),
+            ),
+          ],
+        ),
+        FormSection(
+          title: l10n.formSectionWork,
+          icon: Icons.place_outlined,
+          children: [
+            placesAsync.when(
+              loading: () => AppLoadingIndicator(label: l10n.loading),
+              error: (error, _) => Text(messageForError(error, l10n)),
+              data: (List<Place> places) => FavoritePlacesField(
+                places: places,
+                selectedPlaceIds: _favoritePlaceIds,
+                enabled: !busy,
+                onChanged: (ids) => setState(() => _favoritePlaceIds = ids),
+              ),
+            ),
+          ],
         ),
       ],
     );

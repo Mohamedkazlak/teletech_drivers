@@ -53,7 +53,7 @@ export function NotificationsPage() {
         </button>
       </PageHeading>
       {list.isPending ? (
-        <p role="status" className="text-sm text-navy/70">
+        <p role="status" className="text-sm text-ink-muted">
           {t('common.loading')}
         </p>
       ) : list.isError ? (
@@ -66,7 +66,7 @@ export function NotificationsPage() {
           </button>
         </div>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-navy/70">{t('notifications.empty')}</p>
+        <p className="text-sm text-ink-muted">{t('notifications.empty')}</p>
       ) : (
         <ul className="flex flex-col gap-2">
           {rows.map((item) => {
@@ -77,18 +77,18 @@ export function NotificationsPage() {
                 <button
                   type="button"
                   className={`w-full rounded-card border px-4 py-3 text-start ${
-                    unread ? 'border-deep bg-pale' : 'border-pale bg-white'
+                    unread ? 'border-deep bg-pale' : 'border-line bg-white'
                   }`}
                   aria-label={unread ? t('notifications.unread') : undefined}
                   onClick={() => {
                     void openItem(item)
                   }}
                 >
-                  <span className="block text-sm font-bold text-navy">
+                  <span className="block text-sm font-semibold text-navy">
                     {t(item.title_key, values)}
                   </span>
                   <span className="mt-1 block text-sm text-navy/80">{t(item.body_key, values)}</span>
-                  <span className="mt-1 block text-xs text-navy/60">
+                  <span className="mt-1 block text-xs text-ink-muted">
                     {formatWhen(item.created_at, i18n.language)}
                   </span>
                 </button>
@@ -107,7 +107,7 @@ export function NotificationsPage() {
           >
             {t('common.previous')}
           </button>
-          <p className="text-sm text-navy/75">
+          <p className="text-sm text-ink-muted">
             {t('common.page', { current: page, last: list.data.meta.last_page })}
           </p>
           <button

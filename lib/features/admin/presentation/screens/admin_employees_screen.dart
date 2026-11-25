@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:teletech_drivers/core/widgets/search_field.dart';
+import 'package:teletech_drivers/core/widgets/brand_refresh.dart';
+import 'package:teletech_drivers/core/widgets/swipe_actions.dart';
+import 'package:teletech_drivers/core/widgets/success_moment.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
 import 'package:teletech_drivers/core/widgets/surface_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,15 +83,7 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
       employee: employee,
     );
     if (!context.mounted || succeeded != true) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          employee == null
-              ? l10n.adminEmployeeCreated
-              : l10n.adminEmployeeUpdated,
-        ),
-      ),
-    );
+    await showSuccessMoment(context, message: employee == null ? l10n.adminEmployeeCreated : l10n.adminEmployeeUpdated);
   }
 
   Future<void> _confirmSoftDelete(
@@ -156,13 +152,9 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: TextField(
+            child: SearchField(
               controller: _searchController,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: l10n.adminSearchHint,
-                border: const OutlineInputBorder(),
-              ),
+              hintText: l10n.adminSearchHint,
               onChanged: (_) => setState(() {}),
             ),
           ),
@@ -203,8 +195,7 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
           ),
           Expanded(
             child: employeesAsync.when(
-              loading: () =>
-                  Center(child: AppLoadingIndicator(label: l10n.loading)),
+              loading: () => PeopleListSkeleton(label: l10n.loading),
               error: (error, _) => Center(
                 child: Padding(
                   padding: const EdgeInsets.all(24),
@@ -223,14 +214,32 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
                     icon: Icons.badge_outlined,
                   );
                 }
-                return ListView.separated(
+                return BrandRefresh(
+                  onRefresh: () async {
+                    ref.invalidate(allEmployeesProvider);
+                    try {
+                      await ref.read(allEmployeesProvider.future);
+                    } on Object {
+                      // The error view replaces the list.
+                    }
+                  },
+                  child: ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(16),
                   itemCount: filtered.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {
                     final employee = filtered[index];
                     final branch = employee.branch;
-                    return SurfaceCard(
+                    return SwipeActions(
+                      itemKey: ValueKey(employee.id),
+                      editLabel: l10n.adminEditEmployeeTitle,
+                      onEdit: () => _openForm(context, employee: employee),
+                      destructiveLabel: l10n.adminSoftDeleteAction,
+                      onDestructive: employee.isActive
+                          ? () => _confirmSoftDelete(context, employee)
+                          : null,
+                      child: SurfaceCard(
                       animateIndex: index,
                       child: ListTile(
                       contentPadding: const EdgeInsetsDirectional.fromSTEB(14, 8, 4, 8),
@@ -281,8 +290,10 @@ class _AdminEmployeesScreenState extends ConsumerState<AdminEmployeesScreen> {
                         ],
                       ),
                     ),
+                    ),
                     );
                   },
+                ),
                 );
               },
             ),

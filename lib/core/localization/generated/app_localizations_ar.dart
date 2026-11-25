@@ -2437,4 +2437,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get locationMocked => 'المواقع الوهمية غير مسموحة.';
+
+  @override
+  String get slideToCheckIn => 'اسحب لتسجيل الحضور';
+
+  @override
+  String get slideToCheckOut => 'اسحب لتسجيل الانصراف';
+
+  @override
+  String get formSectionPersonal => 'البيانات الشخصية';
+
+  @override
+  String get formSectionContact => 'التواصل';
+
+  @override
+  String get formSectionVehicle => 'المركبة والرخصة';
+
+  @override
+  String get formSectionAccess => 'تسجيل الدخول';
+
+  @override
+  String get formSectionWork => 'العمل';
+
+  @override
+  String get formSectionLocation => 'الموقع';
+
+  @override
+  String get formSectionPlace => 'بيانات المكان';
+
+  @override
+  String get formFixErrors => 'راجع الحقول المحددة.';
+
+  @override
+  String get passwordStrengthWeak => 'ضعيفة';
+
+  @override
+  String get passwordStrengthFair => 'مقبولة';
+
+  @override
+  String get passwordStrengthGood => 'جيدة';
+
+  @override
+  String get passwordStrengthStrong => 'قوية';
+
+  @override
+  String get clearSearch => 'مسح البحث';
+
+  @override
+  String get adminTripsWeekTitle => 'رحلات هذا الأسبوع';
+
+  @override
+  String get adminTripsWeekSubtitle => 'المجدولة يوميًا، آخر 7 أيام';
 }

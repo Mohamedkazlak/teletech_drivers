@@ -4443,6 +4443,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mock locations are not allowed.'**
   String get locationMocked;
+
+  /// Slide-to-confirm track label for attendance check-in
+  ///
+  /// In en, this message translates to:
+  /// **'Slide to check in'**
+  String get slideToCheckIn;
+
+  /// Slide-to-confirm track label for attendance check-out
+  ///
+  /// In en, this message translates to:
+  /// **'Slide to check out'**
+  String get slideToCheckOut;
+
+  /// Form section title for name fields
+  ///
+  /// In en, this message translates to:
+  /// **'Personal details'**
+  String get formSectionPersonal;
+
+  /// Form section title for email and phone
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get formSectionContact;
+
+  /// Form section title for car plate and licenses
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle & license'**
+  String get formSectionVehicle;
+
+  /// Form section title for password fields
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in'**
+  String get formSectionAccess;
+
+  /// Form section title for branch and work places
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get formSectionWork;
+
+  /// Form section title for map coordinates
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get formSectionLocation;
+
+  /// Form section title for place names and address
+  ///
+  /// In en, this message translates to:
+  /// **'Place details'**
+  String get formSectionPlace;
+
+  /// Shown when a form fails validation
+  ///
+  /// In en, this message translates to:
+  /// **'Check the highlighted fields.'**
+  String get formFixErrors;
+
+  /// Password strength label
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get passwordStrengthWeak;
+
+  /// Password strength label
+  ///
+  /// In en, this message translates to:
+  /// **'Fair'**
+  String get passwordStrengthFair;
+
+  /// Password strength label
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get passwordStrengthGood;
+
+  /// Password strength label
+  ///
+  /// In en, this message translates to:
+  /// **'Strong'**
+  String get passwordStrengthStrong;
+
+  /// Tooltip for the clear button in a search field
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get clearSearch;
+
+  /// Dashboard chart title
+  ///
+  /// In en, this message translates to:
+  /// **'Trips this week'**
+  String get adminTripsWeekTitle;
+
+  /// Dashboard chart subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled per day, last 7 days'**
+  String get adminTripsWeekSubtitle;
 }
 
 class _AppLocalizationsDelegate

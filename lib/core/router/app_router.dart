@@ -6,6 +6,7 @@ import 'package:teletech_drivers/core/router/role_route_strategy.dart';
 import 'package:teletech_drivers/core/router/role_shell_routes.dart';
 import 'package:teletech_drivers/features/auth/domain/entities/app_user.dart';
 import 'package:teletech_drivers/features/auth/presentation/providers/auth_providers.dart';
+import 'package:teletech_drivers/features/auth/presentation/providers/splash_gate.dart';
 import 'package:teletech_drivers/features/auth/presentation/screens/auth_splash_screen.dart';
 import 'package:teletech_drivers/features/auth/presentation/screens/complete_profile_screen.dart';
 import 'package:teletech_drivers/features/auth/presentation/screens/forced_change_password_screen.dart';
@@ -20,6 +21,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
   final refresh = ValueNotifier<int>(0);
   ref.listen(currentUserProvider, (_, _) {
+    refresh.value++;
+  });
+  // Re-run redirects once the splash animation has had its moment.
+  ref.listen(splashGateProvider, (_, _) {
     refresh.value++;
   });
   ref.onDispose(refresh.dispose);
@@ -65,6 +70,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
 String? _redirect({required Ref ref, required GoRouterState state}) {
   final location = state.matchedLocation;
+
+  // Cold start: hold the animated splash until its build-in has played.
+  if (!ref.read(splashGateProvider)) return _splashUnless(location);
+
   final auth = ref.read(currentUserProvider);
 
   return auth.when(

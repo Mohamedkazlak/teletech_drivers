@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:teletech_drivers/core/widgets/brand_refresh.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/localization/language_toggle_button.dart';
 import 'package:teletech_drivers/core/presentation/app_loading_indicator.dart';
@@ -53,7 +54,7 @@ class DriverStatsScreen extends ConsumerWidget {
                       onRetry: () => ref.invalidate(driverStatsProvider),
                     ),
                     data: (value) {
-                      return RefreshIndicator(
+                      return BrandRefresh(
                         onRefresh: () async {
                           ref.invalidate(driverStatsProvider);
                           try {

@@ -68,7 +68,7 @@ export function RequestDetailDialog({
             ]}
           />
           {markers.length > 0 ? (
-            <div className="overflow-hidden rounded-control border border-pale">
+            <div className="overflow-hidden rounded-control border border-line">
               <MapView markers={markers} className="h-64 w-full" />
             </div>
           ) : null}

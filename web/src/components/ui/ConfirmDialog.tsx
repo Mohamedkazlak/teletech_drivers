@@ -39,7 +39,7 @@ export function ConfirmDialog({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <button
         type="button"
-        className="absolute inset-0 bg-navy/50"
+        className="absolute inset-0 bg-navy-deep/45 backdrop-blur-[2px] animate-fade"
         aria-label={cancelLabel}
         onClick={onCancel}
       />
@@ -48,14 +48,14 @@ export function ConfirmDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative w-full max-w-md rounded-card bg-white p-5 shadow-dialog"
+        className="relative w-full max-w-md rounded-[20px] bg-white p-6 shadow-dialog animate-pop"
       >
-        <h2 id={titleId} className="text-lg font-bold text-navy">
+        <h2 id={titleId} className="text-lg font-semibold tracking-[-0.01em] text-navy">
           {title}
         </h2>
-        <p className="mt-2 text-sm text-navy/75">{description}</p>
+        <p className="mt-2 text-sm text-ink-muted">{description}</p>
         {children ? <div className="mt-4">{children}</div> : null}
-        <div className="mt-5 flex justify-end gap-2">
+        <div className="mt-6 flex justify-end gap-2">
           <button type="button" className={secondaryButtonClass} onClick={onCancel} disabled={busy}>
             {cancelLabel}
           </button>

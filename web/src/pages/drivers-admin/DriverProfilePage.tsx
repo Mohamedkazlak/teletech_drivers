@@ -151,7 +151,7 @@ function DriverProfile({ driverId }: { driverId: string }) {
           value: bucket.trips,
         }))}
       />
-      <h2 className="text-base font-bold text-navy">{t('driverAdmin.completed')}</h2>
+      <h2 className="text-base font-semibold text-navy">{t('driverAdmin.completed')}</h2>
       <DataTable
         columns={tripColumns(t, i18n.language)}
         rows={trips.data?.data ?? []}
@@ -219,20 +219,20 @@ function Totals({
   const { t, i18n } = useTranslation()
   return (
     <section>
-      <h2 className="text-base font-bold text-navy">{title}</h2>
+      <h2 className="text-base font-semibold text-navy">{title}</h2>
       <dl className="mt-2 grid gap-3 sm:grid-cols-3">
         <div>
-          <dt className="text-xs font-medium text-navy/60">{t('driverAdmin.trips')}</dt>
+          <dt className="text-xs font-medium text-ink-muted">{t('driverAdmin.trips')}</dt>
           <dd className="text-sm text-navy">{trips ?? t('common.dash')}</dd>
         </div>
         <div>
-          <dt className="text-xs font-medium text-navy/60">{t('driverAdmin.time')}</dt>
+          <dt className="text-xs font-medium text-ink-muted">{t('driverAdmin.time')}</dt>
           <dd className="text-sm text-navy">
             {seconds == null ? t('common.dash') : formatDuration(seconds, t)}
           </dd>
         </div>
         <div>
-          <dt className="text-xs font-medium text-navy/60">{t('driverAdmin.distance')}</dt>
+          <dt className="text-xs font-medium text-ink-muted">{t('driverAdmin.distance')}</dt>
           <dd className="text-sm text-navy">
             {km == null
               ? t('common.dash')

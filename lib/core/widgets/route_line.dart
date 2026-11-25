@@ -11,6 +11,8 @@ class RouteLine extends StatelessWidget {
     required this.to,
     this.color = AppColors.deepBlue,
     this.live = false,
+    this.onDark = false,
+    this.large = false,
     super.key,
   });
 
@@ -18,13 +20,33 @@ class RouteLine extends StatelessWidget {
   final String to;
   final Color color;
 
-  /// Draws the line in the live colour (trip in progress).
+  /// Trip in progress: the line turns to the live colour and a small light
+  /// travels along it.
   final bool live;
+
+  /// White text and marks, for the navy hero surface.
+  final bool onDark;
+
+  /// Bigger place names (details header).
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final lineColor = live ? AppColors.signal : AppColors.line;
+    final markColor = onDark ? AppColors.white : color;
+    final lineColor = live
+        ? AppColors.signal
+        : onDark
+        ? AppColors.white.withValues(alpha: 0.28)
+        : AppColors.line;
+    final fromStyle = (large ? textTheme.bodyLarge : textTheme.bodyMedium)
+        ?.copyWith(
+          color: onDark
+              ? AppColors.white.withValues(alpha: 0.72)
+              : AppColors.inkMuted,
+        );
+    final toStyle = (large ? textTheme.titleLarge : textTheme.titleMedium)
+        ?.copyWith(color: onDark ? AppColors.white : null);
 
     return IntrinsicHeight(
       child: Row(
@@ -35,20 +57,14 @@ class RouteLine extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 5),
-                _Dot(color: color, filled: true),
+                _Dot(color: markColor, filled: true, onDark: onDark),
                 Expanded(
-                  child: Center(
-                    child: Container(
-                      width: 2,
-                      margin: const EdgeInsets.symmetric(vertical: 3),
-                      decoration: BoxDecoration(
-                        color: lineColor,
-                        borderRadius: BorderRadius.circular(1),
-                      ),
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3),
+                    child: _Track(color: lineColor, live: live),
                   ),
                 ),
-                _Dot(color: color, filled: false),
+                _Dot(color: markColor, filled: false, onDark: onDark),
                 const SizedBox(height: 5),
               ],
             ),
@@ -61,18 +77,16 @@ class RouteLine extends StatelessWidget {
               children: [
                 Text(
                   from,
-                  maxLines: 2,
+                  maxLines: large ? 3 : 2,
                   overflow: TextOverflow.ellipsis,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: AppColors.inkMuted,
-                  ),
+                  style: fromStyle,
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: large ? 14 : 10),
                 Text(
                   to,
-                  maxLines: 2,
+                  maxLines: large ? 3 : 2,
                   overflow: TextOverflow.ellipsis,
-                  style: textTheme.titleMedium,
+                  style: toStyle,
                 ),
               ],
             ),
@@ -83,11 +97,112 @@ class RouteLine extends StatelessWidget {
   }
 }
 
+/// The connecting line. When [live], a soft light runs down it on a loop.
+class _Track extends StatefulWidget {
+  const _Track({required this.color, required this.live});
+
+  final Color color;
+  final bool live;
+
+  @override
+  State<_Track> createState() => _TrackState();
+}
+
+class _TrackState extends State<_Track> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1800),
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(_Track oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _sync();
+  }
+
+  void _sync() {
+    final run = widget.live && !AppAnimations.disabled(context);
+    if (run && !_controller.isAnimating) {
+      _controller.repeat();
+    } else if (!run && _controller.isAnimating) {
+      _controller.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final line = Center(
+      child: Container(
+        width: 2,
+        decoration: BoxDecoration(
+          color: widget.color,
+          borderRadius: BorderRadius.circular(1),
+        ),
+      ),
+    );
+    if (!_controller.isAnimating) return line;
+    return Stack(
+      children: [
+        Positioned.fill(child: line),
+        Positioned.fill(
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, _) => CustomPaint(
+              painter: _TrackLightPainter(
+                t: AppMotion.easeInOut.transform(_controller.value),
+                color: widget.color,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TrackLightPainter extends CustomPainter {
+  const _TrackLightPainter({required this.t, required this.color});
+
+  final double t;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final y = size.height * t;
+    final center = Offset(size.width / 2, y);
+    canvas.drawCircle(
+      center,
+      5,
+      Paint()
+        ..color = color.withValues(alpha: 0.25)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
+    );
+    canvas.drawCircle(center, 2.5, Paint()..color = color);
+  }
+
+  @override
+  bool shouldRepaint(_TrackLightPainter oldDelegate) =>
+      oldDelegate.t != t || oldDelegate.color != color;
+}
+
 class _Dot extends StatelessWidget {
-  const _Dot({required this.color, required this.filled});
+  const _Dot({required this.color, required this.filled, this.onDark = false});
 
   final Color color;
   final bool filled;
+  final bool onDark;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +211,9 @@ class _Dot extends StatelessWidget {
       height: 10,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: filled ? color : AppColors.white,
+        color: filled
+            ? color
+            : (onDark ? Colors.transparent : AppColors.white),
         border: Border.all(color: color, width: 2.5),
       ),
     );

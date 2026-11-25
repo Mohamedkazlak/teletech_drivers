@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:teletech_drivers/core/widgets/success_moment.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/localization/language_toggle_button.dart';
 import 'package:teletech_drivers/core/widgets/app_scaffold.dart';
@@ -15,9 +16,7 @@ class DriversAdminDriversScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final succeeded = await AddDriverDialog.show(context);
     if (!context.mounted || succeeded != true) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n.driverCreated)),
-    );
+    await showSuccessMoment(context, message: l10n.driverCreated);
   }
 
   @override

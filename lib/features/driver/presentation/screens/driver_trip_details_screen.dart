@@ -3,12 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
-import 'package:teletech_drivers/core/presentation/app_loading_indicator.dart';
 import 'package:teletech_drivers/core/presentation/branch_chip.dart';
 import 'package:teletech_drivers/core/router/app_routes.dart';
 import 'package:teletech_drivers/core/utils/failure_messages.dart';
 import 'package:teletech_drivers/core/widgets/app_button.dart';
 import 'package:teletech_drivers/core/widgets/app_scaffold.dart';
+import 'package:teletech_drivers/core/widgets/status_chip.dart';
+import 'package:teletech_drivers/core/widgets/trip_hero.dart';
 import 'package:teletech_drivers/features/place/presentation/providers/place_providers.dart';
 import 'package:teletech_drivers/features/trip/domain/entities/trip.dart';
 import 'package:teletech_drivers/features/trip/presentation/providers/trip_providers.dart';
@@ -31,7 +32,7 @@ class DriverTripDetailsScreen extends ConsumerWidget {
       title: l10n.tripDetailsTitle,
       showBackButton: true,
       body: tripAsync.when(
-        loading: () => Center(child: AppLoadingIndicator(label: l10n.loading)),
+        loading: () => TripHeroPlaceholder(tripId: tripId),
         error: (error, _) => Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -67,7 +68,6 @@ class _DriverTripDetailsBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
     final locale = Localizations.localeOf(context);
     final languageCode = locale.languageCode;
     final dateFormat = DateFormat.yMMMd(locale.toString()).add_jm();
@@ -76,38 +76,28 @@ class _DriverTripDetailsBody extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 24),
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                l10n.tripRouteSummary(
-                  resolver.resolveSummary(
-                    summary: trip.pickupSummary,
-                    languageCode: languageCode,
-                  ),
-                  resolver.resolveSummary(
-                    summary: trip.destinationSummary,
-                    languageCode: languageCode,
-                  ),
-                ),
-                style: textTheme.headlineSmall,
-              ),
+        TripHero(
+          tripId: trip.id,
+          child: TripHeroHeader(
+            from: resolver.resolveSummary(
+              summary: trip.pickupSummary,
+              languageCode: languageCode,
             ),
-            TripStatusChip(status: trip.status),
-          ],
+            to: resolver.resolveSummary(
+              summary: trip.destinationSummary,
+              languageCode: languageCode,
+            ),
+            statusLabel: trip.status.label(l10n),
+            statusColor: StatusChip.colorForTrip(trip.status),
+            live: trip.status.isInProgress,
+            meta: dateFormat.format(trip.scheduledAt.toLocal()),
+          ),
         ),
         if (trip.branches.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           BranchChips(branches: trip.branches),
         ],
-        const SizedBox(height: 12),
-        Text(
-          l10n.tripScheduledValue(
-            dateFormat.format(trip.scheduledAt.toLocal()),
-          ),
-          style: textTheme.bodyLarge,
-        ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         TripRequestersSection(
           requesters: trip.requesters,
           passengerCount: trip.passengerCount,

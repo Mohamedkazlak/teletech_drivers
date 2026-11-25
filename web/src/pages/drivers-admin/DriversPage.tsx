@@ -264,7 +264,7 @@ function DriverName({ driver, language }: { driver: Driver; language: string }) 
         {primary}
       </Link>
       {secondary && secondary !== primary ? (
-        <span className="mt-0.5 block text-xs text-navy/60">{secondary}</span>
+        <span className="mt-0.5 block text-xs text-ink-muted">{secondary}</span>
       ) : null}
     </span>
   )

@@ -61,7 +61,7 @@ export function OwnTripReport({ trip }: OwnTripReportProps) {
       className="flex flex-col gap-3"
       aria-label={t('report.question')}
     >
-      <h3 className="text-sm font-bold text-navy">{t('report.question')}</h3>
+      <h3 className="text-sm font-semibold text-navy">{t('report.question')}</h3>
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
@@ -88,7 +88,7 @@ export function OwnTripReport({ trip }: OwnTripReportProps) {
           {t('report.didNotShow')}
         </button>
       </div>
-      <label className="flex flex-col gap-1.5 text-sm font-bold text-navy">
+      <label className="flex flex-col gap-1.5 text-sm font-semibold text-navy">
         {t('report.note')}
         <textarea
           className={`${controlClass} h-24 py-2`}

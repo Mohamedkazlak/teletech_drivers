@@ -51,7 +51,7 @@ export function AssignmentDialog({
         </p>
       ) : null}
       {recommendations.isSuccess && empty ? (
-        <p className="text-sm text-navy/75">{t('drivers.noDrivers')}</p>
+        <p className="text-sm text-ink-muted">{t('drivers.noDrivers')}</p>
       ) : null}
       {recommendations.isSuccess && !empty ? (
         <div
@@ -111,7 +111,7 @@ function DriverGroup({
   if (items.length === 0) return null
   return (
     <section>
-      <h3 className="text-sm font-bold text-navy">{title}</h3>
+      <h3 className="text-sm font-semibold text-navy">{title}</h3>
       <ul className="mt-2 flex flex-col gap-2">
         {items.map((item) => {
           const name =
@@ -119,7 +119,7 @@ function DriverGroup({
           return (
             <li key={item.driver.id}>
               <label
-                className={`flex items-start gap-3 rounded-control border border-pale p-3 ${item.is_unavailable ? 'opacity-60' : ''}`}
+                className={`flex items-start gap-3 rounded-control border border-line p-3 ${item.is_unavailable ? 'opacity-60' : ''}`}
               >
                 <input
                   type="radio"
@@ -133,7 +133,7 @@ function DriverGroup({
                 <span className="flex min-w-0 flex-col gap-1">
                   <span className="font-medium text-navy">{name}</span>
                   {/* distance_from_hq is not on DriverRecommendation; it is not shown. */}
-                  <span className="flex flex-wrap items-center gap-2 text-sm text-navy/75">
+                  <span className="flex flex-wrap items-center gap-2 text-sm text-ink-muted">
                     <StatusBadge status={item.is_unavailable ? 'unavailable' : 'available'} />
                     <span>
                       {item.has_favorite_match ? t('drivers.favorite') : t('drivers.noFavorite')}

@@ -83,19 +83,13 @@ class AdminSectionCard extends StatelessWidget {
                 Icon(Icons.arrow_forward_rounded, color: muted),
             ],
           ),
+          const SizedBox(height: 16),
           const Spacer(),
-          Text(
-            title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: textTheme.titleMedium?.copyWith(color: ink),
-          ),
+          Text(title, style: textTheme.titleMedium?.copyWith(color: ink)),
           if (subtitle != null) ...[
             const SizedBox(height: 4),
             Text(
               subtitle!,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
               style: textTheme.bodySmall?.copyWith(color: muted),
             ),
           ],

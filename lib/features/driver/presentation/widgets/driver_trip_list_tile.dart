@@ -76,6 +76,7 @@ class DriverTripListTile extends ConsumerWidget {
         TripCard(
           animateIndex: animateIndex,
           onTap: () => context.push(AppRoutes.driverTripDetailsPath(trip.id)),
+          heroTripId: trip.id,
           title: routeSummary,
           from: pickup,
           to: destination,

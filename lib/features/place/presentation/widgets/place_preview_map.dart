@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:teletech_drivers/core/theme/app_colors.dart';
+import 'package:teletech_drivers/core/widgets/map_pins.dart';
 import 'package:teletech_drivers/features/tracking/presentation/widgets/osm_map_layer.dart';
 
 /// Compact read-only OSM preview with a single marker.
@@ -45,14 +45,10 @@ class PlacePreviewMap extends StatelessWidget {
                 markers: [
                   Marker(
                     point: point,
-                    width: 40,
-                    height: 40,
+                    width: 34,
+                    height: 42.5,
                     alignment: Alignment.topCenter,
-                    child: const Icon(
-                      Icons.location_on,
-                      color: AppColors.deepBlue,
-                      size: 36,
-                    ),
+                    child: const BrandPin(size: 34),
                   ),
                 ],
               ),

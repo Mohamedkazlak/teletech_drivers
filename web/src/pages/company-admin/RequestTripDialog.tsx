@@ -107,10 +107,10 @@ export function RequestTripDialog({ open, onClose, onCreated }: RequestTripDialo
     <DetailDialog open={open} title={t('myTrips.request')} onClose={close}>
       {created ? (
         <div className="flex flex-col gap-3">
-          <p className="text-sm text-navy/75">{t('myTrips.resultTitle')}</p>
+          <p className="text-sm text-ink-muted">{t('myTrips.resultTitle')}</p>
           <StatusBadge status={created.status} />
           {created.auto_approved && created.status === 'approved' ? (
-            <p className="text-sm text-navy/75">{t('myTrips.autoAccepted')}</p>
+            <p className="text-sm text-ink-muted">{t('myTrips.autoAccepted')}</p>
           ) : null}
           <button type="button" className={primaryButtonClass} onClick={close}>
             {t('common.close')}

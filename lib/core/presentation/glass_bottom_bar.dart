@@ -94,34 +94,40 @@ class GlassBottomBar extends StatelessWidget {
             child: SizedBox(
               height: barHeight,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final count = entries.length;
                     final total = constraints.maxWidth;
                     // The active tab gets room for its label; the rest share
                     // what is left (never under the 48 dp touch target).
-                    final roomForOthers = total - 48.0 * (count - 1);
-                    // Size the active pill to its real label so it never
-                    // clips: icon 22 + gap 8 + padding 28 + breathing room.
+                    // Inactive icons keep a 44 dp column (the bar is 64 dp
+                    // tall, so the touch area stays comfortable); the
+                    // active pill gets the rest it needs for its label.
+                    const minNarrow = 44.0;
+                    const chrome = 22 + 8 + 24 + 8; // icon, gap, padding, air
+                    final roomForPill = total - minNarrow * (count - 1);
                     double wide = total / count;
                     if (anySelected && count > 1) {
                       final active = entries.firstWhere((e) => e.selected);
+                      final maxLabel = (roomForPill - chrome).clamp(
+                        24.0,
+                        double.infinity,
+                      );
                       final painter = TextPainter(
                         text: TextSpan(
                           text: active.label,
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: _BarButton.labelStyle(context),
                         ),
-                        maxLines: 1,
+                        maxLines: 2,
                         textDirection: Directionality.of(context),
                         textScaler: MediaQuery.textScalerOf(context),
-                      )..layout();
-                      final needed = 22 + 8 + 28 + 12 + painter.width;
-                      wide = needed
-                          .clamp(
-                            48.0,
-                            roomForOthers < 48 ? 48.0 : roomForOthers,
-                          )
+                      )..layout(maxWidth: maxLabel.toDouble());
+                      // Long labels wrap to two lines instead of clipping.
+                      wide = (chrome + painter.width + 2)
+                          .clamp(minNarrow, roomForPill < minNarrow
+                              ? minNarrow
+                              : roomForPill)
                           .toDouble();
                       painter.dispose();
                     }
@@ -194,6 +200,14 @@ class _BarButton extends StatelessWidget {
   final VoidCallback onTap;
   final int badgeCount;
 
+  /// Pill label: compact, tight leading so two lines fit the 44 dp pill.
+  static TextStyle? labelStyle(BuildContext context) {
+    return Theme.of(context).textTheme.labelMedium?.copyWith(
+      fontWeight: FontWeight.w600,
+      height: 1.15,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -224,10 +238,13 @@ class _BarButton extends StatelessWidget {
               builder: (context, t, _) {
                 final fg = Color.lerp(AppColors.inkMuted, AppColors.white, t)!;
                 return Container(
-                  height: 44,
-                  constraints: BoxConstraints(maxWidth: width - 4),
+                  constraints: BoxConstraints(
+                    minHeight: 44,
+                    maxWidth: width - 2,
+                  ),
                   padding: EdgeInsetsDirectional.symmetric(
-                    horizontal: 10 + 4 * t,
+                    horizontal: 10 + 2 * t,
+                    vertical: 4,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.navy.withValues(alpha: t),
@@ -259,12 +276,11 @@ class _BarButton extends StatelessWidget {
                                 ),
                                 child: Text(
                                   label,
-                                  maxLines: 1,
-                                  softWrap: false,
-                                  overflow: TextOverflow.fade,
-                                  style: theme.textTheme.labelLarge?.copyWith(
-                                    color: AppColors.white,
-                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: labelStyle(
+                                    context,
+                                  )?.copyWith(color: AppColors.white),
                                 ),
                               ),
                             ),

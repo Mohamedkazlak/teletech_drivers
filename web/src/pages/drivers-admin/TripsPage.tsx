@@ -89,7 +89,7 @@ export function TripsPage() {
           <span>
             <span>{formatWhen(row.scheduled_at, i18n.language)}</span>
             {row.going_started_at || row.finished_at ? (
-              <span className="mt-1 block text-xs text-navy/60">
+              <span className="mt-1 block text-xs text-ink-muted">
                 {formatWhen(row.going_started_at, i18n.language) || t('common.dash')}
                 {' – '}
                 {formatWhen(row.finished_at, i18n.language) || t('common.dash')}

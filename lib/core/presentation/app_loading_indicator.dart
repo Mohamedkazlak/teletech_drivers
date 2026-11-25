@@ -85,9 +85,80 @@ class TripListSkeleton extends StatelessWidget {
 
     return Semantics(
       label: label,
-      child: Padding(
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 16),
         child: ExcludeSemantics(child: list),
+      ),
+    );
+  }
+}
+
+/// Row-shaped placeholders for people and place lists (avatar + two lines).
+class PeopleListSkeleton extends StatelessWidget {
+  const PeopleListSkeleton({required this.label, this.count = 6, super.key});
+
+  final String label;
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget list = Column(
+      children: [
+        for (var i = 0; i < count; i++) ...[
+          const _SkeletonRow(),
+          if (i < count - 1) const SizedBox(height: 10),
+        ],
+      ],
+    );
+
+    if (!AppAnimations.disabled(context)) {
+      list = list
+          .animate(onPlay: (controller) => controller.repeat())
+          .shimmer(
+            duration: const Duration(milliseconds: 1400),
+            color: AppColors.white.withValues(alpha: 0.7),
+          );
+    }
+
+    return Semantics(
+      label: label,
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 16),
+        child: ExcludeSemantics(child: list),
+      ),
+    );
+  }
+}
+
+class _SkeletonRow extends StatelessWidget {
+  const _SkeletonRow();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        border: Border.all(color: AppColors.line),
+      ),
+      child: const Row(
+        children: [
+          SkeletonBox(width: 40, height: 40, radius: 20),
+          SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SkeletonBox(width: 140, height: 16),
+                SizedBox(height: 8),
+                SkeletonBox(width: 200, height: 12),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

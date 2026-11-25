@@ -11,6 +11,7 @@ import 'package:teletech_drivers/core/widgets/app_scaffold.dart';
 import 'package:teletech_drivers/features/admin/presentation/providers/employee_providers.dart';
 import 'package:teletech_drivers/features/admin/presentation/providers/user_account_providers.dart';
 import 'package:teletech_drivers/features/admin/presentation/widgets/admin_section_card.dart';
+import 'package:teletech_drivers/features/admin/presentation/widgets/trips_week_chart.dart';
 import 'package:teletech_drivers/features/auth/presentation/providers/auth_providers.dart';
 import 'package:teletech_drivers/features/auth/presentation/widgets/sign_out_button.dart';
 import 'package:teletech_drivers/features/drivers_admin/presentation/providers/driver_providers.dart';
@@ -71,15 +72,8 @@ class AdminDashboardScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                GridView.count(
-                  crossAxisCount: MediaQuery.sizeOf(context).width >= 700
-                      ? 3
-                      : 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  childAspectRatio: 1.0,
+                _TileGrid(
+                  columns: MediaQuery.sizeOf(context).width >= 700 ? 3 : 2,
                   children: [
                     AdminSectionCard(
                       animateIndex: 0,
@@ -134,8 +128,59 @@ class AdminDashboardScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
+                const TripsWeekChart(animateIndex: 6),
               ],
             ),
+    );
+  }
+}
+
+/// Rows of equal-height tiles that grow with their text, so no title or
+/// hint is ever cut off (a fixed-ratio grid clips long translations).
+class _TileGrid extends StatelessWidget {
+  const _TileGrid({required this.columns, required this.children});
+
+  final int columns;
+  final List<Widget> children;
+
+  static const double _gap = 12;
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = <Widget>[];
+    for (var start = 0; start < children.length; start += columns) {
+      final end = (start + columns).clamp(0, children.length);
+      final rowChildren = children.sublist(start, end);
+      rows.add(
+        ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 150),
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (var i = 0; i < columns; i++) ...[
+                  if (i > 0) const SizedBox(width: _gap),
+                  Expanded(
+                    child: i < rowChildren.length
+                        ? rowChildren[i]
+                        : const SizedBox.shrink(),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (var i = 0; i < rows.length; i++) ...[
+          if (i > 0) const SizedBox(height: _gap),
+          rows[i],
+        ],
+      ],
     );
   }
 }

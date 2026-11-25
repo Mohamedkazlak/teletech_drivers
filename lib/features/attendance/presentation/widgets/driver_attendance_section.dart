@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -10,9 +11,10 @@ import 'package:teletech_drivers/core/theme/app_gradients.dart';
 import 'package:teletech_drivers/core/theme/app_motion.dart';
 import 'package:teletech_drivers/core/theme/app_theme.dart';
 import 'package:teletech_drivers/core/theme/app_typography.dart';
+import 'package:teletech_drivers/core/widgets/slide_to_confirm.dart';
+import 'package:teletech_drivers/core/widgets/success_moment.dart';
 import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
 import 'package:teletech_drivers/core/widgets/brand_mark.dart';
-import 'package:teletech_drivers/core/widgets/pressable_scale.dart';
 import 'package:teletech_drivers/core/widgets/segmented_switch.dart';
 import 'package:teletech_drivers/core/utils/failure_messages.dart';
 import 'package:teletech_drivers/core/widgets/status_chip.dart';
@@ -75,13 +77,14 @@ class _DriverAttendanceSectionState
         radiusM: result.radiusM,
       ),
     };
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
     if (result.step == AttendanceScanStep.success) {
-      HapticFeedback.mediumImpact();
       setState(() => _successCount++);
+      unawaited(showSuccessMoment(context, message: message));
       ref.invalidate(attendanceTodayProvider);
       ref.invalidate(myAttendanceProvider);
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
@@ -273,9 +276,6 @@ class _StatusCard extends StatelessWidget {
         Icons.qr_code_2_rounded,
       ),
     };
-    final buttonLabel = today.isCheckedIn
-        ? l10n.attendanceScanCheckOut
-        : l10n.attendanceScanCheckIn;
     final canScan = !scanning && !today.isCheckedOut;
     final duration = AppAnimations.duration(context, AppMotion.standard);
 
@@ -392,44 +392,15 @@ class _StatusCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
-          PressableScale(
+          SlideToConfirm(
+            label: today.isCheckedIn
+                ? l10n.slideToCheckOut
+                : l10n.slideToCheckIn,
+            icon: Icons.arrow_forward_rounded,
+            isLoading: scanning,
             enabled: canScan,
-            haptic: true,
-            child: FilledButton.icon(
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.white,
-                foregroundColor: AppColors.navy,
-                disabledBackgroundColor: AppColors.white.withValues(
-                  alpha: 0.1,
-                ),
-                disabledForegroundColor: AppColors.white.withValues(
-                  alpha: 0.55,
-                ),
-                minimumSize: const Size.fromHeight(AppTheme.controlHeight),
-              ),
-              onPressed: canScan ? onScan : null,
-              icon: scanning
-                  ? const SizedBox.square(
-                      dimension: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.2,
-                        strokeCap: StrokeCap.round,
-                        color: AppColors.navy,
-                      ),
-                    )
-                  : Icon(
-                      today.isCheckedOut
-                          ? Icons.task_alt_rounded
-                          : Icons.qr_code_scanner_rounded,
-                    ),
-              label: Text(
-                scanning
-                    ? l10n.loading
-                    : today.isCheckedOut
-                    ? l10n.attendanceStatusCheckedOut
-                    : buttonLabel,
-              ),
-            ),
+            doneLabel: l10n.attendanceStatusCheckedOut,
+            onConfirmed: onScan,
           ),
         ],
       ),

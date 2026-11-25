@@ -8,6 +8,7 @@ import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
 import 'package:teletech_drivers/core/widgets/app_logo.dart';
 import 'package:teletech_drivers/core/widgets/app_scaffold.dart';
 import 'package:teletech_drivers/core/widgets/auth_gradient_header.dart';
+import 'package:teletech_drivers/core/widgets/shake.dart';
 import 'package:teletech_drivers/features/auth/presentation/widgets/sign_out_button.dart';
 
 /// Auth shell: gradient header, hero logo, overlapping white card.
@@ -17,8 +18,12 @@ class AuthPageScaffold extends StatelessWidget {
     required this.child,
     this.subtitle,
     this.showSignOut = false,
+    this.shakeTrigger = 0,
     super.key,
   });
+
+  /// Change to shake the form card (failed sign-in, invalid fields).
+  final int shakeTrigger;
 
   final String title;
   final String? subtitle;
@@ -67,11 +72,14 @@ class AuthPageScaffold extends StatelessWidget {
                         const SizedBox(height: 8),
                         _HeroLogo(reduceMotion: reduceMotion),
                         const SizedBox(height: 20),
-                        _AuthCard(
-                          title: title,
-                          subtitle: subtitle,
-                          reduceMotion: reduceMotion,
-                          child: child,
+                        Shake(
+                          trigger: shakeTrigger,
+                          child: _AuthCard(
+                            title: title,
+                            subtitle: subtitle,
+                            reduceMotion: reduceMotion,
+                            child: child,
+                          ),
                         ),
                       ],
                     ),

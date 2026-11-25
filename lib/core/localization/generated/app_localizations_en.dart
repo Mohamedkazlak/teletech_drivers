@@ -2445,4 +2445,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get locationMocked => 'Mock locations are not allowed.';
+
+  @override
+  String get slideToCheckIn => 'Slide to check in';
+
+  @override
+  String get slideToCheckOut => 'Slide to check out';
+
+  @override
+  String get formSectionPersonal => 'Personal details';
+
+  @override
+  String get formSectionContact => 'Contact';
+
+  @override
+  String get formSectionVehicle => 'Vehicle & license';
+
+  @override
+  String get formSectionAccess => 'Sign-in';
+
+  @override
+  String get formSectionWork => 'Work';
+
+  @override
+  String get formSectionLocation => 'Location';
+
+  @override
+  String get formSectionPlace => 'Place details';
+
+  @override
+  String get formFixErrors => 'Check the highlighted fields.';
+
+  @override
+  String get passwordStrengthWeak => 'Weak';
+
+  @override
+  String get passwordStrengthFair => 'Fair';
+
+  @override
+  String get passwordStrengthGood => 'Good';
+
+  @override
+  String get passwordStrengthStrong => 'Strong';
+
+  @override
+  String get clearSearch => 'Clear search';
+
+  @override
+  String get adminTripsWeekTitle => 'Trips this week';
+
+  @override
+  String get adminTripsWeekSubtitle => 'Scheduled per day, last 7 days';
 }

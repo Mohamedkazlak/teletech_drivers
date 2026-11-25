@@ -115,16 +115,43 @@ class _AppBarTitle extends StatelessWidget {
         logo,
         if (hasTitle) ...[
           const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              text,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
+          Expanded(child: _FittedTitle(text: text)),
         ],
       ],
+    );
+  }
+}
+
+/// Screen title that never truncates a normal title: full size when it fits
+/// on one line, otherwise a step smaller and allowed two lines.
+class _FittedTitle extends StatelessWidget {
+  const _FittedTitle({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final large = textTheme.titleLarge;
+        final painter = TextPainter(
+          text: TextSpan(text: text, style: large),
+          maxLines: 1,
+          textDirection: Directionality.of(context),
+          textScaler: MediaQuery.textScalerOf(context),
+        )..layout(maxWidth: constraints.maxWidth);
+        final fits = !painter.didExceedMaxLines;
+        painter.dispose();
+        return Text(
+          text,
+          maxLines: fits ? 1 : 2,
+          overflow: TextOverflow.ellipsis,
+          style: fits
+              ? large
+              : textTheme.titleMedium?.copyWith(height: 1.15),
+        );
+      },
     );
   }
 }

@@ -37,7 +37,7 @@ export function LiveMapPage() {
       <PageHeading title={t('liveMap.title')}>
         <div className="flex flex-wrap items-center gap-3">
           {map.dataUpdatedAt > 0 ? (
-            <p className="text-sm text-navy/75" aria-live="polite">
+            <p className="text-sm text-ink-muted" aria-live="polite">
               {t('liveMap.updated', {
                 time: formatWhen(new Date(map.dataUpdatedAt).toISOString(), i18n.language),
               })}
@@ -54,7 +54,7 @@ export function LiveMapPage() {
           </button>
         </div>
       </PageHeading>
-      <p className="text-sm text-navy/75">{t('liveMap.hint')}</p>
+      <p className="text-sm text-ink-muted">{t('liveMap.hint')}</p>
       {map.isPending ? <p role="status">{t('common.loading')}</p> : null}
       {map.isError ? (
         <div className="flex flex-col items-start gap-3">
@@ -67,11 +67,11 @@ export function LiveMapPage() {
         </div>
       ) : null}
       {map.data && drivers.length === 0 ? (
-        <p className="text-sm text-navy/75">{t('liveMap.empty')}</p>
+        <p className="text-sm text-ink-muted">{t('liveMap.empty')}</p>
       ) : null}
       {map.data ? (
         <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
-          <div className="overflow-hidden rounded-card border border-pale bg-white">
+          <div className="overflow-hidden rounded-card border border-line bg-white">
             <MapView
               className="h-80 w-full sm:h-[28rem]"
               markers={markers}
@@ -82,11 +82,11 @@ export function LiveMapPage() {
             {selected ? (
               <DriverCard driver={selected} language={i18n.language} />
             ) : (
-              <p className="text-sm text-navy/75">{t('liveMap.select')}</p>
+              <p className="text-sm text-ink-muted">{t('liveMap.select')}</p>
             )}
             {located.length > 0 ? (
               <div>
-                <h2 className="text-sm font-bold text-navy">{t('liveMap.drivers')}</h2>
+                <h2 className="text-sm font-semibold text-navy">{t('liveMap.drivers')}</h2>
                 <ul className="mt-2 flex flex-col gap-2">
                   {located.map((driver) => {
                     const name = driverName(driver, i18n.language)
@@ -98,7 +98,7 @@ export function LiveMapPage() {
                           aria-pressed={selectedDriver}
                           className={
                             selectedDriver
-                              ? 'h-9 w-full rounded-control bg-deep px-3 text-start text-sm font-bold text-white'
+                              ? 'h-9 w-full rounded-control bg-deep px-3 text-start text-sm font-semibold text-white'
                               : 'h-9 w-full rounded-control border-[1.5px] border-mid bg-pale px-3 text-start text-sm font-medium text-navy'
                           }
                           onClick={() => setSelectedId(driver.driver.id)}
@@ -113,8 +113,8 @@ export function LiveMapPage() {
             ) : null}
             {missing.length > 0 ? (
               <div>
-                <h2 className="text-sm font-bold text-navy">{t('liveMap.noFix')}</h2>
-                <p className="mt-1 text-sm text-navy/75">{t('liveMap.noFixList')}</p>
+                <h2 className="text-sm font-semibold text-navy">{t('liveMap.noFix')}</h2>
+                <p className="mt-1 text-sm text-ink-muted">{t('liveMap.noFixList')}</p>
                 <ul className="mt-2 list-disc ps-5 text-sm text-navy">
                   {missing.map((driver) => (
                     <li key={driver.driver.id}>{driverName(driver, i18n.language)}</li>
@@ -136,22 +136,22 @@ function DriverCard({ driver, language }: { driver: LiveMapDriver; language: str
   return (
     <section
       aria-label={t('liveMap.card')}
-      className="rounded-card border border-pale bg-white p-4"
+      className="rounded-card border border-line bg-white p-4"
     >
-      <h2 className="text-base font-bold text-navy">{name}</h2>
+      <h2 className="text-base font-semibold text-navy">{name}</h2>
       <dl className="mt-3 grid gap-2 text-sm">
         <div>
-          <dt className="text-xs font-medium text-navy/60">{t('driverAdmin.phone')}</dt>
+          <dt className="text-xs font-medium text-ink-muted">{t('driverAdmin.phone')}</dt>
           <dd>{driver.driver.phone || t('common.dash')}</dd>
         </div>
         <div>
-          <dt className="text-xs font-medium text-navy/60">{t('availabilityAdmin.state')}</dt>
+          <dt className="text-xs font-medium text-ink-muted">{t('availabilityAdmin.state')}</dt>
           <dd className="mt-1">
             <StatusBadge status={driver.state} />
           </dd>
         </div>
         <div>
-          <dt className="text-xs font-medium text-navy/60">{t('liveMap.trip')}</dt>
+          <dt className="text-xs font-medium text-ink-muted">{t('liveMap.trip')}</dt>
           <dd>
             {trip ? (
               <span>
@@ -169,7 +169,7 @@ function DriverCard({ driver, language }: { driver: LiveMapDriver; language: str
           </dd>
         </div>
         <div>
-          <dt className="text-xs font-medium text-navy/60">{t('liveMap.lastSeen')}</dt>
+          <dt className="text-xs font-medium text-ink-muted">{t('liveMap.lastSeen')}</dt>
           <dd>{formatWhen(driver.updated_at, language) || t('common.dash')}</dd>
         </div>
       </dl>

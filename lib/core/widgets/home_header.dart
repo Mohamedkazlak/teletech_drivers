@@ -72,10 +72,12 @@ class HomeHeaderChip extends StatelessWidget {
             Icon(icon, size: 14, color: AppColors.inkMuted),
             const SizedBox(width: 6),
           ],
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: AppColors.inkMuted,
+          Flexible(
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: AppColors.inkMuted,
+              ),
             ),
           ),
         ],

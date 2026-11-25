@@ -8,6 +8,7 @@ import 'package:teletech_drivers/core/presentation/branch_chip.dart';
 import 'package:teletech_drivers/core/presentation/requester_contact_section.dart';
 import 'package:teletech_drivers/core/utils/failure_messages.dart';
 import 'package:teletech_drivers/core/widgets/status_chip.dart';
+import 'package:teletech_drivers/core/widgets/trip_hero.dart';
 import 'package:teletech_drivers/features/auth/presentation/providers/auth_providers.dart';
 import 'package:teletech_drivers/features/drivers_admin/presentation/providers/driver_providers.dart';
 import 'package:teletech_drivers/features/place/presentation/providers/place_providers.dart';
@@ -36,7 +37,7 @@ class TripDetailsScreen extends ConsumerWidget {
       title: l10n.tripDetailsTitle,
       showBackButton: true,
       body: tripAsync.when(
-        loading: () => Center(child: AppLoadingIndicator(label: l10n.loading)),
+        loading: () => TripHeroPlaceholder(tripId: tripId),
         error: (error, _) => Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -109,42 +110,29 @@ class _TripDetailsBody extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 24),
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(destinationName, style: textTheme.headlineSmall),
+        TripHero(
+          tripId: trip.id,
+          child: TripHeroHeader(
+            from: pickupName,
+            to: destinationName,
+            statusLabel: tripStageLabel(trip, l10n),
+            statusColor: StatusChip.colorForTrip(trip.status),
+            live: trip.status.isInProgress,
+            meta: dateFormat.format(trip.scheduledAt.toLocal()),
+            footer: TripHeroInfoRow(
+              icon: Icons.local_taxi_outlined,
+              label: driverName == null
+                  ? l10n.tripDriverUnassigned
+                  : l10n.tripDriverNameValue(driverName!),
             ),
-            StatusChip(
-              label: tripStageLabel(trip, l10n),
-              color: StatusChip.colorForTrip(trip.status),
-            ),
-          ],
+          ),
         ),
-        if (!ownsReport) TripConfirmationSummary(trip: trip),
-        OwnTripReportSection(trip: trip),
         if (trip.branches.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           BranchChips(branches: trip.branches),
         ],
-        const SizedBox(height: 12),
-        Text(
-          l10n.tripRequestPickupValue(pickupName),
-          style: textTheme.bodyLarge,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          driverName == null
-              ? l10n.tripDriverUnassigned
-              : l10n.tripDriverNameValue(driverName!),
-          style: textTheme.bodyLarge,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          l10n.tripScheduledValue(
-            dateFormat.format(trip.scheduledAt.toLocal()),
-          ),
-          style: textTheme.bodyLarge,
-        ),
+        if (!ownsReport) TripConfirmationSummary(trip: trip),
+        OwnTripReportSection(trip: trip),
         const SizedBox(height: 16),
         Text(l10n.tripEventsSection, style: textTheme.titleMedium),
         const SizedBox(height: 8),

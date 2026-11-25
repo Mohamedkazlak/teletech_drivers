@@ -11,6 +11,7 @@ import 'package:teletech_drivers/core/presentation/branch_chip.dart';
 import 'package:teletech_drivers/core/presentation/requester_contact_section.dart';
 import 'package:teletech_drivers/core/utils/failure_messages.dart';
 import 'package:teletech_drivers/core/widgets/status_chip.dart';
+import 'package:teletech_drivers/core/widgets/trip_hero.dart';
 import 'package:teletech_drivers/features/auth/domain/entities/app_user.dart';
 import 'package:teletech_drivers/features/auth/presentation/providers/auth_providers.dart';
 import 'package:teletech_drivers/features/drivers_admin/presentation/controllers/trip_assignment_controller.dart';
@@ -60,7 +61,7 @@ class DriversAdminTripDetailsScreen extends ConsumerWidget {
       title: l10n.tripDetailsTitle,
       showBackButton: true,
       body: tripAsync.when(
-        loading: () => Center(child: AppLoadingIndicator(label: l10n.loading)),
+        loading: () => TripHeroPlaceholder(tripId: tripId),
         error: (error, _) => Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -210,28 +211,28 @@ class _TripDetailsBodyState extends ConsumerState<_TripDetailsBody> {
     return ListView(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 24),
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                l10n.tripRouteSummary(
-                  resolver.resolveSummary(
-                    summary: trip.pickupSummary,
-                    languageCode: languageCode,
-                  ),
-                  resolver.resolveSummary(
-                    summary: trip.destinationSummary,
-                    languageCode: languageCode,
-                  ),
-                ),
-                style: textTheme.headlineSmall,
-              ),
+        TripHero(
+          tripId: trip.id,
+          child: TripHeroHeader(
+            from: resolver.resolveSummary(
+              summary: trip.pickupSummary,
+              languageCode: languageCode,
             ),
-            StatusChip(
-              label: tripStageLabel(trip, l10n),
-              color: StatusChip.colorForTrip(trip.status),
+            to: resolver.resolveSummary(
+              summary: trip.destinationSummary,
+              languageCode: languageCode,
             ),
-          ],
+            statusLabel: tripStageLabel(trip, l10n),
+            statusColor: StatusChip.colorForTrip(trip.status),
+            live: trip.status.isInProgress,
+            meta: dateFormat.format(trip.scheduledAt.toLocal()),
+            footer: TripHeroInfoRow(
+              icon: Icons.local_taxi_outlined,
+              label: trip.driverId == null
+                  ? l10n.tripDriverUnassigned
+                  : l10n.tripAssignedDriverValue(assignedDriverName),
+            ),
+          ),
         ),
         if (!ownsReport) TripConfirmationSummary(trip: trip),
         if (trip.tracking != null) ...[
@@ -242,20 +243,6 @@ class _TripDetailsBodyState extends ConsumerState<_TripDetailsBody> {
         if (trip.branches.isNotEmpty) ...[
           const SizedBox(height: 8),
           BranchChips(branches: trip.branches),
-        ],
-        const SizedBox(height: 12),
-        Text(
-          l10n.tripScheduledValue(
-            dateFormat.format(trip.scheduledAt.toLocal()),
-          ),
-          style: textTheme.bodyLarge,
-        ),
-        if (trip.driverId != null) ...[
-          const SizedBox(height: 8),
-          Text(
-            l10n.tripAssignedDriverValue(assignedDriverName),
-            style: textTheme.bodyLarge,
-          ),
         ],
         if (trip.status.isInProgress && trip.driverId != null) ...[
           const SizedBox(height: 12),

@@ -65,7 +65,7 @@ function ResetPasswordForm({ account, onClose }: ResetPasswordDialogProps) {
       }}
     >
       <div className="flex flex-col gap-3">
-        <p className="text-sm text-navy/75">{t('users.passwordHint')}</p>
+        <p className="text-sm text-ink-muted">{t('users.passwordHint')}</p>
         {error ? (
           <p role="alert" className="text-sm text-danger">
             {error}

@@ -3,6 +3,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
+import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
+import 'package:teletech_drivers/core/widgets/map_pins.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/theme/app_colors.dart';
 import 'package:teletech_drivers/features/place/domain/entities/picked_location.dart';
@@ -108,7 +110,12 @@ class _PlaceCoordinatePickerState extends State<PlaceCoordinatePicker> {
       _locateMessage = null;
     });
     if (moveCamera) {
-      _mapController.move(point, 15);
+      animateMapMove(
+        controller: _mapController,
+        target: point,
+        zoom: 15,
+        instant: AppAnimations.disabled(context),
+      );
     }
     _emit(point);
   }
@@ -239,8 +246,8 @@ class _PlaceCoordinatePickerState extends State<PlaceCoordinatePicker> {
                         markers: [
                           Marker(
                             point: marker,
-                            width: 48,
-                            height: 48,
+                            width: 40,
+                            height: 50,
                             alignment: Alignment.topCenter,
                             child: GestureDetector(
                               onPanStart: widget.enabled
@@ -269,11 +276,7 @@ class _PlaceCoordinatePickerState extends State<PlaceCoordinatePicker> {
                                       if (point != null) _emit(point);
                                     }
                                   : null,
-                              child: const Icon(
-                                Icons.location_on,
-                                color: AppColors.deepBlue,
-                                size: 44,
-                              ),
+                              child: const BrandPin(),
                             ),
                           ),
                         ],

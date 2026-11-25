@@ -152,13 +152,37 @@ abstract final class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.white,
+        // Focused fields get a faint blue wash so the active one is obvious.
+        fillColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) return AppColors.scaffold;
+          if (states.contains(WidgetState.focused)) {
+            return const Color(0xFFF7FAFF);
+          }
+          return AppColors.white;
+        }),
+        // Long hints and validation messages wrap instead of being cut off.
+        helperMaxLines: 3,
+        errorMaxLines: 3,
+        hintMaxLines: 2,
+        alignLabelWithHint: true,
+        hintStyle: textTheme.bodyLarge?.copyWith(
+          color: AppColors.inkMuted.withValues(alpha: 0.75),
+        ),
+        helperStyle: textTheme.bodySmall?.copyWith(color: AppColors.inkMuted),
+        errorStyle: textTheme.bodySmall?.copyWith(
+          color: AppColors.inkOn(AppColors.error),
+          fontWeight: FontWeight.w500,
+        ),
+        suffixIconColor: AppColors.inkMuted,
         labelStyle: textTheme.bodyLarge?.copyWith(color: AppColors.inkMuted),
         floatingLabelStyle: textTheme.bodyMedium?.copyWith(
           color: AppColors.deepBlue,
           fontWeight: FontWeight.w600,
         ),
         prefixIconColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.error)) {
+            return AppColors.inkOn(AppColors.error);
+          }
           return states.contains(WidgetState.focused)
               ? AppColors.deepBlue
               : AppColors.inkMuted;
@@ -272,7 +296,56 @@ abstract final class AppTheme {
         shape: const StadiumBorder(side: BorderSide(color: AppColors.line)),
         side: const BorderSide(color: AppColors.line),
       ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: AppColors.white,
+        surfaceTintColor: Colors.transparent,
+        elevation: 6,
+        shadowColor: AppColors.navy.withValues(alpha: 0.2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(controlRadius),
+          side: const BorderSide(color: AppColors.line),
+        ),
+        textStyle: textTheme.bodyMedium,
+      ),
+      menuTheme: MenuThemeData(
+        style: MenuStyle(
+          backgroundColor: const WidgetStatePropertyAll(AppColors.white),
+          surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+          elevation: const WidgetStatePropertyAll(6),
+          shadowColor: WidgetStatePropertyAll(
+            AppColors.navy.withValues(alpha: 0.2),
+          ),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(controlRadius),
+              side: const BorderSide(color: AppColors.line),
+            ),
+          ),
+        ),
+      ),
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: AppColors.white,
+        surfaceTintColor: Colors.transparent,
+        headerBackgroundColor: AppColors.navy,
+        headerForegroundColor: AppColors.white,
+        todayBorder: const BorderSide(color: AppColors.deepBlue),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+      ),
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: AppColors.white,
+        dialBackgroundColor: AppColors.paleBlue,
+        hourMinuteShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(controlRadius),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+      ),
       dialogTheme: DialogThemeData(
+        actionsPadding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         backgroundColor: AppColors.white,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(

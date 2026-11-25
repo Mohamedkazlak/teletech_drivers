@@ -174,10 +174,10 @@ export function TripsPage() {
                   status: null,
                 })
               }
-              className="rounded-card border border-pale bg-white px-4 py-3 text-start"
+              className="rounded-card border border-line bg-white px-4 py-3 text-start"
             >
-              <p className="text-sm text-navy/75">{t(`status.${itemStage}`)}</p>
-              <p className="mt-1 text-2xl font-bold text-navy">
+              <p className="text-sm text-ink-muted">{t(`status.${itemStage}`)}</p>
+              <p className="mt-1 text-2xl font-semibold text-navy">
                 {item.isPending
                   ? t('common.loading')
                   : item.isError

@@ -57,7 +57,7 @@ export function ExportReportDialog({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <button
         type="button"
-        className="absolute inset-0 bg-navy/50"
+        className="absolute inset-0 bg-navy-deep/45 backdrop-blur-[2px] animate-fade"
         aria-label={t('common.cancel')}
         onClick={onClose}
       />
@@ -66,12 +66,12 @@ export function ExportReportDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative w-full max-w-md rounded-card bg-white p-5 shadow-dialog"
+        className="relative w-full max-w-md rounded-[20px] bg-white p-6 shadow-dialog animate-pop"
       >
-        <h2 id={titleId} className="text-lg font-bold text-navy">
+        <h2 id={titleId} className="text-lg font-semibold text-navy">
           {t('driverAdmin.exportTitle')}
         </h2>
-        <p className="mt-2 text-sm text-navy/75">{driverName}</p>
+        <p className="mt-2 text-sm text-ink-muted">{driverName}</p>
         <div className="mt-4 flex flex-col gap-3">
           <FormField id={periodId} label={t('driverAdmin.exportPeriod')}>
             <select
@@ -128,7 +128,7 @@ export function ExportReportDialog({
           </FormField>
           {error ? <p className={alertClass}>{error}</p> : null}
           {busy ? (
-            <p role="status" className="text-sm text-navy/70">
+            <p role="status" className="text-sm text-ink-muted">
               {t('driverAdmin.exportDownloading')}
             </p>
           ) : null}

@@ -8,6 +8,7 @@ import 'package:teletech_drivers/core/widgets/animation_helpers.dart';
 import 'package:teletech_drivers/core/widgets/pressable_scale.dart';
 import 'package:teletech_drivers/core/widgets/route_line.dart';
 import 'package:teletech_drivers/core/widgets/status_chip.dart';
+import 'package:teletech_drivers/core/widgets/trip_hero.dart';
 
 /// Shared trip / request summary card.
 ///
@@ -28,8 +29,13 @@ class TripCard extends StatelessWidget {
     this.to,
     this.meta,
     this.live = false,
+    this.heroTripId,
     super.key,
   });
+
+  /// When set, the card flies into the details header ([TripHeroHeader]).
+  /// Only one card per trip on a screen may set this.
+  final String? heroTripId;
 
   final String title;
   final String statusLabel;
@@ -74,10 +80,15 @@ class TripCard extends StatelessWidget {
               ),
               if (meta != null) ...[
                 const SizedBox(width: 12),
-                Text(
-                  meta!,
-                  style: AppTypography.tabular(
-                    textTheme.labelMedium?.copyWith(color: AppColors.inkMuted),
+                Flexible(
+                  child: Text(
+                    meta!,
+                    textAlign: TextAlign.end,
+                    style: AppTypography.tabular(
+                      textTheme.labelMedium?.copyWith(
+                        color: AppColors.inkMuted,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -128,6 +139,10 @@ class TripCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(onTap: onTap, child: body),
     );
+
+    if (heroTripId != null) {
+      card = TripHero(tripId: heroTripId!, child: card);
+    }
 
     if (onTap != null) {
       card = PressableScale(scale: 0.985, child: card);

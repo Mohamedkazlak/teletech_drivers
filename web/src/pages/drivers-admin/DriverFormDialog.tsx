@@ -233,7 +233,7 @@ function DriverForm({
         />
       </FormField>
       <fieldset className="flex flex-col gap-3">
-        <legend className="text-sm font-bold text-navy">{t('driverAdmin.carLicense')}</legend>
+        <legend className="text-sm font-semibold text-navy">{t('driverAdmin.carLicense')}</legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField
             id="driver-plate-letters"

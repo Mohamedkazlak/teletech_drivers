@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +9,9 @@ import 'package:teletech_drivers/core/utils/failure_messages.dart';
 import 'package:teletech_drivers/core/widgets/animated_error_banner.dart';
 import 'package:teletech_drivers/core/widgets/app_button.dart';
 import 'package:teletech_drivers/core/widgets/app_scaffold.dart';
+import 'package:teletech_drivers/core/widgets/form_section.dart';
+import 'package:teletech_drivers/core/widgets/shake.dart';
+import 'package:teletech_drivers/core/widgets/success_moment.dart';
 import 'package:teletech_drivers/core/widgets/app_text_field.dart';
 import 'package:teletech_drivers/features/auth/domain/entities/user_role.dart';
 import 'package:teletech_drivers/features/auth/presentation/providers/auth_providers.dart';
@@ -47,6 +52,7 @@ class _NewTripRequestScreenState extends ConsumerState<NewTripRequestScreen> {
   String? _pickupError;
   String? _destinationError;
   String? _dateTimeError;
+  var _shake = 0;
 
   @override
   void dispose() {
@@ -287,6 +293,7 @@ class _NewTripRequestScreenState extends ConsumerState<NewTripRequestScreen> {
         pickup == null ||
         destination == null ||
         _requestedDateTime == null) {
+      setState(() => _shake++);
       return;
     }
 
@@ -313,9 +320,10 @@ class _NewTripRequestScreenState extends ConsumerState<NewTripRequestScreen> {
     if (result == null) {
       final failure = ref.read(createTripRequestControllerProvider).failure;
       final serverMessage = scheduleFieldMessage(failure);
-      if (serverMessage != null) {
-        setState(() => _dateTimeError = serverMessage);
-      }
+      setState(() {
+        if (serverMessage != null) _dateTimeError = serverMessage;
+        _shake++;
+      });
       return;
     }
 
@@ -323,8 +331,7 @@ class _NewTripRequestScreenState extends ConsumerState<NewTripRequestScreen> {
     final message = tripId != null && tripId.isNotEmpty
         ? l10n.driversAdminTripUnassigned
         : l10n.tripRequestCreated;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    unawaited(showSuccessMoment(context, message: message));
     Navigator.of(context).pop();
   }
 
@@ -371,172 +378,176 @@ class _NewTripRequestScreenState extends ConsumerState<NewTripRequestScreen> {
               return const NoPlacesAvailableState();
             }
 
-            return ListView(
-              padding: const EdgeInsetsDirectional.fromSTEB(24, 16, 24, 24),
+            final busy = formState.isLoading;
+            return Column(
               children: [
-                AnimatedErrorBanner(message: banner),
-                if (banner != null) const SizedBox(height: 16),
-                PlaceSearchDropdown(
-                  key: ValueKey('pickup-$languageCode-${_pickup.runtimeType}'),
-                  places: places,
-                  selected: pickupIsMap ? null : _pickup,
-                  label: l10n.pickupLocationLabel,
-                  searchHint: l10n.searchPlacesHint,
-                  otherOptionLabel: l10n.otherPlaceOption,
-                  errorText: pickupIsCustom ? null : _pickupError,
-                  enabled: !formState.isLoading,
-                  onSelected: _onPickupSelected,
-                ),
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: TextButton.icon(
-                    onPressed: formState.isLoading
-                        ? null
-                        : () => _chooseOnMap(forPickup: true),
-                    icon: const Icon(Icons.map_outlined),
-                    label: Text(l10n.chooseOnMap),
-                  ),
-                ),
-                if (pickupIsMap) ...[
-                  MapPickedPlaceSummary(
-                    selection: _pickup! as CustomPlaceSelection,
-                    enabled: !formState.isLoading,
-                    onClear: () {
-                      setState(() {
-                        _pickup = null;
-                        _customPickupController.clear();
-                        _pickupError = null;
-                      });
-                    },
-                  ),
-                ] else if (pickupIsCustom) ...[
-                  CustomPlaceField(
-                    controller: _customPickupController,
-                    label: l10n.customPlaceLabel,
-                    hint: l10n.customPlaceHint,
-                    errorText: _pickupError,
-                    enabled: !formState.isLoading,
-                    onChanged: (value) {
-                      setState(() {
-                        _pickup = CustomPlaceSelection(value);
-                        _pickupError = null;
-                      });
-                    },
-                  ),
-                ],
-                const SizedBox(height: 16),
-                PlaceSearchDropdown(
-                  key: ValueKey(
-                    'destination-$languageCode-${_destination.runtimeType}',
-                  ),
-                  places: places,
-                  selected: destinationIsMap ? null : _destination,
-                  label: l10n.destinationLabel,
-                  searchHint: l10n.searchPlacesHint,
-                  otherOptionLabel: l10n.otherPlaceOption,
-                  errorText: destinationIsCustom ? null : _destinationError,
-                  enabled: !formState.isLoading,
-                  onSelected: _onDestinationSelected,
-                ),
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: TextButton.icon(
-                    onPressed: formState.isLoading
-                        ? null
-                        : () => _chooseOnMap(forPickup: false),
-                    icon: const Icon(Icons.map_outlined),
-                    label: Text(l10n.chooseOnMap),
-                  ),
-                ),
-                if (destinationIsMap) ...[
-                  MapPickedPlaceSummary(
-                    selection: _destination! as CustomPlaceSelection,
-                    enabled: !formState.isLoading,
-                    onClear: () {
-                      setState(() {
-                        _destination = null;
-                        _customDestinationController.clear();
-                        _destinationError = null;
-                      });
-                    },
-                  ),
-                ] else if (destinationIsCustom) ...[
-                  CustomPlaceField(
-                    controller: _customDestinationController,
-                    label: l10n.customPlaceLabel,
-                    hint: l10n.customPlaceHint,
-                    errorText: _destinationError,
-                    enabled: !formState.isLoading,
-                    onChanged: (value) {
-                      setState(() {
-                        _destination = CustomPlaceSelection(value);
-                        _destinationError = null;
-                      });
-                    },
-                  ),
-                ],
-                const SizedBox(height: 16),
-                InputDecorator(
-                  decoration: InputDecoration(
-                    labelText: l10n.requestedDateTimeLabel,
-                    prefixIcon: const Icon(Icons.calendar_month_outlined),
-                    errorText: timeError,
-                  ),
-                  child: InkWell(
-                    onTap: formState.isLoading ? null : _pickDateTime,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Row(
+                Expanded(
+                  child: Shake(
+                    trigger: _shake,
+                    child: ListView(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                      16,
+                      12,
+                      16,
+                      24,
+                    ),
+                    children: [
+                      AnimatedErrorBanner(message: banner),
+                      if (banner != null) const SizedBox(height: 12),
+                      FormSection(
                         children: [
-                          Expanded(
-                            child: Text(
-                              requested == null
-                                  ? l10n.selectDateTime
-                                  : dateFormat.format(
-                                      CairoClock.wall(requested),
-                                    ),
-                              style: Theme.of(context).textTheme.bodyLarge
-                                  ?.copyWith(
-                                    color: requested == null
-                                        ? Theme.of(context).hintColor
-                                        : null,
-                                  ),
+                          PlaceSearchDropdown(
+                            key: ValueKey(
+                              'pickup-$languageCode-${_pickup.runtimeType}',
                             ),
+                            places: places,
+                            selected: pickupIsMap ? null : _pickup,
+                            label: l10n.pickupLocationLabel,
+                            icon: Icons.trip_origin_rounded,
+                            searchHint: l10n.searchPlacesHint,
+                            otherOptionLabel: l10n.otherPlaceOption,
+                            errorText: pickupIsCustom ? null : _pickupError,
+                            enabled: !busy,
+                            onSelected: _onPickupSelected,
+                          ),
+                          if (pickupIsMap)
+                            MapPickedPlaceSummary(
+                              selection: _pickup! as CustomPlaceSelection,
+                              enabled: !busy,
+                              onClear: () {
+                                setState(() {
+                                  _pickup = null;
+                                  _customPickupController.clear();
+                                  _pickupError = null;
+                                });
+                              },
+                            )
+                          else if (pickupIsCustom)
+                            CustomPlaceField(
+                              controller: _customPickupController,
+                              label: l10n.customPlaceLabel,
+                              hint: l10n.customPlaceHint,
+                              errorText: _pickupError,
+                              enabled: !busy,
+                              onChanged: (value) {
+                                setState(() {
+                                  _pickup = CustomPlaceSelection(value);
+                                  _pickupError = null;
+                                });
+                              },
+                            ),
+                          FieldAction(
+                            label: l10n.chooseOnMap,
+                            icon: Icons.map_outlined,
+                            onPressed: busy
+                                ? null
+                                : () => _chooseOnMap(forPickup: true),
+                          ),
+                          const Divider(height: 12),
+                          PlaceSearchDropdown(
+                            key: ValueKey(
+                              'destination-$languageCode-'
+                              '${_destination.runtimeType}',
+                            ),
+                            places: places,
+                            selected: destinationIsMap ? null : _destination,
+                            label: l10n.destinationLabel,
+                            icon: Icons.place_rounded,
+                            searchHint: l10n.searchPlacesHint,
+                            otherOptionLabel: l10n.otherPlaceOption,
+                            errorText: destinationIsCustom
+                                ? null
+                                : _destinationError,
+                            enabled: !busy,
+                            onSelected: _onDestinationSelected,
+                          ),
+                          if (destinationIsMap)
+                            MapPickedPlaceSummary(
+                              selection: _destination! as CustomPlaceSelection,
+                              enabled: !busy,
+                              onClear: () {
+                                setState(() {
+                                  _destination = null;
+                                  _customDestinationController.clear();
+                                  _destinationError = null;
+                                });
+                              },
+                            )
+                          else if (destinationIsCustom)
+                            CustomPlaceField(
+                              controller: _customDestinationController,
+                              label: l10n.customPlaceLabel,
+                              hint: l10n.customPlaceHint,
+                              errorText: _destinationError,
+                              enabled: !busy,
+                              onChanged: (value) {
+                                setState(() {
+                                  _destination = CustomPlaceSelection(value);
+                                  _destinationError = null;
+                                });
+                              },
+                            ),
+                          FieldAction(
+                            label: l10n.chooseOnMap,
+                            icon: Icons.map_outlined,
+                            onPressed: busy
+                                ? null
+                                : () => _chooseOnMap(forPickup: false),
                           ),
                         ],
                       ),
-                    ),
+                      const SizedBox(height: 12),
+                      FormSection(
+                        children: [
+                          PickerField(
+                            label: l10n.requestedDateTimeLabel,
+                            icon: Icons.calendar_month_outlined,
+                            placeholder: l10n.selectDateTime,
+                            value: requested == null
+                                ? null
+                                : dateFormat.format(
+                                    CairoClock.wall(requested),
+                                  ),
+                            errorText: timeError,
+                            onTap: busy ? null : _pickDateTime,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      FormSection(
+                        children: [
+                          AppTextField(
+                            controller: _notesController,
+                            label: l10n.notesLabel,
+                            hintText: l10n.notesHint,
+                            helperText: l10n.notesFellowEmployeesHint,
+                            enabled: !busy,
+                            keyboardType: TextInputType.multiline,
+                            textInputAction: TextInputAction.newline,
+                            textCapitalization: TextCapitalization.sentences,
+                            minLines: 3,
+                            maxLines: 8,
+                            maxLength: 500,
+                            prefixIcon: Icons.notes_outlined,
+                          ),
+                          FieldAction(
+                            label: l10n.addAnotherNameLine,
+                            icon: Icons.person_add_alt_1_outlined,
+                            onPressed: busy ? null : _addNotesNameLine,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                AppTextField(
-                  controller: _notesController,
-                  label: l10n.notesLabel,
-                  hintText: l10n.notesHint,
-                  helperText: l10n.notesFellowEmployeesHint,
-                  enabled: !formState.isLoading,
-                  keyboardType: TextInputType.multiline,
-                  textInputAction: TextInputAction.newline,
-                  textCapitalization: TextCapitalization.sentences,
-                  minLines: 3,
-                  maxLines: 8,
-                  maxLength: 500,
-                  prefixIcon: Icons.notes_outlined,
-                ),
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: TextButton.icon(
-                    onPressed: formState.isLoading ? null : _addNotesNameLine,
-                    icon: const Icon(Icons.person_add_alt_1_outlined),
-                    label: Text(l10n.addAnotherNameLine),
+                FormActionBar(
+                  child: AppButton(
+                    label: l10n.submitTripRequest,
+                    loadingLabel: l10n.loading,
+                    isLoading: busy,
+                    onPressed: _submit,
                   ),
-                ),
-                const SizedBox(height: 24),
-                AppButton(
-                  label: l10n.submitTripRequest,
-                  loadingLabel: l10n.loading,
-                  isLoading: formState.isLoading,
-                  onPressed: _submit,
                 ),
               ],
             );

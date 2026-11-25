@@ -76,11 +76,11 @@ function PlaceView({ place, language }: { place: Place; language: string }) {
           },
         ]}
       />
-      <p className="text-sm text-navy/75">
+      <p className="text-sm text-ink-muted">
         {localizedName(language, place.name_en, place.name_ar)}
       </p>
       {markers.length > 0 ? (
-        <div className="overflow-hidden rounded-control border border-pale">
+        <div className="overflow-hidden rounded-control border border-line">
           <MapView markers={markers} className="h-64 w-full" />
         </div>
       ) : null}
@@ -273,8 +273,8 @@ function PlaceForm({ place, onClose }: { place: Place | null; onClose: () => voi
           />
         </FormField>
       </div>
-      <p className="text-xs text-navy/60">{t('places.pickHint')}</p>
-      <div className="overflow-hidden rounded-control border border-pale">
+      <p className="text-xs text-ink-muted">{t('places.pickHint')}</p>
+      <div className="overflow-hidden rounded-control border border-line">
         <MapView
           className="h-64 w-full"
           center={markers[0] ? [markers[0].lat, markers[0].lng] : undefined}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:teletech_drivers/core/widgets/success_moment.dart';
 import 'package:teletech_drivers/core/localization/generated/app_localizations.dart';
 import 'package:teletech_drivers/core/presentation/fleet_period_bar.dart';
 import 'package:teletech_drivers/core/utils/measurement_format.dart';
@@ -35,8 +36,7 @@ class DriverDetailsScreen extends ConsumerWidget {
     final succeeded = await EditDriverDialog.show(context, driver: driver);
     if (!context.mounted || succeeded != true) return;
     ref.invalidate(driverProfileProvider(driverId));
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(l10n.driverUpdated)));
+    await showSuccessMoment(context, message: l10n.driverUpdated);
   }
 
   @override

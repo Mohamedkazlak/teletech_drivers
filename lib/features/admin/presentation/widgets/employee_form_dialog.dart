@@ -9,7 +9,8 @@ import 'package:teletech_drivers/features/admin/presentation/validation/employee
 import 'package:teletech_drivers/features/auth/domain/entities/app_user.dart';
 import 'package:teletech_drivers/features/auth/domain/entities/branch.dart';
 import 'package:teletech_drivers/features/auth/presentation/validation/auth_validators.dart';
-import 'package:teletech_drivers/features/auth/presentation/widgets/auth_error_banner.dart';
+import 'package:teletech_drivers/core/widgets/form_section.dart';
+import 'package:teletech_drivers/core/widgets/form_sheet.dart';
 import 'package:teletech_drivers/features/auth/presentation/widgets/password_visibility_button.dart';
 
 /// Create or edit an employee (name en/ar, phone, email, branch).
@@ -19,8 +20,8 @@ class EmployeeFormDialog extends ConsumerStatefulWidget {
   final AppUser? employee;
 
   static Future<bool?> show(BuildContext context, {AppUser? employee}) {
-    return showDialog<bool>(
-      context: context,
+    return showFormSheet<bool>(
+      context,
       builder: (_) => EmployeeFormDialog(employee: employee),
     );
   }
@@ -38,6 +39,7 @@ class _EmployeeFormDialogState extends ConsumerState<EmployeeFormDialog> {
   late final TextEditingController _passwordController;
   Branch? _branch;
   var _obscurePassword = true;
+  var _shake = 0;
 
   bool get _isEdit => widget.employee != null;
 
@@ -72,10 +74,7 @@ class _EmployeeFormDialogState extends ConsumerState<EmployeeFormDialog> {
     final formValid = _formKey.currentState?.validate() ?? false;
     final branchError = EmployeeValidators.branch(_branch, l10n);
     if (!formValid || branchError != null) {
-      if (branchError != null && mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(branchError)));
-      }
+      setState(() => _shake++);
       return;
     }
 
@@ -115,115 +114,116 @@ class _EmployeeFormDialogState extends ConsumerState<EmployeeFormDialog> {
         ? ref.watch(updateEmployeeControllerProvider)
         : ref.watch(createEmployeeControllerProvider);
 
-    return AlertDialog(
-      title: Text(
-        _isEdit ? l10n.adminEditEmployeeTitle : l10n.adminAddEmployeeTitle,
-      ),
-      content: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (formState.failure != null) ...[
-                AuthErrorBanner(message: formState.failure!.message(l10n)),
-                const SizedBox(height: 16),
-              ],
-              TextFormField(
-                controller: _nameEnController,
-                enabled: !formState.isLoading,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: l10n.driverNameEnLabel),
-                validator: (value) => EmployeeValidators.nameEn(value, l10n),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _nameArController,
-                enabled: !formState.isLoading,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: l10n.driverNameArLabel),
-                validator: (value) => EmployeeValidators.nameAr(value, l10n),
-              ),
-              const SizedBox(height: 12),
+    final busy = formState.isLoading;
+    return FormSheet(
+      title: _isEdit ? l10n.adminEditEmployeeTitle : l10n.adminAddEmployeeTitle,
+      subtitle: _isEdit ? widget.employee!.email : null,
+      icon: _isEdit ? Icons.edit_outlined : Icons.person_add_alt_1_outlined,
+      formKey: _formKey,
+      isLoading: busy,
+      shakeTrigger: _shake,
+      errorMessage: formState.failure?.message(l10n),
+      primaryLabel: _isEdit ? l10n.adminSaveEmployee : l10n.adminAddEmployee,
+      onPrimary: _submit,
+      children: [
+        FormSection(
+          title: l10n.formSectionPersonal,
+          icon: Icons.badge_outlined,
+          children: [
+            TextFormField(
+              controller: _nameEnController,
+              enabled: !busy,
+              textInputAction: TextInputAction.next,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(labelText: l10n.driverNameEnLabel),
+              validator: (value) => EmployeeValidators.nameEn(value, l10n),
+            ),
+            TextFormField(
+              controller: _nameArController,
+              enabled: !busy,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(labelText: l10n.driverNameArLabel),
+              validator: (value) => EmployeeValidators.nameAr(value, l10n),
+            ),
+          ],
+        ),
+        FormSection(
+          title: l10n.formSectionContact,
+          icon: Icons.alternate_email_rounded,
+          children: [
+            if (!_isEdit)
               TextFormField(
                 controller: _emailController,
-                enabled: !formState.isLoading && !_isEdit,
+                enabled: !busy,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: l10n.emailLabel),
+                autocorrect: false,
+                decoration: InputDecoration(
+                  labelText: l10n.emailLabel,
+                  prefixIcon: const Icon(Icons.email_outlined),
+                ),
                 validator: (value) => EmployeeValidators.email(value, l10n),
               ),
-              if (!_isEdit) ...[
-                const SizedBox(height: 12),
-                TextFormField(
-                  controller: _passwordController,
-                  enabled: !formState.isLoading,
-                  obscureText: _obscurePassword,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    labelText: l10n.passwordLabel,
-                    suffixIcon: PasswordVisibilityButton(
-                      obscure: _obscurePassword,
-                      onPressed: () {
-                        setState(() => _obscurePassword = !_obscurePassword);
-                      },
-                    ),
-                  ),
-                  validator: (value) => AuthValidators.password(value, l10n),
-                ),
-              ],
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _phoneController,
-                enabled: !formState.isLoading,
-                keyboardType: TextInputType.phone,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: l10n.phoneLabel),
-                validator: (value) => EmployeeValidators.phone(value, l10n),
+            TextFormField(
+              controller: _phoneController,
+              enabled: !busy,
+              keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.phoneLabel,
+                prefixIcon: const Icon(Icons.phone_outlined),
               ),
-              const SizedBox(height: 12),
-              DropdownButtonFormField<Branch>(
-                // ignore: deprecated_member_use
-                value: _branch,
-                decoration: InputDecoration(labelText: l10n.branchLabel),
-                items: [
-                  for (final branch in Branch.values)
-                    DropdownMenuItem(
-                      value: branch,
-                      child: Text(branchLabel(branch, l10n)),
-                    ),
-                ],
-                onChanged: formState.isLoading
-                    ? null
-                    : (value) => setState(() => _branch = value),
-                validator: (_) => EmployeeValidators.branch(_branch, l10n),
+              validator: (value) => EmployeeValidators.phone(value, l10n),
+            ),
+          ],
+        ),
+        FormSection(
+          title: l10n.formSectionWork,
+          icon: Icons.apartment_outlined,
+          children: [
+            DropdownButtonFormField<Branch>(
+              // ignore: deprecated_member_use
+              value: _branch,
+              isExpanded: true,
+              decoration: InputDecoration(labelText: l10n.branchLabel),
+              items: [
+                for (final branch in Branch.values)
+                  DropdownMenuItem(
+                    value: branch,
+                    child: Text(branchLabel(branch, l10n)),
+                  ),
+              ],
+              onChanged: busy
+                  ? null
+                  : (value) => setState(() => _branch = value),
+              validator: (_) => EmployeeValidators.branch(_branch, l10n),
+            ),
+          ],
+        ),
+        if (!_isEdit)
+          FormSection(
+            title: l10n.formSectionAccess,
+            icon: Icons.lock_outline_rounded,
+            children: [
+              TextFormField(
+                controller: _passwordController,
+                enabled: !busy,
+                obscureText: _obscurePassword,
+                textInputAction: TextInputAction.done,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  labelText: l10n.passwordLabel,
+                  suffixIcon: PasswordVisibilityButton(
+                    obscure: _obscurePassword,
+                    onPressed: () {
+                      setState(() => _obscurePassword = !_obscurePassword);
+                    },
+                  ),
+                ),
+                validator: (value) => AuthValidators.password(value, l10n),
               ),
             ],
           ),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: formState.isLoading
-              ? null
-              : () => Navigator.of(context).pop(false),
-          child: Text(l10n.dialogCancel),
-        ),
-        FilledButton(
-          onPressed: formState.isLoading ? null : _submit,
-          child: formState.isLoading
-              ? SizedBox.square(
-                  dimension: 20,
-                  child: Semantics(
-                    label: l10n.loading,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  ),
-                )
-              : Text(_isEdit ? l10n.adminSaveEmployee : l10n.adminAddEmployee),
-        ),
       ],
     );
   }

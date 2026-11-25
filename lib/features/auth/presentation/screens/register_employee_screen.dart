@@ -16,6 +16,7 @@ import 'package:teletech_drivers/features/auth/domain/entities/branch.dart';
 import 'package:teletech_drivers/features/auth/presentation/controllers/register_employee_controller.dart';
 import 'package:teletech_drivers/features/auth/presentation/validation/auth_validators.dart';
 import 'package:teletech_drivers/features/auth/presentation/widgets/auth_page_scaffold.dart';
+import 'package:teletech_drivers/features/auth/presentation/widgets/password_strength_meter.dart';
 import 'package:teletech_drivers/features/auth/presentation/widgets/password_visibility_button.dart';
 
 class RegisterEmployeeScreen extends ConsumerStatefulWidget {
@@ -37,6 +38,7 @@ class _RegisterEmployeeScreenState
   final _confirmPasswordController = TextEditingController();
   Branch? _branch;
   var _autovalidateMode = AutovalidateMode.disabled;
+  var _shake = 0;
   var _obscurePassword = true;
   var _obscureConfirmPassword = true;
 
@@ -57,6 +59,7 @@ class _RegisterEmployeeScreenState
 
   void _onPasswordChanged(String _) {
     _clearFailure();
+    setState(() {});
     if (_autovalidateMode == AutovalidateMode.onUserInteraction) {
       _formKey.currentState?.validate();
     }
@@ -64,7 +67,10 @@ class _RegisterEmployeeScreenState
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
-      setState(() => _autovalidateMode = AutovalidateMode.onUserInteraction);
+      setState(() {
+        _autovalidateMode = AutovalidateMode.onUserInteraction;
+        _shake++;
+      });
       return;
     }
     final branch = _branch;
@@ -84,6 +90,8 @@ class _RegisterEmployeeScreenState
     if (!mounted) return;
     if (ref.read(registerEmployeeControllerProvider).failure == null) {
       TextInput.finishAutofillContext();
+    } else {
+      setState(() => _shake++);
     }
   }
 
@@ -108,6 +116,7 @@ class _RegisterEmployeeScreenState
         _branch != null;
 
     return AuthPageScaffold(
+      shakeTrigger: _shake,
       title: l10n.registerTitle,
       subtitle: l10n.registerSubtitle,
       child: AutofillGroup(
@@ -188,6 +197,7 @@ class _RegisterEmployeeScreenState
               DropdownButtonFormField<Branch>(
                 // ignore: deprecated_member_use
                 value: _branch,
+                isExpanded: true,
                 decoration: InputDecoration(
                   labelText: l10n.branchLabel,
                   prefixIcon: const Icon(Icons.apartment_outlined),
@@ -231,6 +241,7 @@ class _RegisterEmployeeScreenState
                         }),
                 ),
               ),
+              PasswordStrengthMeter(password: _passwordController.text),
               const SizedBox(height: 16),
               AppTextField(
                 controller: _confirmPasswordController,
