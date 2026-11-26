@@ -35,6 +35,12 @@ const ar = {
     includeDeleted: 'إظهار المحذوف',
     deleted: 'محذوف',
   },
+  filters: {
+    clear: 'مسح عوامل التصفية',
+    clearSearch: 'مسح البحث',
+    anyDriver: 'أي سائق',
+    clearDriver: 'مسح السائق',
+  },
   nav: {
     dashboard: 'لوحة المعلومات',
     drivers: 'السائقون',

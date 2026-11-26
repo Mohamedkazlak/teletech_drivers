@@ -4,6 +4,7 @@ import type { TripRequest, TripSummary } from '../../api/types'
 import { myTripsQuery, type MyTripsTab } from '../../api/company-queries'
 import { useMyTrips } from '../../api/use-trips'
 import { PageHeading } from '../../components/layout/AppShell'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { StatusBadge } from '../../components/ui/StatusBadge'
@@ -29,7 +30,7 @@ function readTab(value: string | null): MyTripsTab {
 
 export function MyTripsPage() {
   const { t, i18n } = useTranslation()
-  const { params, set, page, setPage } = useListParams()
+  const { params, set, page, setPage, countActive, clear } = useListParams()
   const tab = readTab(params.get('tab'))
   const query = useMemo(() => myTripsQuery(tab, page), [tab, page])
   const list = useMyTrips(query)
@@ -108,15 +109,17 @@ export function MyTripsPage() {
           {t('myTrips.request')}
         </button>
       </PageHeading>
-      <FilterSelect
-        label={t('myTrips.tabs')}
-        value={tab}
-        onChange={(next) => set({ tab: next === 'all' ? null : next })}
-        options={TABS.map((item) => ({
-          value: item,
-          label: item === 'cancelled' ? t('myTrips.cancelledTrips') : t(`myTrips.${item}`),
-        }))}
-      />
+      <FilterBar activeCount={countActive(['tab'])} onClear={() => clear(['tab'])}>
+        <FilterSelect
+          label={t('myTrips.tabs')}
+          value={tab}
+          onChange={(next) => set({ tab: next === 'all' ? null : next })}
+          options={TABS.map((item) => ({
+            value: item,
+            label: item === 'cancelled' ? t('myTrips.cancelledTrips') : t(`myTrips.${item}`),
+          }))}
+        />
+      </FilterBar>
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}

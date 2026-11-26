@@ -8,11 +8,11 @@ import { useDeleteDriver, useDrivers, useRestoreDriver } from '../../api/use-dri
 import { PageHeading } from '../../components/layout/AppShell'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { DataTable, type Column } from '../../components/ui/DataTable'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { IncludeDeletedToggle } from '../../components/ui/IncludeDeletedToggle'
-import { FormField } from '../../components/ui/FormField'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { controlClass, primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
@@ -180,30 +180,31 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
           {t('driverAdmin.add')}
         </button>
       </PageHeading>
-      <FilterSelect
-        label={t('driverAdmin.filter')}
-        value={attendance}
-        onChange={(next) => set({ attendance: next || null })}
-        options={[
-          { value: '', label: t('branch.all') },
-          { value: 'checked_in', label: t('attendance.checkedInToday') },
-          { value: 'not_checked_in', label: t('attendance.notCheckedIn') },
-        ]}
-      />
-      {allowDeleted ? (
-        <IncludeDeletedToggle
-          checked={includeDeleted}
-          onChange={(checked) => set({ deleted: checked ? '1' : null })}
+      <FilterBar
+        search={{ value: search, onChange: setSearch, label: t('driverAdmin.search') }}
+        activeCount={[attendance, searchParam, includeDeleted].filter(Boolean).length}
+        onClear={() => {
+          setSearch('')
+          set({ attendance: null, search: null, deleted: null })
+        }}
+      >
+        <FilterSelect
+          label={t('driverAdmin.filter')}
+          value={attendance}
+          onChange={(next) => set({ attendance: next || null })}
+          options={[
+            { value: '', label: t('branch.all') },
+            { value: 'checked_in', label: t('attendance.checkedInToday') },
+            { value: 'not_checked_in', label: t('attendance.notCheckedIn') },
+          ]}
         />
-      ) : null}
-      <FormField id="drivers-search" label={t('driverAdmin.search')}>
-        <input
-          id="drivers-search"
-          className={controlClass}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </FormField>
+        {allowDeleted ? (
+          <IncludeDeletedToggle
+            checked={includeDeleted}
+            onChange={(checked) => set({ deleted: checked ? '1' : null })}
+          />
+        ) : null}
+      </FilterBar>
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}

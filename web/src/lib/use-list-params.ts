@@ -27,5 +27,17 @@ export function useListParams() {
     [set],
   )
 
-  return { params, set, page, setPage }
+  /** How many of [keys] are set in the URL (drives "Clear filters"). */
+  const countActive = useCallback(
+    (keys: readonly string[]) => keys.filter((key) => params.get(key)).length,
+    [params],
+  )
+
+  /** Removes [keys] and the page from the URL. */
+  const clear = useCallback(
+    (keys: readonly string[]) => set(Object.fromEntries(keys.map((key) => [key, null]))),
+    [set],
+  )
+
+  return { params, set, page, setPage, countActive, clear }
 }

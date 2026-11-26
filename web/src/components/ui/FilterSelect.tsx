@@ -1,4 +1,4 @@
-import { useId, type ReactNode } from 'react'
+import { useId } from 'react'
 import { controlClass } from './styles'
 
 export type FilterOption = {
@@ -16,8 +16,8 @@ type FilterSelectProps = {
 export function FilterSelect({ label, options, value, onChange }: FilterSelectProps) {
   const id = useId()
   return (
-    <div className="flex w-full max-w-xs flex-col gap-1.5">
-      <label htmlFor={id} className="text-[13px] font-semibold text-navy">
+    <div className="flex min-w-44 flex-col gap-1">
+      <label htmlFor={id} className="text-xs font-semibold text-ink-muted">
         {label}
       </label>
       <select
@@ -34,8 +34,4 @@ export function FilterSelect({ label, options, value, onChange }: FilterSelectPr
       </select>
     </div>
   )
-}
-
-export function FilterRow({ children }: { children: ReactNode }) {
-  return <div className="flex flex-wrap items-end gap-3">{children}</div>
 }

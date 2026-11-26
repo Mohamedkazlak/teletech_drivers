@@ -2,7 +2,8 @@ import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../../api/client'
-import { renderPage } from '../../test/render-page'
+import { formatDateParam } from '../../lib/period'
+import { driver, paginated, renderPage } from '../../test/render-page'
 import { AttendancePage } from './AttendancePage'
 import { AttendanceQrPage } from './AttendanceQrPage'
 
@@ -11,6 +12,12 @@ vi.mock('../../api/client', () => ({
 }))
 
 const http = vi.mocked(api)
+
+function attendanceQueries(): Array<Record<string, unknown> | undefined> {
+  return http.get.mock.calls
+    .filter(([path]) => path === '/attendance')
+    .map(([, options]) => (options as { query?: Record<string, unknown> } | undefined)?.query)
+}
 
 describe('attendance page', () => {
   beforeEach(() => {
@@ -50,6 +57,12 @@ describe('attendance page', () => {
           meta: { current_page: 1, per_page: 15, total: 1, last_page: 1 },
         }
       }
+      if (path === '/drivers') {
+        return paginated([
+          driver(),
+          driver({ id: 'driver-2', name_en: 'Huda Samir', name_ar: 'هدى سمير' }),
+        ])
+      }
       throw new Error(path)
     })
   })
@@ -60,6 +73,37 @@ describe('attendance page', () => {
     expect(screen.getByText('No check-out')).toBeInTheDocument()
     expect(screen.getByText('Present 1, absent 0, on-site 0 h')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Attendance QR' })).toHaveAttribute('href', '/qr')
+  })
+
+  it('opens on today and switches to a week range', async () => {
+    const user = userEvent.setup()
+    renderPage(<AttendancePage />)
+    await screen.findByText('Nader Ali')
+
+    const today = formatDateParam(new Date())
+    expect(attendanceQueries().at(-1)).toMatchObject({ date: today })
+    expect(attendanceQueries().at(-1)?.period).toBeUndefined()
+    expect(screen.getByRole('radio', { name: 'Day' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.queryByLabelText('Work date')).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('radio', { name: 'Week' }))
+    await waitFor(() => {
+      expect(attendanceQueries().at(-1)).toMatchObject({ period: 'week', date: today })
+    })
+  })
+
+  it('filters by a driver picked by name', async () => {
+    const user = userEvent.setup()
+    renderPage(<AttendancePage />)
+    await screen.findByText('Nader Ali')
+
+    await user.type(screen.getByRole('combobox', { name: 'Driver' }), 'hud')
+    await user.click(await screen.findByRole('option', { name: 'Huda Samir' }))
+
+    await waitFor(() => {
+      expect(attendanceQueries().at(-1)).toMatchObject({ driver_id: 'driver-2' })
+    })
+    expect(screen.getByRole('combobox', { name: 'Driver' })).toHaveValue('Huda Samir')
   })
 
   it('requires a reason before adjusting attendance', async () => {

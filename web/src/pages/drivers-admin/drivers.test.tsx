@@ -109,6 +109,23 @@ describe('drivers admin roster', () => {
     })
   })
 
+  it('restores filters from the URL and clears them all at once', async () => {
+    const user = userEvent.setup()
+    renderPage(<DriversPage />, '/?attendance=checked_in&search=om&page=2')
+
+    expect(screen.getByRole('combobox', { name: 'Attendance' })).toHaveValue('checked_in')
+    expect(screen.getByRole('searchbox', { name: 'Search drivers' })).toHaveValue('om')
+
+    await user.click(screen.getByRole('button', { name: 'Clear filters' }))
+
+    expect(screen.getByRole('combobox', { name: 'Attendance' })).toHaveValue('')
+    expect(screen.getByRole('searchbox', { name: 'Search drivers' })).toHaveValue('')
+    expect(screen.queryByRole('button', { name: 'Clear filters' })).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(queriesFor('/drivers').at(-1)).toEqual({ per_page: 15 })
+    })
+  })
+
   it('requests the next page', async () => {
     const user = userEvent.setup()
     http.get.mockImplementation(async (path: string) => {
@@ -297,7 +314,7 @@ describe('drivers admin roster', () => {
     expect(document.documentElement.lang).toBe('ar')
     expect(await screen.findByRole('heading', { name: 'السائقون' })).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'مسجّل الحضور اليوم' })).toBeInTheDocument()
-    expect(screen.queryByRole('checkbox', { name: 'إظهار المحذوف' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('switch', { name: 'إظهار المحذوف' })).not.toBeInTheDocument()
   })
 })
 
@@ -325,12 +342,12 @@ describe('admin driver restore', () => {
   it('shows include-deleted and restore only for the system admin', async () => {
     const user = userEvent.setup()
     const fleet = renderPage(<DriversPage />)
-    expect(screen.queryByRole('checkbox', { name: 'Include deleted' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('switch', { name: 'Include deleted' })).not.toBeInTheDocument()
     expect(await screen.findByRole('button', { name: 'Edit' })).toBeInTheDocument()
     fleet.unmount()
 
     renderPage(<DriversPage allowDeleted />)
-    await user.click(screen.getByRole('checkbox', { name: 'Include deleted' }))
+    await user.click(screen.getByRole('switch', { name: 'Include deleted' }))
     await waitFor(() => {
       expect(queriesFor('/drivers')).toContainEqual(
         expect.objectContaining({ include_deleted: true, per_page: 15 }),

@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Switch } from './Switch'
 
 type IncludeDeletedToggleProps = {
   checked: boolean
@@ -7,14 +8,5 @@ type IncludeDeletedToggleProps = {
 
 export function IncludeDeletedToggle({ checked, onChange }: IncludeDeletedToggleProps) {
   const { t } = useTranslation()
-  return (
-    <label className="inline-flex items-center gap-2 text-sm text-navy">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={(event) => onChange(event.target.checked)}
-      />
-      {t('common.includeDeleted')}
-    </label>
-  )
+  return <Switch checked={checked} onChange={onChange} label={t('common.includeDeleted')} />
 }

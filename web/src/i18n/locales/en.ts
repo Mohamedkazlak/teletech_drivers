@@ -35,6 +35,12 @@ const en = {
     includeDeleted: 'Include deleted',
     deleted: 'Deleted',
   },
+  filters: {
+    clear: 'Clear filters',
+    clearSearch: 'Clear search',
+    anyDriver: 'Any driver',
+    clearDriver: 'Clear driver',
+  },
   nav: {
     dashboard: 'Dashboard',
     drivers: 'Drivers',

@@ -13,8 +13,9 @@ import { PageHeading } from '../../components/layout/AppShell'
 import { BranchFilter, type BranchFilterValue } from '../../components/ui/BranchFilter'
 import { BranchText } from '../../components/ui/BranchText'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { DataTable, type Column } from '../../components/ui/DataTable'
-import { FilterRow, FilterSelect } from '../../components/ui/FilterSelect'
+import { FilterSelect } from '../../components/ui/FilterSelect'
 import { FormField } from '../../components/ui/FormField'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { controlClass, secondaryButtonClass } from '../../components/ui/styles'
@@ -38,10 +39,12 @@ function readBranch(value: string | null): BranchFilterValue {
   return isBranch(value) ? value : ''
 }
 
+const FILTER_KEYS = ['status', 'branch'] as const
+
 export function RequestedTripsPage() {
   const { t, i18n } = useTranslation()
   const toast = useToast()
-  const { params, set, page, setPage } = useListParams()
+  const { params, set, page, setPage, countActive, clear } = useListParams()
   const status = readStatus(params.get('status'))
   const highlight = params.get('request')
   const branch = readBranch(params.get('branch'))
@@ -185,7 +188,10 @@ export function RequestedTripsPage() {
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.requestedTrips')} />
-      <FilterRow>
+      <FilterBar
+        activeCount={countActive(FILTER_KEYS)}
+        onClear={() => clear(FILTER_KEYS)}
+      >
         <FilterSelect
           label={t('requests.approval')}
           value={status}
@@ -196,7 +202,7 @@ export function RequestedTripsPage() {
           value={branch}
           onChange={(next: Branch | '') => set({ branch: next || null })}
         />
-      </FilterRow>
+      </FilterBar>
       {status === 'pending' && suggestions.isError ? (
         <p role="alert" className="text-sm text-danger">
           {messageForApiError(suggestions.error, t)}

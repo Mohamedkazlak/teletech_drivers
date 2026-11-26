@@ -84,11 +84,11 @@ describe('employees', () => {
         per_page: 15,
       })
     })
-    expect(screen.getByRole('checkbox', { name: 'Include deleted' })).not.toBeChecked()
+    expect(screen.getByRole('switch', { name: 'Include deleted' })).not.toBeChecked()
 
     await user.selectOptions(screen.getByRole('combobox', { name: 'Account' }), 'Inactive')
     await user.selectOptions(screen.getByRole('combobox', { name: 'Branch' }), 'New Headquarters')
-    await user.click(screen.getByRole('checkbox', { name: 'Include deleted' }))
+    await user.click(screen.getByRole('switch', { name: 'Include deleted' }))
 
     await waitFor(() => {
       expect(queriesFor('/employees')).toContainEqual(
@@ -161,7 +161,7 @@ describe('employees', () => {
       expect(http.delete).toHaveBeenCalledWith('/employees/emp-1')
     })
 
-    await user.click(screen.getByRole('checkbox', { name: 'Include deleted' }))
+    await user.click(screen.getByRole('switch', { name: 'Include deleted' }))
     await user.click(await screen.findByRole('button', { name: 'Restore' }))
     const restoreDialog = await screen.findByRole('dialog', { name: 'Restore this employee?' })
     await user.click(within(restoreDialog).getByRole('button', { name: 'Restore' }))
@@ -177,6 +177,6 @@ describe('employees', () => {
     expect(document.documentElement.dir).toBe('rtl')
     expect(await screen.findByRole('heading', { name: 'الموظفون' })).toBeInTheDocument()
     expect(screen.getByLabelText('بحث في الموظفين')).toBeInTheDocument()
-    expect(screen.getByRole('checkbox', { name: 'إظهار المحذوف' })).toBeInTheDocument()
+    expect(screen.getByRole('switch', { name: 'إظهار المحذوف' })).toBeInTheDocument()
   })
 })

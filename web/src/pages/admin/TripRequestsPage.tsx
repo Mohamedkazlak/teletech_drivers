@@ -6,9 +6,10 @@ import { useTripRequests } from '../../api/use-trip-requests'
 import { PageHeading } from '../../components/layout/AppShell'
 import { BranchFilter, type BranchFilterValue } from '../../components/ui/BranchFilter'
 import { BranchText } from '../../components/ui/BranchText'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { DataTable, type Column } from '../../components/ui/DataTable'
-import { FilterRow, FilterSelect } from '../../components/ui/FilterSelect'
-import { PeriodBar } from '../../components/ui/PeriodBar'
+import { FilterSelect } from '../../components/ui/FilterSelect'
+import { PeriodControl } from '../../components/ui/PeriodControl'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { secondaryButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
@@ -34,9 +35,11 @@ function readPeriod(value: string | null): RequestPeriod {
   return 'all'
 }
 
+const FILTER_KEYS = ['status', 'branch', 'period', 'date'] as const
+
 export function TripRequestsPage() {
   const { t, i18n } = useTranslation()
-  const { params, set, page, setPage } = useListParams()
+  const { params, set, page, setPage, countActive, clear } = useListParams()
   const status = readStatus(params.get('status'))
   const branch = readBranch(params.get('branch'))
   const period = readPeriod(params.get('period'))
@@ -104,7 +107,10 @@ export function TripRequestsPage() {
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.tripRequests')} />
-      <FilterRow>
+      <FilterBar
+        activeCount={countActive(FILTER_KEYS)}
+        onClear={() => clear(FILTER_KEYS)}
+      >
         <FilterSelect
           label={t('requests.status')}
           value={status}
@@ -115,14 +121,14 @@ export function TripRequestsPage() {
           value={branch}
           onChange={(next: Branch | '') => set({ branch: next || null })}
         />
-      </FilterRow>
-      <PeriodBar
-        periods={['week', 'month', 'year', 'all']}
-        value={{ period, date: period === 'all' ? undefined : date }}
-        onChange={(next) =>
-          set({ period: next.period === 'all' ? null : next.period, date: next.date ?? null })
-        }
-      />
+        <PeriodControl
+          periods={['week', 'month', 'year', 'all']}
+          value={{ period, date: period === 'all' ? undefined : date }}
+          onChange={(next) =>
+            set({ period: next.period === 'all' ? null : next.period, date: next.date ?? null })
+          }
+        />
+      </FilterBar>
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}

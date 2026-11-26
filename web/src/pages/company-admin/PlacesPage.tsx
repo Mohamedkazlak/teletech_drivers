@@ -5,10 +5,10 @@ import { placesListQuery } from '../../api/company-queries'
 import { useDeletePlace, usePlaces } from '../../api/use-places'
 import { PageHeading } from '../../components/layout/AppShell'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { DataTable, type Column } from '../../components/ui/DataTable'
-import { FormField } from '../../components/ui/FormField'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { controlClass, primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
@@ -121,14 +121,14 @@ export function PlacesPage() {
           {t('places.add')}
         </button>
       </PageHeading>
-      <FormField id="places-search" label={t('places.search')}>
-        <input
-          id="places-search"
-          className={controlClass}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </FormField>
+      <FilterBar
+        search={{ value: search, onChange: setSearch, label: t('places.search') }}
+        activeCount={searchParam ? 1 : 0}
+        onClear={() => {
+          setSearch('')
+          set({ search: null })
+        }}
+      />
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}

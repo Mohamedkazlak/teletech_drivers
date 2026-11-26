@@ -5,11 +5,11 @@ import { useUsers } from '../../api/use-users'
 import type { UserRole } from '../../api/types'
 import { useAuth } from '../../auth/auth-context'
 import { PageHeading } from '../../components/layout/AppShell'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { DataTable, type Column } from '../../components/ui/DataTable'
-import { FilterRow, FilterSelect } from '../../components/ui/FilterSelect'
-import { FormField } from '../../components/ui/FormField'
+import { FilterSelect } from '../../components/ui/FilterSelect'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { controlClass, secondaryButtonClass } from '../../components/ui/styles'
+import { secondaryButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
 import { useListParams } from '../../lib/use-list-params'
@@ -101,15 +101,14 @@ export function UsersPage() {
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.users')} />
-      <FormField id="users-search" label={t('users.search')}>
-        <input
-          id="users-search"
-          className={controlClass}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </FormField>
-      <FilterRow>
+      <FilterBar
+        search={{ value: search, onChange: setSearch, label: t('users.search') }}
+        activeCount={[searchParam, role].filter(Boolean).length}
+        onClear={() => {
+          setSearch('')
+          set({ search: null, role: null })
+        }}
+      >
         <FilterSelect
           label={t('users.role')}
           value={role}
@@ -119,7 +118,7 @@ export function UsersPage() {
             ...ROLES.map((item) => ({ value: item, label: t(`role.${item}`) })),
           ]}
         />
-      </FilterRow>
+      </FilterBar>
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}

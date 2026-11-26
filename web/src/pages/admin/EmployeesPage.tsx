@@ -7,12 +7,12 @@ import { PageHeading } from '../../components/layout/AppShell'
 import { BranchFilter, type BranchFilterValue } from '../../components/ui/BranchFilter'
 import { BranchText } from '../../components/ui/BranchText'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { DataTable, type Column } from '../../components/ui/DataTable'
-import { FilterRow, FilterSelect } from '../../components/ui/FilterSelect'
-import { FormField } from '../../components/ui/FormField'
+import { FilterSelect } from '../../components/ui/FilterSelect'
 import { IncludeDeletedToggle } from '../../components/ui/IncludeDeletedToggle'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { controlClass, primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { isBranch, localizedName } from '../../lib/names'
@@ -196,15 +196,14 @@ export function EmployeesPage() {
           {t('employees.add')}
         </button>
       </PageHeading>
-      <FormField id="employees-search" label={t('employees.search')}>
-        <input
-          id="employees-search"
-          className={controlClass}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </FormField>
-      <FilterRow>
+      <FilterBar
+        search={{ value: search, onChange: setSearch, label: t('employees.search') }}
+        activeCount={[searchParam, branch, active, includeDeleted].filter(Boolean).length}
+        onClear={() => {
+          setSearch('')
+          set({ search: null, branch: null, active: null, deleted: null })
+        }}
+      >
         <BranchFilter
           value={branch}
           onChange={(next: Branch | '') => set({ branch: next || null })}
@@ -219,11 +218,11 @@ export function EmployeesPage() {
             { value: 'false', label: t('status.inactive') },
           ]}
         />
-      </FilterRow>
-      <IncludeDeletedToggle
-        checked={includeDeleted}
-        onChange={(checked) => set({ deleted: checked ? '1' : null })}
-      />
+        <IncludeDeletedToggle
+          checked={includeDeleted}
+          onChange={(checked) => set({ deleted: checked ? '1' : null })}
+        />
+      </FilterBar>
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}

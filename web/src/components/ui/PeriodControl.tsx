@@ -142,9 +142,6 @@ export function PeriodControl({ value, onChange, periods = DEFAULT_PERIODS }: Pe
   )
 }
 
-/** Kept while pages move to PeriodControl. */
-export const PeriodBar = PeriodControl
-
 function describeRange(period: PeriodKind, anchor: Date, locale: typeof enUS): string {
   if (period === 'all') return ''
   if (period === 'day') return format(anchor, 'EEE d MMM yyyy', { locale })
