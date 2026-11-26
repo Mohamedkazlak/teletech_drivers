@@ -102,6 +102,7 @@ const ar = {
     month: 'شهر',
     year: 'سنة',
     all: 'الكل',
+    today: 'اليوم',
     previous: 'الفترة السابقة',
     next: 'الفترة التالية',
     label: 'الفترة',

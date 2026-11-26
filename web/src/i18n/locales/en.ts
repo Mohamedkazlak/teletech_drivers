@@ -102,6 +102,7 @@ const en = {
     month: 'Month',
     year: 'Year',
     all: 'All',
+    today: 'Today',
     previous: 'Previous period',
     next: 'Next period',
     label: 'Period',

@@ -267,7 +267,7 @@ describe('drivers admin roster', () => {
 
     renderPage(<Screen />, '/drivers/driver-1')
     expect(await screen.findByRole('heading', { name: 'Nader Ali' })).toBeInTheDocument()
-    await user.selectOptions(screen.getByRole('combobox', { name: 'Period' }), 'Year')
+    await user.click(screen.getByRole('radio', { name: 'Year' }))
     await waitFor(() => {
       expect(queriesFor('/drivers/driver-1/stats').some((query) => query?.period === 'year')).toBe(
         true,
@@ -276,7 +276,7 @@ describe('drivers admin roster', () => {
 
     await user.click(screen.getByRole('link', { name: 'Open Huda' }))
     expect(await screen.findByRole('heading', { name: 'Huda Samir' })).toBeInTheDocument()
-    expect(screen.getByRole('combobox', { name: 'Period' })).toHaveValue('week')
+    expect(screen.getByRole('radio', { name: 'Week' })).toHaveAttribute('aria-checked', 'true')
     await waitFor(() => {
       expect(queriesFor('/drivers/driver-2/stats').some((query) => query?.period === 'week')).toBe(
         true,
