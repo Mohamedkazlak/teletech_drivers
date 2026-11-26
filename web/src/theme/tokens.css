@@ -9,6 +9,9 @@
 
   /* Brand */
   --color-deep: #0b4da2; /* TeleTech blue: primary actions, active state */
+  --color-hero-in: #4fd19a; /* checked in, on the navy hero */
+  --color-hero-out: #8fb9ff; /* checked out, on the navy hero */
+  --color-hero-absent: #f2c26b; /* absent, on the navy hero */
   --color-toast-accent: #8fb9ff; /* accent text on the navy toast */
   --color-signal: #2f7bea; /* live / in-progress, focus glow */
   --color-mid: #4a78be;

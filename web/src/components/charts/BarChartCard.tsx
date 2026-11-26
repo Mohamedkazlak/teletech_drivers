@@ -1,3 +1,4 @@
+import { useReducedMotion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
@@ -23,7 +24,9 @@ function ChartTooltip({ active, label, payload }: TooltipProps) {
 }
 
 export function BarChartCard({ title, points }: { title: string; points: ChartPoint[] }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const reduce = useReducedMotion()
+  const rtl = i18n.dir() === 'rtl'
   return (
     <section className="flex flex-col rounded-card border border-line bg-white p-5 animate-rise">
       <h2 className="text-[15px] font-semibold text-navy">{title}</h2>
@@ -39,7 +42,14 @@ export function BarChartCard({ title, points }: { title: string; points: ChartPo
             ))}
           </ul>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={points} margin={{ top: 8, right: 4, bottom: 0, left: -18 }}>
+            <BarChart
+              data={points}
+              margin={
+                rtl
+                  ? { top: 8, right: -18, bottom: 0, left: 4 }
+                  : { top: 8, right: 4, bottom: 0, left: -18 }
+              }
+            >
               <defs>
                 <linearGradient id="bar-fill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#2F7BEA" />
@@ -49,6 +59,7 @@ export function BarChartCard({ title, points }: { title: string; points: ChartPo
               <CartesianGrid vertical={false} stroke="#E3E8F1" strokeDasharray="4 4" />
               <XAxis
                 dataKey="label"
+                reversed={rtl}
                 tickLine={false}
                 axisLine={false}
                 tick={{ fill: '#5B6B86', fontSize: 12 }}
@@ -56,6 +67,7 @@ export function BarChartCard({ title, points }: { title: string; points: ChartPo
                 height={44}
               />
               <YAxis
+                orientation={rtl ? 'right' : 'left'}
                 allowDecimals={false}
                 tickLine={false}
                 axisLine={false}
@@ -71,6 +83,7 @@ export function BarChartCard({ title, points }: { title: string; points: ChartPo
                 fill="url(#bar-fill)"
                 radius={[10, 10, 4, 4]}
                 maxBarSize={44}
+                isAnimationActive={!reduce}
                 animationDuration={700}
                 animationEasing="ease-out"
               />
