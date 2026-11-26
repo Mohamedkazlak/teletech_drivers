@@ -121,10 +121,7 @@ export function TripsPage() {
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.trips')} />
-      <FilterBar
-        activeCount={countActive(FILTER_KEYS)}
-        onClear={() => clear(FILTER_KEYS)}
-      >
+      <FilterBar activeCount={countActive(FILTER_KEYS)} onClear={() => clear(FILTER_KEYS)}>
         <FilterSelect
           label={t('trips.stage')}
           value={tab}
@@ -150,7 +147,13 @@ export function TripsPage() {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('trips.empty')}
+        empty={{
+          message: t('trips.empty'),
+          action:
+            countActive(FILTER_KEYS) > 0
+              ? { label: t('filters.clear'), onClick: () => clear(FILTER_KEYS) }
+              : undefined,
+        }}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

@@ -220,7 +220,10 @@ export function RequestedTripsPage() {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('requests.empty')}
+        empty={{
+          message: t('requests.empty'),
+          action: countActive(FILTER_KEYS) > 0 ? { label: t('filters.clear'), onClick: () => clear(FILTER_KEYS) } : undefined,
+        }}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

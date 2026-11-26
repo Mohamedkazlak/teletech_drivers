@@ -106,6 +106,12 @@ export function PlacesPage() {
     }
   }
 
+  const activeFilters = searchParam ? 1 : 0
+  function clearFilters() {
+    setSearch('')
+    set({ search: null })
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.places')}>
@@ -123,11 +129,8 @@ export function PlacesPage() {
       </PageHeading>
       <FilterBar
         search={{ value: search, onChange: setSearch, label: t('places.search') }}
-        activeCount={searchParam ? 1 : 0}
-        onClear={() => {
-          setSearch('')
-          set({ search: null })
-        }}
+        activeCount={activeFilters}
+        onClear={clearFilters}
       />
       <DataTable
         columns={columns}
@@ -138,7 +141,10 @@ export function PlacesPage() {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('places.empty')}
+        empty={{
+          message: t('places.empty'),
+          action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
+        }}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

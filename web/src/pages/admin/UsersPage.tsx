@@ -98,16 +98,19 @@ export function UsersPage() {
     [i18n.language, t, user?.id],
   )
 
+  const activeFilters = [searchParam, role].filter(Boolean).length
+  function clearFilters() {
+    setSearch('')
+    set({ search: null, role: null })
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.users')} />
       <FilterBar
         search={{ value: search, onChange: setSearch, label: t('users.search') }}
-        activeCount={[searchParam, role].filter(Boolean).length}
-        onClear={() => {
-          setSearch('')
-          set({ search: null, role: null })
-        }}
+        activeCount={activeFilters}
+        onClear={clearFilters}
       >
         <FilterSelect
           label={t('users.role')}
@@ -128,7 +131,10 @@ export function UsersPage() {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('users.empty')}
+        empty={{
+          message: t('users.empty'),
+          action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
+        }}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

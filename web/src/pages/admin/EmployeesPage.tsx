@@ -189,6 +189,12 @@ export function EmployeesPage() {
     ? localizedName(i18n.language, restoring.name_en, restoring.name_ar)
     : ''
 
+  const activeFilters = [searchParam, branch, active, includeDeleted].filter(Boolean).length
+  function clearFilters() {
+    setSearch('')
+    set({ search: null, branch: null, active: null, deleted: null })
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.employees')}>
@@ -198,11 +204,8 @@ export function EmployeesPage() {
       </PageHeading>
       <FilterBar
         search={{ value: search, onChange: setSearch, label: t('employees.search') }}
-        activeCount={[searchParam, branch, active, includeDeleted].filter(Boolean).length}
-        onClear={() => {
-          setSearch('')
-          set({ search: null, branch: null, active: null, deleted: null })
-        }}
+        activeCount={activeFilters}
+        onClear={clearFilters}
       >
         <BranchFilter
           value={branch}
@@ -232,7 +235,10 @@ export function EmployeesPage() {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('employees.empty')}
+        empty={{
+          message: t('employees.empty'),
+          action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
+        }}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

@@ -2,7 +2,13 @@ import { createContext, useContext } from 'react'
 
 export type ToastTone = 'success' | 'error' | 'info'
 
-export type ToastApi = (message: string, tone?: ToastTone) => void
+export type ToastAction = { label: string; onClick: () => void }
+
+export type ToastApi = (
+  message: string,
+  tone?: ToastTone,
+  options?: { action?: ToastAction },
+) => void
 
 export const ToastContext = createContext<ToastApi | null>(null)
 

@@ -7,6 +7,7 @@ import {
   RefreshIcon,
   SortIcon,
 } from '../icons'
+import { EmptyState, type EmptyStateAction } from './EmptyState'
 import { ghostButtonClass } from './styles'
 
 export type Column<T> = {
@@ -24,6 +25,8 @@ type DataTableProps<T> = {
   error?: string | null
   onRetry?: () => void
   emptyLabel?: string
+  /** Empty state with a reason and, when useful, a next step. Wins over emptyLabel. */
+  empty?: { message: string; action?: EmptyStateAction }
   page?: number
   lastPage?: number
   onPageChange?: (page: number) => void
@@ -41,6 +44,7 @@ export function DataTable<T>({
   error = null,
   onRetry,
   emptyLabel,
+  empty,
   page = 1,
   lastPage = 1,
   onPageChange,
@@ -153,11 +157,11 @@ export function DataTable<T>({
               </tr>
             ) : sortedRows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="px-4 py-14 text-center">
-                  <div className="mx-auto flex max-w-sm flex-col items-center gap-3 text-ink-muted">
-                    <EmptyRoute />
-                    <p>{emptyLabel ?? t('common.empty')}</p>
-                  </div>
+                <td colSpan={columns.length} className="px-4 py-14">
+                  <EmptyState
+                    message={empty?.message ?? emptyLabel ?? t('common.empty')}
+                    action={empty?.action}
+                  />
                 </td>
               </tr>
             ) : (
@@ -213,29 +217,4 @@ function compareValues(left: string | number | null, right: string | number | nu
   if (right === null) return -1
   if (typeof left === 'number' && typeof right === 'number') return left - right
   return String(left).localeCompare(String(right))
-}
-
-/** Small route drawing for empty tables (the app's empty-state motif). */
-function EmptyRoute() {
-  return (
-    <svg width="72" height="52" viewBox="0 0 132 96" fill="none" aria-hidden="true">
-      <circle cx="114" cy="23" r="22" fill="var(--color-pale)" />
-      <path
-        d="M16 75 C66 98 58 2 114 23"
-        stroke="var(--color-line)"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <path
-        d="M16 75 C66 98 58 2 114 23"
-        stroke="var(--color-deep)"
-        strokeWidth="4"
-        strokeLinecap="round"
-        strokeDasharray="6 10"
-        opacity="0.5"
-      />
-      <circle cx="16" cy="75" r="6" fill="var(--color-deep)" />
-      <circle cx="114" cy="23" r="7" fill="white" stroke="var(--color-deep)" strokeWidth="4" />
-    </svg>
-  )
 }

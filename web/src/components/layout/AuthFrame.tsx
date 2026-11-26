@@ -58,9 +58,7 @@ export function AuthFrame({ title, subtitle, children }: AuthFrameProps) {
         </div>
         <div className="rounded-auth border border-white/60 bg-white px-6 pb-6 pt-7 shadow-auth [animation-delay:80ms] animate-rise">
           <h1 className="text-[22px] font-semibold tracking-[-0.01em] text-navy">{title}</h1>
-          {subtitle ? (
-            <p className="mt-1 text-sm text-ink-muted animate-fade">{subtitle}</p>
-          ) : null}
+          {subtitle ? <p className="mt-1 text-sm text-ink-muted animate-fade">{subtitle}</p> : null}
           <div className="mt-6">{children}</div>
         </div>
       </div>

@@ -9,6 +9,7 @@ import {
 import { useAuth } from '../auth/auth-context'
 import { isWebRole } from '../auth/roles'
 import { PageHeading } from '../components/layout/AppShell'
+import { EmptyState } from '../components/ui/EmptyState'
 import { secondaryButtonClass } from '../components/ui/styles'
 import { messageForApiError } from '../lib/api-message'
 import { formatWhen } from '../lib/format'
@@ -41,16 +42,18 @@ export function NotificationsPage() {
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('notifications.title')}>
-        <button
-          type="button"
-          className={secondaryButtonClass}
-          disabled={!hasUnread || markAll.isPending}
-          onClick={() => {
-            void markAll.mutate()
-          }}
-        >
-          {t('notifications.markAll')}
-        </button>
+        {hasUnread ? (
+          <button
+            type="button"
+            className={secondaryButtonClass}
+            disabled={markAll.isPending}
+            onClick={() => {
+              void markAll.mutate()
+            }}
+          >
+            {t('notifications.markAll')}
+          </button>
+        ) : null}
       </PageHeading>
       {list.isPending ? (
         <p role="status" className="text-sm text-ink-muted">
@@ -66,7 +69,9 @@ export function NotificationsPage() {
           </button>
         </div>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-ink-muted">{t('notifications.empty')}</p>
+        <div className="rounded-card border border-line bg-white px-4 py-14">
+          <EmptyState message={t('notifications.empty')} />
+        </div>
       ) : (
         <ul className="flex flex-col gap-2">
           {rows.map((item) => {

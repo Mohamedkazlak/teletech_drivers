@@ -38,7 +38,7 @@ textarea {
 }
 
 /* Fields draw their own focus ring (controlClass). */
-input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+input:not([type='checkbox']):not([type='radio']):focus-visible,
 select:focus-visible,
 textarea:focus-visible {
   outline: none;

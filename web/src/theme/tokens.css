@@ -9,6 +9,7 @@
 
   /* Brand */
   --color-deep: #0b4da2; /* TeleTech blue: primary actions, active state */
+  --color-toast-accent: #8fb9ff; /* accent text on the navy toast */
   --color-signal: #2f7bea; /* live / in-progress, focus glow */
   --color-mid: #4a78be;
   --color-light: #8ca6d9;

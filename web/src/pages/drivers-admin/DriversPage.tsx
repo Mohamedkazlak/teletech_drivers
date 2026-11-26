@@ -173,6 +173,12 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
     ? localizedName(i18n.language, restoring.name_en, restoring.name_ar)
     : ''
 
+  const activeFilters = [attendance, searchParam, includeDeleted].filter(Boolean).length
+  function clearFilters() {
+    setSearch('')
+    set({ attendance: null, search: null, deleted: null })
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.drivers')}>
@@ -182,11 +188,8 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
       </PageHeading>
       <FilterBar
         search={{ value: search, onChange: setSearch, label: t('driverAdmin.search') }}
-        activeCount={[attendance, searchParam, includeDeleted].filter(Boolean).length}
-        onClear={() => {
-          setSearch('')
-          set({ attendance: null, search: null, deleted: null })
-        }}
+        activeCount={activeFilters}
+        onClear={clearFilters}
       >
         <FilterSelect
           label={t('driverAdmin.filter')}
@@ -214,7 +217,10 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('driverAdmin.empty')}
+        empty={{
+          message: t('driverAdmin.empty'),
+          action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
+        }}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

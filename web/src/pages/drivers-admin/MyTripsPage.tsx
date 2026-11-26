@@ -129,7 +129,13 @@ export function MyTripsPage() {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('myTrips.empty')}
+        empty={{
+          message: t('myTrips.empty'),
+          action:
+            countActive(['tab']) > 0
+              ? { label: t('filters.clear'), onClick: () => clear(['tab']) }
+              : undefined,
+        }}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}
