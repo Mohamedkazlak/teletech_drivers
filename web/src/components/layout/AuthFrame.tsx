@@ -1,7 +1,6 @@
 import { lazy, Suspense, type ReactNode } from 'react'
 import { BrandMark } from '../brand/BrandMark'
 import { LanguageToggle } from '../language/LanguageToggle'
-import BlurText from '../reactbits/BlurText'
 
 // WebGL rings (React Bits) load after the form, so sign-in is never blocked.
 const MagicRings = lazy(() => import('../reactbits/MagicRings'))
@@ -60,14 +59,7 @@ export function AuthFrame({ title, subtitle, children }: AuthFrameProps) {
         <div className="rounded-auth border border-white/60 bg-white px-6 pb-6 pt-7 shadow-auth [animation-delay:80ms] animate-rise">
           <h1 className="text-[22px] font-semibold tracking-[-0.01em] text-navy">{title}</h1>
           {subtitle ? (
-            <BlurText
-              text={subtitle}
-              className="mt-1 text-sm text-ink-muted"
-              animateBy="words"
-              direction="bottom"
-              delay={60}
-              trigger="load"
-            />
+            <p className="mt-1 text-sm text-ink-muted animate-fade">{subtitle}</p>
           ) : null}
           <div className="mt-6">{children}</div>
         </div>

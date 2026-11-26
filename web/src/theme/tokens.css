@@ -44,6 +44,7 @@
 
   --animate-rise: rise 420ms var(--ease-out) backwards;
   --animate-fade: fade 260ms var(--ease-out) backwards;
+  --animate-fade-quick: fade 180ms var(--ease-out) backwards;
   --animate-pop: pop 220ms var(--ease-out) backwards;
   --animate-shimmer: shimmer 1.4s linear infinite;
   --animate-pulse-ring: pulse-ring 2.4s var(--ease-out) infinite;
