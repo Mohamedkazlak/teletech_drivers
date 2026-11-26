@@ -32,7 +32,7 @@ export const iconButtonClass = `relative inline-flex h-10 w-10 shrink-0 items-ce
 
 /** Floating menu panel (account, notifications). */
 export const menuPanelClass =
-  'absolute end-0 z-30 mt-2 origin-top-right rounded-[14px] border border-line bg-white p-1.5 shadow-float animate-pop rtl:origin-top-left'
+  'absolute end-0 z-30 mt-2 origin-top-right rounded-[14px] border border-line bg-white p-1.5 shadow-float animate-menu-in rtl:origin-top-left'
 
 export const menuItemClass =
   'flex w-full items-center gap-2.5 rounded-[10px] px-3 py-2 text-start text-sm text-navy transition-colors duration-150 hover:bg-pale'

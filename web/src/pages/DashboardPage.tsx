@@ -1,28 +1,26 @@
-import type { TFunction } from 'i18next'
-import type { ComponentType, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import type { AdminDashboard } from '../api/types'
 import { useAdminDashboard } from '../api/use-dashboard'
+import { useTrips } from '../api/use-trips'
 import { RingField } from '../components/brand/BrandMark'
-import { BarChartCard, type ChartPoint } from '../components/charts/BarChartCard'
-import {
-  AlertIcon,
-  ArrowEndIcon,
-  CarIcon,
-  ClipboardIcon,
-  PeopleIcon,
-  PinIcon,
-  RefreshIcon,
-  RouteIcon,
-} from '../components/icons'
+import { AlertIcon, ArrowEndIcon, CheckIcon, RefreshIcon } from '../components/icons'
 import { PageHeading } from '../components/layout/AppShell'
-import CountUp from '../components/reactbits/CountUp'
-import { secondaryButtonClass } from '../components/ui/styles'
+import { RouteCell } from '../components/trips/RouteCell'
+import { TripPhase } from '../components/trips/TripPhase'
+import { Counter } from '../components/ui/Counter'
+import { EmptyState } from '../components/ui/EmptyState'
+import { ghostButtonClass, secondaryButtonClass } from '../components/ui/styles'
 import { messageForApiError } from '../lib/api-message'
+import { staggerDelay } from '../lib/motion'
+import { localizedName } from '../lib/names'
 
-type IconType = ComponentType<{ size?: number; className?: string }>
+const ON_THE_ROAD_LIMIT = 5
 
+/*
+  Status first: today's attendance, then what needs someone to act, then the
+  totals in one line, then the trips that are moving right now.
+*/
 export function DashboardPage() {
   const { t } = useTranslation()
   const dashboard = useAdminDashboard()
@@ -58,109 +56,9 @@ export function DashboardPage() {
       {summary ? (
         <>
           <FleetToday summary={summary} />
-          <CardGroup title={t('dashboard.drivers')} icon={CarIcon}>
-            <StatCard
-              to="/admin/drivers"
-              label={t('dashboard.driversTotal')}
-              value={summary.drivers.total}
-            />
-            <StatCard
-              to="/admin/attendance"
-              label={t('dashboard.driversCheckedIn')}
-              value={summary.drivers.checked_in}
-              tone="success"
-            />
-            <StatCard
-              to="/admin/attendance"
-              label={t('dashboard.driversCheckedOut')}
-              value={summary.drivers.checked_out}
-            />
-            <StatCard
-              to="/admin/attendance"
-              label={t('dashboard.driversAbsent')}
-              value={summary.drivers.absent}
-              tone="warning"
-            />
-          </CardGroup>
-          <CardGroup title={t('dashboard.trips')} icon={RouteIcon}>
-            <StatCard
-              to="/admin/trips?stage=unassigned"
-              label={t('dashboard.tripsUnassigned')}
-              value={summary.trips.unassigned}
-              tone="warning"
-            />
-            <StatCard
-              to="/admin/trips?stage=assigned"
-              label={t('dashboard.tripsAssigned')}
-              value={summary.trips.assigned}
-            />
-            <StatCard
-              to="/admin/trips?stage=in_progress"
-              label={t('dashboard.tripsInProgress')}
-              value={summary.trips.in_progress}
-              tone="live"
-            />
-            <StatCard
-              to="/admin/trips?stage=completed&finished_period=day"
-              label={t('dashboard.tripsCompletedToday')}
-              value={summary.trips.completed_today}
-              tone="success"
-            />
-            <StatCard
-              to="/admin/trips?stage=completed&finished_period=week"
-              label={t('dashboard.tripsCompletedWeek')}
-              value={summary.trips.completed_this_week}
-            />
-          </CardGroup>
-          <div className="grid gap-7 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
-            <div className="flex flex-col gap-7">
-              <CardGroup title={t('dashboard.requests')} icon={ClipboardIcon} compact>
-                <StatCard
-                  to="/admin/trip-requests?status=pending"
-                  label={t('dashboard.requestsPending')}
-                  value={summary.requests.pending}
-                  tone="warning"
-                />
-                <StatCard
-                  to="/admin/trip-requests?status=approved"
-                  label={t('dashboard.requestsApproved')}
-                  value={summary.requests.approved}
-                  tone="success"
-                />
-                <StatCard
-                  to="/admin/trip-requests?status=rejected"
-                  label={t('dashboard.requestsRejected')}
-                  value={summary.requests.rejected}
-                  tone="danger"
-                />
-              </CardGroup>
-              <div className="grid gap-7 sm:grid-cols-3">
-                <CardGroup title={t('dashboard.employees')} icon={PeopleIcon} single>
-                  <StatCard
-                    to="/admin/employees"
-                    label={t('dashboard.employees')}
-                    value={summary.employees_total}
-                  />
-                </CardGroup>
-                <CardGroup title={t('dashboard.places')} icon={PinIcon} single>
-                  <StatCard
-                    to="/admin/places"
-                    label={t('dashboard.places')}
-                    value={summary.places_total}
-                  />
-                </CardGroup>
-                <CardGroup title={t('dashboard.unconfirmed')} icon={AlertIcon} single>
-                  <StatCard
-                    to="/admin/trips?unconfirmed=true"
-                    label={t('dashboard.unconfirmed')}
-                    value={summary.unconfirmed_trips}
-                    tone={summary.unconfirmed_trips > 0 ? 'warning' : undefined}
-                  />
-                </CardGroup>
-              </div>
-            </div>
-            <BarChartCard title={t('dashboard.chart')} points={tripPoints(summary.trips, t)} />
-          </div>
+          <AttentionStrip summary={summary} />
+          <TotalsLine summary={summary} />
+          <OnTheRoad />
         </>
       ) : null}
     </section>
@@ -174,51 +72,66 @@ export function DashboardPage() {
 function FleetToday({ summary }: { summary: AdminDashboard }) {
   const { t } = useTranslation()
   const { total, checked_in: checkedIn, checked_out: checkedOut, absent } = summary.drivers
-  const safeTotal = Math.max(total, checkedIn + checkedOut + absent, 1)
   const segments = [
-    { key: 'in', value: checkedIn, label: t('dashboard.driversCheckedIn'), color: '#4fd19a' },
-    { key: 'out', value: checkedOut, label: t('dashboard.driversCheckedOut'), color: '#8fb9ff' },
-    { key: 'absent', value: absent, label: t('dashboard.driversAbsent'), color: '#f2c26b' },
+    {
+      key: 'in',
+      value: checkedIn,
+      label: t('dashboard.driversCheckedIn'),
+      color: 'var(--color-hero-in)',
+    },
+    {
+      key: 'out',
+      value: checkedOut,
+      label: t('dashboard.driversCheckedOut'),
+      color: 'var(--color-hero-out)',
+    },
+    {
+      key: 'absent',
+      value: absent,
+      label: t('dashboard.driversAbsent'),
+      color: 'var(--color-hero-absent)',
+    },
   ]
+  const counted = Math.max(total, checkedIn + checkedOut + absent, 1)
 
   return (
     <section
       aria-label={t('dashboard.attendanceToday')}
-      className="relative overflow-hidden rounded-[22px] bg-[linear-gradient(135deg,#0b4da2_0%,#0b1f45_55%,#071533_100%)] p-6 text-white shadow-float animate-rise sm:p-7"
+      className="relative overflow-hidden rounded-[22px] bg-[linear-gradient(135deg,var(--color-deep)_0%,var(--color-navy)_55%,var(--color-navy-deep)_100%)] p-6 text-white shadow-float animate-rise sm:p-7"
     >
       <RingField />
       <div className="relative grid gap-7 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:items-end">
         <div>
           <p className="text-sm font-medium text-white/70">{t('dashboard.attendanceToday')}</p>
-          <p className="mt-2 text-[17px] font-medium text-white/90">
-            <span
-              aria-hidden="true"
-              className="me-1 text-[44px] leading-none font-semibold tracking-[-0.03em] text-white tabular"
-            >
-              <CountUp to={checkedIn} duration={1.1} mode="roll" trigger="load" />
+          <p className="mt-2 flex items-baseline gap-1 text-[17px] font-medium text-white/90">
+            <Counter
+              value={checkedIn}
+              className="text-[44px] leading-none font-semibold tracking-[-0.03em] text-white"
+            />
+            <span aria-hidden="true" className="text-white/60 tabular">
+              / {total}
             </span>
             <span className="sr-only">
               {t('dashboard.checkedInOf', { count: checkedIn, total })}
             </span>
-            <span aria-hidden="true" className="text-white/60 tabular">
-              / {total}
-            </span>
           </p>
           <div
-            className="mt-5 flex h-2.5 w-full overflow-hidden rounded-full bg-white/10"
+            className="mt-5 flex h-2.5 w-full gap-[3px] overflow-hidden rounded-full bg-white/10"
             aria-hidden="true"
           >
-            {segments.map((segment, index) => (
-              <span
-                key={segment.key}
-                className="h-full origin-left transition-[width] duration-700 ease-[var(--ease-out)] first:rounded-s-full last:rounded-e-full rtl:origin-right"
-                style={{
-                  width: `${(segment.value / safeTotal) * 100}%`,
-                  background: segment.color,
-                  animation: `bar-grow 900ms var(--ease-out) ${150 + index * 90}ms backwards`,
-                }}
-              />
-            ))}
+            {segments
+              .filter((segment) => segment.value > 0)
+              .map((segment, index) => (
+                <span
+                  key={segment.key}
+                  className="h-full origin-left rounded-full rtl:origin-right"
+                  style={{
+                    flexBasis: `${(segment.value / counted) * 100}%`,
+                    background: segment.color,
+                    animation: `bar-grow 900ms var(--ease-out) ${150 + index * 90}ms backwards`,
+                  }}
+                />
+              ))}
           </div>
           <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-[13px] text-white/75">
             {segments.map((segment) => (
@@ -243,131 +156,238 @@ function FleetToday({ summary }: { summary: AdminDashboard }) {
   )
 }
 
-function HeroFigure({ label, value, live = false }: { label: string; value: number; live?: boolean }) {
+function HeroFigure({
+  label,
+  value,
+  live = false,
+}: {
+  label: string
+  value: number
+  live?: boolean
+}) {
   return (
     <div className="min-w-[8.5rem] flex-1 rounded-[16px] bg-white/[0.08] px-4 py-3.5 shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08)] md:flex-none">
       <p className="flex items-center gap-2 text-[13px] text-white/70">
-        {live ? (
+        {live && value > 0 ? (
           <span aria-hidden="true" className="relative inline-flex h-2 w-2">
-            <span className="absolute inset-0 rounded-full bg-[#4fd19a] animate-pulse-ring" />
-            <span className="relative h-2 w-2 rounded-full bg-[#4fd19a]" />
+            <span className="absolute inset-0 rounded-full bg-[var(--color-hero-in)] animate-pulse-ring" />
+            <span className="relative h-2 w-2 rounded-full bg-[var(--color-hero-in)]" />
           </span>
         ) : null}
         {label}
       </p>
-      <p className="mt-1 text-[28px] leading-none font-semibold tracking-[-0.02em] tabular">
-        <span aria-hidden="true">
-          <CountUp to={value} duration={1} mode="roll" trigger="load" />
-        </span>
-        <span className="sr-only">{value}</span>
-      </p>
+      <Counter
+        value={value}
+        className="mt-1 text-[28px] leading-none font-semibold tracking-[-0.02em]"
+      />
     </div>
   )
 }
 
-function tripPoints(trips: AdminDashboard['trips'], translate: TFunction): ChartPoint[] {
-  return [
-    { label: translate('status.unassigned'), value: trips.unassigned },
-    { label: translate('status.assigned'), value: trips.assigned },
-    { label: translate('status.in_progress'), value: trips.in_progress },
-    { label: translate('dashboard.tripsCompletedToday'), value: trips.completed_today },
-    { label: translate('dashboard.tripsCompletedWeek'), value: trips.completed_this_week },
+/** Four things that need someone to act; calm when there's nothing to do. */
+function AttentionStrip({ summary }: { summary: AdminDashboard }) {
+  const { t } = useTranslation()
+  const items = [
+    {
+      to: '/admin/trips?stage=unassigned',
+      label: t('dashboard.tripsUnassigned'),
+      value: summary.trips.unassigned,
+    },
+    {
+      to: '/admin/trip-requests?status=pending',
+      label: t('dashboard.requestsPending'),
+      value: summary.requests.pending,
+    },
+    {
+      to: '/admin/trips?unconfirmed=true',
+      label: t('dashboard.unconfirmed'),
+      value: summary.unconfirmed_trips,
+    },
+    {
+      to: '/admin/attendance?status=absent',
+      label: t('dashboard.absentDrivers'),
+      value: summary.drivers.absent,
+    },
   ]
-}
 
-function CardGroup({
-  title,
-  icon: Icon,
-  compact = false,
-  single = false,
-  children,
-}: {
-  title: string
-  icon: IconType
-  compact?: boolean
-  single?: boolean
-  children: ReactNode
-}) {
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="flex items-center gap-2 text-[15px] font-semibold text-navy">
-        <Icon size={18} className="text-deep" />
-        {title}
+    <section aria-labelledby="attention-heading" className="flex flex-col gap-3">
+      <h2 id="attention-heading" className="text-lg font-semibold tracking-[-0.01em] text-navy">
+        {t('dashboard.attention')}
       </h2>
-      <div
-        className={`grid gap-3 [&>*:nth-child(2)]:[animation-delay:50ms] [&>*:nth-child(3)]:[animation-delay:90ms] [&>*:nth-child(4)]:[animation-delay:120ms] [&>*:nth-child(5)]:[animation-delay:145ms] ${
-          single
-            ? ''
-            : compact
-              ? 'sm:grid-cols-3'
-              : 'sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5'
-        }`}
-      >
-        {children}
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {items.map((item, index) => {
+          const needsAction = item.value > 0
+          return (
+            <Link
+              key={item.to}
+              to={item.to}
+              data-tone={needsAction ? 'warning' : 'calm'}
+              style={{ animationDelay: `${staggerDelay(index)}ms` }}
+              className={`group flex min-h-[96px] flex-col justify-between rounded-card border px-4 py-3.5 transition-[border-color,transform,background-color] duration-[180ms] ease-[var(--ease-out)] animate-row-in hover:-translate-y-0.5 active:scale-[0.97] motion-reduce:hover:translate-y-0 ${
+                needsAction
+                  ? 'border-warning/45 bg-warning/[0.07] hover:border-warning/70'
+                  : 'border-line bg-white hover:border-deep/35'
+              }`}
+            >
+              <span className="flex items-center gap-2 text-[13px] text-ink-muted">
+                {needsAction ? (
+                  <span
+                    aria-hidden="true"
+                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-warning"
+                  />
+                ) : null}
+                {item.label}
+              </span>{' '}
+              <span className="mt-2 flex items-end justify-between gap-2">
+                {needsAction ? (
+                  <Counter
+                    value={item.value}
+                    className="text-[30px] leading-none font-semibold tracking-[-0.02em] text-warning-ink"
+                  />
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-success-ink">
+                    <CheckIcon size={16} />
+                    {t('dashboard.allClear')}
+                  </span>
+                )}
+                <ArrowEndIcon
+                  size={18}
+                  className="text-deep opacity-0 transition-[opacity,transform] duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 rtl:group-hover:-translate-x-0.5"
+                />
+              </span>
+            </Link>
+          )
+        })}
       </div>
     </section>
   )
 }
 
-type Tone = 'success' | 'warning' | 'danger' | 'live'
+/** Totals that don't need action, on one quiet line. */
+function TotalsLine({ summary }: { summary: AdminDashboard }) {
+  const { t } = useTranslation()
+  const items = [
+    {
+      to: '/admin/drivers',
+      value: summary.drivers.total,
+      label: t('dashboard.totalDrivers', { count: summary.drivers.total }),
+    },
+    {
+      to: '/admin/employees',
+      value: summary.employees_total,
+      label: t('dashboard.totalEmployees', { count: summary.employees_total }),
+    },
+    {
+      to: '/admin/places',
+      value: summary.places_total,
+      label: t('dashboard.totalPlaces', { count: summary.places_total }),
+    },
+    {
+      to: '/admin/trips?stage=completed&finished_period=day',
+      value: summary.trips.completed_today,
+      label: t('dashboard.totalCompletedToday'),
+    },
+    {
+      to: '/admin/trips?stage=completed&finished_period=week',
+      value: summary.trips.completed_this_week,
+      label: t('dashboard.totalCompletedWeek'),
+    },
+  ]
 
-const toneDot: Record<Tone, string> = {
-  success: 'bg-success',
-  warning: 'bg-warning',
-  danger: 'bg-danger',
-  live: 'bg-signal',
+  return (
+    <section aria-label={t('dashboard.totals')}>
+      <ul className="flex flex-wrap items-center gap-x-1 gap-y-2 rounded-card border border-line bg-white px-2 py-1.5">
+        {items.map((item, index) => (
+          <li
+            key={item.to}
+            className="flex items-center animate-row-in"
+            style={{ animationDelay: `${staggerDelay(index)}ms` }}
+          >
+            {index > 0 ? <span aria-hidden="true" className="mx-1 h-4 w-px bg-line" /> : null}
+            <Link
+              to={item.to}
+              className="inline-flex items-baseline gap-1.5 rounded-[10px] px-3 py-2 text-sm text-ink-muted transition-colors duration-150 hover:bg-pale hover:text-navy"
+            >
+              <Counter value={item.value} className="text-base font-semibold text-navy" />{' '}
+              <span>{item.label}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
 }
 
-function StatCard({
-  to,
-  label,
-  value,
-  tone,
-}: {
-  to: string
-  label: string
-  value: number
-  tone?: Tone
-}) {
+/** Up to five trips that are moving right now. */
+function OnTheRoad() {
+  const { t, i18n } = useTranslation()
+  const trips = useTrips({ stage: 'in_progress', per_page: ON_THE_ROAD_LIMIT })
+  const rows = trips.data?.data ?? []
+
   return (
-    <Link
-      to={to}
-      className="group relative flex min-h-[104px] flex-col justify-between overflow-hidden rounded-card border border-line bg-white px-4 py-3.5 text-start transition-[border-color,box-shadow,transform] duration-200 ease-[var(--ease-out)] animate-rise hover:-translate-y-0.5 hover:border-deep/35 active:translate-y-0 active:scale-[0.99]"
-    >
-      <p className="flex items-center gap-2 text-[13px] leading-snug text-ink-muted">
-        {tone ? (
-          <span aria-hidden="true" className={`h-1.5 w-1.5 shrink-0 rounded-full ${toneDot[tone]}`} />
-        ) : null}
-        {label}
-      </p>
-      <div className="mt-2 flex items-end justify-between gap-2">
-        <p className="text-[30px] leading-none font-semibold tracking-[-0.02em] text-navy tabular">
-          <span aria-hidden="true">
-            <CountUp to={value} duration={1} mode="roll" trigger="load" />
-          </span>
-          <span className="sr-only">{value}</span>
-        </p>
-        <ArrowEndIcon
-          size={18}
-          className="text-deep opacity-0 transition-[opacity,transform] duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 rtl:group-hover:-translate-x-0.5"
-        />
+    <section aria-labelledby="road-heading" className="flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-3">
+        <h2 id="road-heading" className="text-lg font-semibold tracking-[-0.01em] text-navy">
+          {t('dashboard.liveNow')}
+        </h2>
+        <Link to="/admin/trips?stage=in_progress" className={ghostButtonClass}>
+          {t('dashboard.viewAll')}
+        </Link>
       </div>
-    </Link>
+      <div className="overflow-hidden rounded-card border border-line bg-white">
+        {trips.isPending ? (
+          <div aria-hidden="true" className="divide-y divide-line">
+            {[0, 1, 2].map((index) => (
+              <div key={index} className="flex h-16 items-center gap-6 px-4">
+                <span className="skeleton block h-3.5 w-40" />
+                <span className="skeleton block h-3.5 w-24" />
+              </div>
+            ))}
+          </div>
+        ) : trips.isError ? (
+          <p className="px-4 py-6 text-sm text-danger-ink">{messageForApiError(trips.error, t)}</p>
+        ) : rows.length === 0 ? (
+          <div className="px-4 py-10">
+            <EmptyState message={t('dashboard.noneOnRoad')} />
+          </div>
+        ) : (
+          <ul className="divide-y divide-line">
+            {rows.map((trip, index) => (
+              <li
+                key={trip.id}
+                className="grid gap-x-6 gap-y-2 px-4 py-3 animate-row-in sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto] sm:items-center"
+                style={{ animationDelay: `${staggerDelay(index)}ms` }}
+              >
+                <RouteCell from={trip.pickup_summary} to={trip.destination_summary} />
+                <span className="text-sm text-navy">
+                  {trip.driver
+                    ? localizedName(i18n.language, trip.driver.name_en, trip.driver.name_ar)
+                    : t('trips.unassigned')}
+                </span>
+                <TripPhase status={trip.status} confirmation={trip.confirmation_status} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
   )
 }
 
 function DashboardSkeleton() {
   return (
     <div aria-hidden="true" className="flex flex-col gap-7">
-      <div className="h-[168px] rounded-[22px] bg-[linear-gradient(135deg,#0b4da2_0%,#0b1f45_55%,#071533_100%)] opacity-90" />
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
-        {[0, 1, 2, 3, 4].map((index) => (
-          <div key={index} className="h-[104px] rounded-card border border-line bg-white p-4">
-            <span className="skeleton block h-3 w-24" />
+      <div className="h-[168px] rounded-[22px] bg-[linear-gradient(135deg,var(--color-deep)_0%,var(--color-navy)_55%,var(--color-navy-deep)_100%)] opacity-90" />
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {[0, 1, 2, 3].map((index) => (
+          <div key={index} className="h-[96px] rounded-card border border-line bg-white p-4">
+            <span className="skeleton block h-3 w-28" />
             <span className="skeleton mt-6 block h-7 w-12" />
           </div>
         ))}
       </div>
+      <div className="h-[52px] rounded-card border border-line bg-white" />
     </div>
   )
 }

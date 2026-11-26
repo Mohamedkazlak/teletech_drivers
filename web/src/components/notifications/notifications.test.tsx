@@ -8,6 +8,7 @@ import { api } from '../../api/client'
 import type { User } from '../../api/types'
 import { AuthContext } from '../../auth/auth-context'
 import { NotificationMenu } from './NotificationMenu'
+import { NotificationsPage } from '../../pages/NotificationsPage'
 import i18n from '../../i18n'
 import { pageMeta } from '../../test/render-page'
 
@@ -121,5 +122,40 @@ describe('notification menu', () => {
     await person.click(await screen.findByRole('button', { name: 'Notifications' }))
     await person.click(await screen.findByRole('menuitem', { name: 'View all' }))
     expect(await screen.findByText('all-notifications')).toBeInTheDocument()
+  })
+})
+
+describe('notifications page', () => {
+  beforeEach(() => {
+    http.get.mockReset()
+  })
+
+  it('shows an empty state and no mark-all button when there is nothing', async () => {
+    http.get.mockImplementation(async (path: string) => {
+      if (path === '/notifications') return { data: [], meta: pageMeta(0) }
+      if (path === '/notifications/unread-count') return { count: 0 }
+      throw new Error(path)
+    })
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    render(
+      <QueryClientProvider client={client}>
+        <AuthContext.Provider
+          value={{
+            status: 'authenticated',
+            user: user(),
+            login: vi.fn(),
+            logout: vi.fn(),
+            refresh: vi.fn(async () => user()),
+          }}
+        >
+          <MemoryRouter>
+            <NotificationsPage />
+          </MemoryRouter>
+        </AuthContext.Provider>
+      </QueryClientProvider>,
+    )
+    expect(await screen.findByText('No notifications yet.')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Mark all as read' })).not.toBeInTheDocument()
+    expect(document.querySelector('svg.rtl\\:-scale-x-100')).not.toBeNull()
   })
 })

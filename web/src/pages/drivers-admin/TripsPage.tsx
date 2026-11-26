@@ -8,11 +8,12 @@ import {
 } from '../../api/drivers-queries'
 import { PageHeading } from '../../components/layout/AppShell'
 import { BranchFilter, type BranchFilterValue } from '../../components/ui/BranchFilter'
+import { FilterBar } from '../../components/ui/FilterBar'
+import { tripColumns } from '../../components/trips/trip-columns'
 import { DataTable, type Column } from '../../components/ui/DataTable'
-import { FilterRow, FilterSelect } from '../../components/ui/FilterSelect'
-import { PeriodBar } from '../../components/ui/PeriodBar'
-import { StatusBadge } from '../../components/ui/StatusBadge'
-import { secondaryButtonClass } from '../../components/ui/styles'
+import { FilterSelect } from '../../components/ui/FilterSelect'
+import { PeriodControl } from '../../components/ui/PeriodControl'
+import { ghostButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
 import { formatWhen } from '../../lib/format'
 import { isBranch, localizedName } from '../../lib/names'
@@ -31,9 +32,11 @@ function readBranch(value: string | null): BranchFilterValue {
   return isBranch(value) ? value : ''
 }
 
+const FILTER_KEYS = ['stage', 'branch', 'period', 'date'] as const
+
 export function TripsPage() {
   const { t, i18n } = useTranslation()
-  const { params, set, page, setPage } = useListParams()
+  const { params, set, page, setPage, countActive, clear } = useListParams()
   const tab = readTab(params.get('stage'))
   const branch = readBranch(params.get('branch'))
   const period = readTripPeriod(params.get('period'))
@@ -46,79 +49,28 @@ export function TripsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const columns = useMemo<Column<TripSummary>[]>(
-    () => [
-      {
-        id: 'people',
-        header: t('trips.people'),
-        accessor: (row) => peopleLabel(row, i18n.language, t('common.dash')),
-      },
-      {
-        id: 'route',
-        header: t('requests.route'),
-        accessor: (row) =>
-          t('requests.routeValue', {
-            from: row.pickup_summary || t('common.dash'),
-            to: row.destination_summary || t('common.dash'),
-          }),
-      },
-      {
-        id: 'driver',
-        header: t('trips.driver'),
-        accessor: (row) =>
-          row.driver
-            ? localizedName(i18n.language, row.driver.name_en, row.driver.name_ar)
-            : t('trips.unassigned'),
-      },
-      {
-        id: 'status',
-        header: t('requests.status'),
-        accessor: (row) => (
-          <span className="inline-flex flex-wrap gap-1">
-            <StatusBadge status={row.status} />
-            {row.confirmation_status === 'unconfirmed' ? (
-              <StatusBadge status="unconfirmed" />
-            ) : null}
-          </span>
-        ),
-      },
-      {
-        id: 'when',
-        header: t('trips.scheduled'),
-        sortValue: (row) => row.scheduled_at,
-        accessor: (row) => (
-          <span>
-            <span>{formatWhen(row.scheduled_at, i18n.language)}</span>
-            {row.going_started_at || row.finished_at ? (
-              <span className="mt-1 block text-xs text-ink-muted">
-                {formatWhen(row.going_started_at, i18n.language) || t('common.dash')}
-                {' – '}
-                {formatWhen(row.finished_at, i18n.language) || t('common.dash')}
-              </span>
-            ) : null}
-          </span>
-        ),
-      },
-      {
-        id: 'actions',
-        header: t('common.actions'),
-        accessor: (row) => (
-          <button
-            type="button"
-            className={secondaryButtonClass}
-            onClick={() => setSelectedId(row.id)}
-          >
+    () =>
+      tripColumns<TripSummary>(t, i18n.language, {
+        people: (trip) => peopleLabel(trip, i18n.language, t('common.dash')),
+        whenDetail: (trip) =>
+          trip.going_started_at || trip.finished_at
+            ? `${formatWhen(trip.going_started_at, i18n.language) || t('common.dash')} – ${
+                formatWhen(trip.finished_at, i18n.language) || t('common.dash')
+              }`
+            : null,
+        actions: (trip) => (
+          <button type="button" className={ghostButtonClass} onClick={() => setSelectedId(trip.id)}>
             {t('common.view')}
           </button>
         ),
-      },
-    ],
+      }),
     [i18n.language, t],
   )
 
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.trips')} />
-      <FilterRow>
+      <FilterBar activeCount={countActive(FILTER_KEYS)} onClear={() => clear(FILTER_KEYS)}>
         <FilterSelect
           label={t('trips.stage')}
           value={tab}
@@ -129,12 +81,12 @@ export function TripsPage() {
           value={branch}
           onChange={(next: Branch | '') => set({ branch: next || null })}
         />
-      </FilterRow>
-      <PeriodBar
-        periods={TRIP_PERIODS}
-        value={{ period, date: period === 'all' ? undefined : date }}
-        onChange={(next) => set({ period: next.period, date: next.date ?? null })}
-      />
+        <PeriodControl
+          periods={TRIP_PERIODS}
+          value={{ period, date: period === 'all' ? undefined : date }}
+          onChange={(next) => set({ period: next.period, date: next.date ?? null })}
+        />
+      </FilterBar>
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}
@@ -144,7 +96,15 @@ export function TripsPage() {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('trips.empty')}
+        empty={{
+          message: t('trips.empty'),
+          action:
+            countActive(FILTER_KEYS) > 0
+              ? { label: t('filters.clear'), onClick: () => clear(FILTER_KEYS) }
+              : undefined,
+        }}
+        total={list.data?.meta.total}
+        onRowClick={(row) => setSelectedId(row.id)}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

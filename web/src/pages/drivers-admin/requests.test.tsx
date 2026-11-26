@@ -6,7 +6,13 @@ import { ApiError } from '../../api/errors'
 import type { DriverRecommendation, DriverSummary } from '../../api/types'
 import i18n from '../../i18n'
 import { cairoInputToIso } from '../../lib/cairo-schedule'
-import { paginated, renderPage, tripRequest, tripSummary } from '../../test/render-page'
+import {
+  paginated,
+  renderPage,
+  tripRequest,
+  tripSummary,
+  chooseRowAction,
+} from '../../test/render-page'
 import { RequestsPage } from './RequestsPage'
 
 vi.mock('../../components/map/MapView', () => ({
@@ -130,7 +136,7 @@ describe('drivers admin requests', () => {
     })
 
     renderPage(<RequestsPage />)
-    await user.click(await screen.findByRole('button', { name: 'Create trip & assign driver' }))
+    await chooseRowAction(user, 'Sara Nabil', 'Create trip & assign driver')
 
     await waitFor(() => {
       expect(http.post).toHaveBeenCalledWith('/trips/from-requests', {

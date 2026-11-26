@@ -1,7 +1,7 @@
 const en = {
   app: {
-    name: 'TeleTech Drivers',
-    tagline: 'Fleet console',
+    name: 'TeleCars',
+    tagline: 'TeleTech fleet console',
   },
   common: {
     loading: 'Loading…',
@@ -34,6 +34,13 @@ const en = {
     restore: 'Restore',
     includeDeleted: 'Include deleted',
     deleted: 'Deleted',
+  },
+  filters: {
+    clear: 'Clear filters',
+    clearSearch: 'Clear search',
+    anyDriver: 'Any driver',
+    clearDriver: 'Clear driver',
+    unknownDriver: 'Unknown driver',
   },
   nav: {
     dashboard: 'Dashboard',
@@ -102,6 +109,7 @@ const en = {
     month: 'Month',
     year: 'Year',
     all: 'All',
+    today: 'Today',
     previous: 'Previous period',
     next: 'Next period',
     label: 'Period',
@@ -115,6 +123,9 @@ const en = {
     passwordMatch: 'The passwords do not match.',
   },
   table: {
+    actionsFor: 'Actions for {{name}}',
+    results_one: '{{count}} result',
+    results_other: '{{count}} results',
     sort: 'Sort by {{column}}',
   },
   status: {
@@ -190,6 +201,20 @@ const en = {
     select: 'Select a driver on the map.',
   },
   dashboard: {
+    attention: 'Needs attention',
+    allClear: 'All clear',
+    absentDrivers: 'Absent drivers',
+    totals: 'Totals',
+    totalDrivers_one: 'driver',
+    totalDrivers_other: 'drivers',
+    totalEmployees_one: 'employee',
+    totalEmployees_other: 'employees',
+    totalPlaces_one: 'place',
+    totalPlaces_other: 'places',
+    totalCompletedToday: 'completed today',
+    totalCompletedWeek: 'completed this week',
+    viewAll: 'View all',
+    noneOnRoad: 'No trips on the road right now.',
     drivers: 'Drivers',
     driversTotal: 'Total drivers',
     driversCheckedIn: 'Checked in',
@@ -226,6 +251,7 @@ const en = {
     meters: '{{value}} m',
   },
   requests: {
+    waitingOn: { company: 'Waiting on company admin', drivers: 'Waiting on drivers admin' },
     requester: 'Requester',
     from: 'From',
     to: 'To',
@@ -319,6 +345,9 @@ const en = {
     unassignedReady: 'Your trip is unassigned. Open it here to choose a driver.',
   },
   trips: {
+    phaseOf: 'Phase {{step}} of {{total}}: {{label}}',
+    when: 'When',
+    phase: 'Phase',
     empty: 'No trips in this view.',
     detailTitle: 'Trip details',
     stage: 'Stage',
@@ -436,6 +465,7 @@ const en = {
     restored: 'Employee restored.',
   },
   users: {
+    you: 'You',
     search: 'Search users',
     role: 'Role',
     allRoles: 'All roles',

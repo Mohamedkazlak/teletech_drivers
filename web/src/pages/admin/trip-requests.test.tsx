@@ -47,7 +47,7 @@ describe('admin trip requests', () => {
 
     await user.selectOptions(screen.getByRole('combobox', { name: 'Status' }), 'Approved')
     await user.selectOptions(screen.getByRole('combobox', { name: 'Branch' }), 'New Headquarters')
-    await user.selectOptions(screen.getByRole('combobox', { name: 'Period' }), 'Week')
+    await user.click(screen.getByRole('radio', { name: 'Week' }))
 
     const today = formatDateParam(new Date())
     await waitFor(() => {

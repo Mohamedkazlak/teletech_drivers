@@ -5,7 +5,7 @@ import { api } from '../../api/client'
 import { ApiError } from '../../api/errors'
 import type { Employee } from '../../api/types'
 import i18n from '../../i18n'
-import { paginated, renderPage } from '../../test/render-page'
+import { paginated, renderPage, chooseRowAction } from '../../test/render-page'
 import { EmployeesPage } from './EmployeesPage'
 
 vi.mock('../../api/client', () => ({
@@ -84,11 +84,11 @@ describe('employees', () => {
         per_page: 15,
       })
     })
-    expect(screen.getByRole('checkbox', { name: 'Include deleted' })).not.toBeChecked()
+    expect(screen.getByRole('switch', { name: 'Include deleted' })).not.toBeChecked()
 
     await user.selectOptions(screen.getByRole('combobox', { name: 'Account' }), 'Inactive')
     await user.selectOptions(screen.getByRole('combobox', { name: 'Branch' }), 'New Headquarters')
-    await user.click(screen.getByRole('checkbox', { name: 'Include deleted' }))
+    await user.click(screen.getByRole('switch', { name: 'Include deleted' }))
 
     await waitFor(() => {
       expect(queriesFor('/employees')).toContainEqual(
@@ -100,8 +100,9 @@ describe('employees', () => {
         }),
       )
     })
-    expect(await screen.findByRole('button', { name: 'Restore' })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Edit' })).not.toBeInTheDocument()
+    await user.click(await screen.findByRole('button', { name: 'Actions for Sara Nabil' }))
+    expect(screen.getByRole('menuitem', { name: 'Restore' })).toBeInTheDocument()
+    expect(screen.queryByRole('menuitem', { name: 'Edit' })).not.toBeInTheDocument()
   })
 
   it('creates an employee and shows a 422 field error', async () => {
@@ -135,7 +136,7 @@ describe('employees', () => {
     http.patch.mockResolvedValue(employee({ phone: '01099999999' }))
     renderPage(<EmployeesPage />)
 
-    await user.click(await screen.findByRole('button', { name: 'Edit' }))
+    await chooseRowAction(user, 'Sara Nabil', 'Edit')
     const dialog = await screen.findByRole('dialog', { name: 'Edit employee' })
     expect(within(dialog).queryByLabelText('Temporary password')).not.toBeInTheDocument()
     const phone = within(dialog).getByLabelText('Phone')
@@ -154,15 +155,15 @@ describe('employees', () => {
     http.post.mockResolvedValue(employee({ deleted_at: null }))
     renderPage(<EmployeesPage />)
 
-    await user.click(await screen.findByRole('button', { name: 'Delete' }))
+    await chooseRowAction(user, 'Sara Nabil', 'Delete')
     const deleteDialog = await screen.findByRole('dialog', { name: 'Delete this employee?' })
     await user.click(within(deleteDialog).getByRole('button', { name: 'Delete' }))
     await waitFor(() => {
       expect(http.delete).toHaveBeenCalledWith('/employees/emp-1')
     })
 
-    await user.click(screen.getByRole('checkbox', { name: 'Include deleted' }))
-    await user.click(await screen.findByRole('button', { name: 'Restore' }))
+    await user.click(screen.getByRole('switch', { name: 'Include deleted' }))
+    await chooseRowAction(user, 'Sara Nabil', 'Restore')
     const restoreDialog = await screen.findByRole('dialog', { name: 'Restore this employee?' })
     await user.click(within(restoreDialog).getByRole('button', { name: 'Restore' }))
     await waitFor(() => {
@@ -177,6 +178,6 @@ describe('employees', () => {
     expect(document.documentElement.dir).toBe('rtl')
     expect(await screen.findByRole('heading', { name: 'الموظفون' })).toBeInTheDocument()
     expect(screen.getByLabelText('بحث في الموظفين')).toBeInTheDocument()
-    expect(screen.getByRole('checkbox', { name: 'إظهار المحذوف' })).toBeInTheDocument()
+    expect(screen.getByRole('switch', { name: 'إظهار المحذوف' })).toBeInTheDocument()
   })
 })

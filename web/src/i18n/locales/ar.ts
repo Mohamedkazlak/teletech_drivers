@@ -1,7 +1,7 @@
 const ar = {
   app: {
-    name: 'تيلي تك للسائقين',
-    tagline: 'لوحة الأسطول',
+    name: 'تيلي كارز',
+    tagline: 'منصة أسطول تيلي تك',
   },
   common: {
     loading: 'جار التحميل…',
@@ -34,6 +34,13 @@ const ar = {
     restore: 'استعادة',
     includeDeleted: 'إظهار المحذوف',
     deleted: 'محذوف',
+  },
+  filters: {
+    clear: 'مسح عوامل التصفية',
+    clearSearch: 'مسح البحث',
+    anyDriver: 'أي سائق',
+    clearDriver: 'مسح السائق',
+    unknownDriver: 'سائق غير معروف',
   },
   nav: {
     dashboard: 'لوحة المعلومات',
@@ -102,6 +109,7 @@ const ar = {
     month: 'شهر',
     year: 'سنة',
     all: 'الكل',
+    today: 'اليوم',
     previous: 'الفترة السابقة',
     next: 'الفترة التالية',
     label: 'الفترة',
@@ -115,6 +123,8 @@ const ar = {
     passwordMatch: 'كلمتا المرور غير متطابقتين.',
   },
   table: {
+    actionsFor: 'إجراءات {{name}}',
+    results: 'النتائج: {{count}}',
     sort: 'ترتيب حسب {{column}}',
   },
   status: {
@@ -190,6 +200,17 @@ const ar = {
     select: 'اختر سائقاً على الخريطة.',
   },
   dashboard: {
+    attention: 'يحتاج إلى متابعة',
+    allClear: 'لا شيء معلّق',
+    absentDrivers: 'سائقون غائبون',
+    totals: 'الإجماليات',
+    totalDrivers: 'سائقين',
+    totalEmployees: 'موظفين',
+    totalPlaces: 'أماكن',
+    totalCompletedToday: 'مكتملة اليوم',
+    totalCompletedWeek: 'مكتملة هذا الأسبوع',
+    viewAll: 'عرض الكل',
+    noneOnRoad: 'لا توجد رحلات على الطريق الآن.',
     drivers: 'السائقون',
     driversTotal: 'إجمالي السائقين',
     driversCheckedIn: 'حاضرون',
@@ -226,6 +247,7 @@ const ar = {
     meters: '{{value}} م',
   },
   requests: {
+    waitingOn: { company: 'بانتظار مدير الشركة', drivers: 'بانتظار مسؤول السائقين' },
     requester: 'مقدم الطلب',
     from: 'من',
     to: 'إلى',
@@ -319,6 +341,9 @@ const ar = {
     unassignedReady: 'رحلتك غير معينة. افتحها من هنا لاختيار سائق.',
   },
   trips: {
+    phaseOf: 'المرحلة {{step}} من {{total}}: {{label}}',
+    when: 'الموعد',
+    phase: 'المرحلة',
     empty: 'لا توجد رحلات في هذا العرض.',
     detailTitle: 'تفاصيل الرحلة',
     stage: 'المرحلة',
@@ -435,6 +460,7 @@ const ar = {
     restored: 'تمت استعادة الموظف.',
   },
   users: {
+    you: 'أنت',
     search: 'بحث في المستخدمين',
     role: 'الدور',
     allRoles: 'كل الأدوار',

@@ -49,12 +49,12 @@ describe('shared screens reused by system admin', () => {
 
     const drivers = renderPage(<DriversPage allowDeleted />)
     expect(await screen.findByRole('heading', { name: 'Drivers' })).toBeInTheDocument()
-    expect(screen.getByRole('checkbox', { name: 'Include deleted' })).toBeInTheDocument()
+    expect(screen.getByRole('switch', { name: 'Include deleted' })).toBeInTheDocument()
     drivers.unmount()
 
     const fleet = renderPage(<DriversPage />)
     expect(await screen.findByRole('heading', { name: 'Drivers' })).toBeInTheDocument()
-    expect(screen.queryByRole('checkbox', { name: 'Include deleted' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('switch', { name: 'Include deleted' })).not.toBeInTheDocument()
     fleet.unmount()
 
     const trips = renderPage(<TripsPage />)

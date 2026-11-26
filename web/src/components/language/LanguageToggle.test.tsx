@@ -49,4 +49,16 @@ describe('language and RTL toggle', () => {
     expect(localStorage.getItem(LOCALE_KEY)).toBe('en')
     expect(screen.getByRole('heading', { name: 'Sign in' })).toBeInTheDocument()
   })
+
+  it('shows short labels in the compact variant and keeps full names for screen readers', async () => {
+    const user = userEvent.setup()
+    render(<LanguageToggle compact />)
+
+    const arabic = screen.getByRole('button', { name: 'العربية' })
+    expect(arabic).toHaveTextContent('ع')
+    expect(screen.getByRole('button', { name: 'English' })).toHaveTextContent('EN')
+
+    await user.click(arabic)
+    expect(document.documentElement.dir).toBe('rtl')
+  })
 })

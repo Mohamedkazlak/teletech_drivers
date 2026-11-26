@@ -22,7 +22,10 @@ export function RequestTrackingPanel({ tracking }: RequestTrackingPanelProps) {
           {reason ? <p className="mt-1 text-base text-navy">{reason}</p> : null}
         </div>
       ) : null}
-      <Answer question={t('tracking.approvedQuestion')} answer={approvedAnswer(tracking, approved, t, i18n.language)} />
+      <Answer
+        question={t('tracking.approvedQuestion')}
+        answer={approvedAnswer(tracking, approved, t, i18n.language)}
+      />
       <Answer
         question={t('tracking.driverQuestion')}
         answer={driverAnswer(tracking, assigned, t, i18n.language)}
@@ -49,11 +52,15 @@ export function RequestTrackingPanel({ tracking }: RequestTrackingPanelProps) {
               className={`mt-1 size-3 shrink-0 rounded-full ${event.reached_at ? 'bg-success' : 'bg-pale'}`}
             />
             <div>
-              <p className={`text-sm font-semibold ${event.reached_at ? 'text-navy' : 'text-navy/45'}`}>
+              <p
+                className={`text-sm font-semibold ${event.reached_at ? 'text-navy' : 'text-navy/45'}`}
+              >
                 {t(`tracking.${event.stage}`)}
               </p>
               {event.reached_at ? (
-                <p className="text-sm text-ink-muted">{formatWhen(event.reached_at, i18n.language)}</p>
+                <p className="text-sm text-ink-muted">
+                  {formatWhen(event.reached_at, i18n.language)}
+                </p>
               ) : null}
               {event.actor_role ? (
                 <p className="text-sm text-ink-muted">{t(`role.${event.actor_role}`)}</p>
@@ -75,7 +82,10 @@ function Answer({ question, answer }: { question: string; answer: string }) {
   )
 }
 
-function eventFor(tracking: RequestTracking, stage: RequestTrackingStage): RequestTrackingEvent | undefined {
+function eventFor(
+  tracking: RequestTracking,
+  stage: RequestTrackingStage,
+): RequestTrackingEvent | undefined {
   return tracking.timeline.find((event) => event.stage === stage)
 }
 

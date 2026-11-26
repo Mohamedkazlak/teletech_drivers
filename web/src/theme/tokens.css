@@ -9,6 +9,10 @@
 
   /* Brand */
   --color-deep: #0b4da2; /* TeleTech blue: primary actions, active state */
+  --color-hero-in: #4fd19a; /* checked in, on the navy hero */
+  --color-hero-out: #8fb9ff; /* checked out, on the navy hero */
+  --color-hero-absent: #f2c26b; /* absent, on the navy hero */
+  --color-toast-accent: #8fb9ff; /* accent text on the navy toast */
   --color-signal: #2f7bea; /* live / in-progress, focus glow */
   --color-mid: #4a78be;
   --color-light: #8ca6d9;
@@ -44,9 +48,26 @@
 
   --animate-rise: rise 420ms var(--ease-out) backwards;
   --animate-fade: fade 260ms var(--ease-out) backwards;
+  --animate-fade-quick: fade 180ms var(--ease-out) backwards;
+  --animate-menu-in: menu-in 180ms var(--ease-out) backwards;
+  --animate-row-in: row-in 260ms var(--ease-out) backwards;
   --animate-pop: pop 220ms var(--ease-out) backwards;
   --animate-shimmer: shimmer 1.4s linear infinite;
   --animate-pulse-ring: pulse-ring 2.4s var(--ease-out) infinite;
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+  }
+
+  @keyframes row-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
 
   @keyframes rise {
     from {

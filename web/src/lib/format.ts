@@ -1,13 +1,55 @@
 import type { TFunction } from 'i18next'
 
-export function formatWhen(value: string | null | undefined, language: string): string {
-  if (!value) return ''
+const CAIRO = 'Africa/Cairo'
+const EMPTY = '—'
+
+function parseDate(value: string | null | undefined): Date | null {
+  if (!value) return null
   const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return value
-  return new Intl.DateTimeFormat(language.startsWith('ar') ? 'ar' : 'en', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(date)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
+function isArabic(language: string): boolean {
+  return language.startsWith('ar')
+}
+
+function cairoYear(date: Date): string {
+  return new Intl.DateTimeFormat('en', { timeZone: CAIRO, year: 'numeric' }).format(date)
+}
+
+/** "Wed 26 Nov" in Cairo time; the year is added when it isn't this year. */
+export function formatDate(value: string | null | undefined, language: string): string {
+  const date = parseDate(value)
+  if (!date) return EMPTY
+  const otherYear = cairoYear(date) !== cairoYear(new Date())
+  return new Intl.DateTimeFormat(isArabic(language) ? 'ar' : 'en-GB', {
+    timeZone: CAIRO,
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    ...(otherYear ? { year: 'numeric' as const } : {}),
+  })
+    .format(date)
+    .replace(',', '')
+}
+
+/** "Wed 26 Nov, 3:58 PM" in Cairo time; the time never wraps. */
+export function formatDateTime(value: string | null | undefined, language: string): string {
+  const date = parseDate(value)
+  if (!date) return EMPTY
+  const time = new Intl.DateTimeFormat(isArabic(language) ? 'ar' : 'en-US', {
+    timeZone: CAIRO,
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+    .format(date)
+    .replace(/\s/g, ' ')
+  return `${formatDate(value, language)}${isArabic(language) ? '،' : ','} ${time}`
+}
+
+/** Same as formatDateTime, but empty for missing values so callers choose the fallback. */
+export function formatWhen(value: string | null | undefined, language: string): string {
+  return parseDate(value) ? formatDateTime(value, language) : (value ?? '')
 }
 
 export function formatDuration(seconds: number, t: TFunction): string {

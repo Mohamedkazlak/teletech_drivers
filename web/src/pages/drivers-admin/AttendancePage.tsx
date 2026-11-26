@@ -2,35 +2,53 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { AttendancePeriod, AttendanceStatus } from '../../api/attendance'
-import { useAdjustAttendance, useAttendanceList, useAttendanceSummary } from '../../api/use-attendance'
+import {
+  useAdjustAttendance,
+  useAttendanceList,
+  useAttendanceSummary,
+} from '../../api/use-attendance'
 import { PageHeading } from '../../components/layout/AppShell'
 import { DataTable, type Column } from '../../components/ui/DataTable'
+import { DriverPicker } from '../../components/ui/DriverPicker'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { FilterSelect } from '../../components/ui/FilterSelect'
+import { PeriodControl } from '../../components/ui/PeriodControl'
 import { FormField } from '../../components/ui/FormField'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
+import { formatDate } from '../../lib/format'
+import { formatDateParam } from '../../lib/period'
 import { useListParams } from '../../lib/use-list-params'
 import type { AttendanceDay } from '../../api/attendance'
 
-const periods: AttendancePeriod[] = ['week', 'month', 'year']
-const statuses: Array<'' | AttendanceStatus> = ['', 'present', 'absent', 'checked_in', 'checked_out']
+type AttendanceView = 'day' | AttendancePeriod
+const PERIODS: AttendanceView[] = ['day', 'week', 'month', 'year']
+const FILTER_KEYS = ['period', 'date', 'status', 'driver'] as const
+const statuses: Array<'' | AttendanceStatus> = [
+  '',
+  'present',
+  'absent',
+  'checked_in',
+  'checked_out',
+]
 
 export function AttendancePage() {
   const { t, i18n } = useTranslation()
   const toast = useToast()
-  const { params, set, page } = useListParams()
-  const date = params.get('date') ?? ''
+  const { params, set, page, countActive, clear } = useListParams()
+  const date = params.get('date') || formatDateParam(new Date())
   const driverId = params.get('driver') ?? ''
   const period = readPeriod(params.get('period'))
   const status = readStatus(params.get('status'))
   const summary = useAttendanceSummary()
+  // Day sends only the date, which the API reads as that single day.
   const list = useAttendanceList({
-    date: date || undefined,
+    date,
     driver_id: driverId || undefined,
-    period,
+    period: period === 'day' ? undefined : period,
     status: status || undefined,
     page,
   })
@@ -42,7 +60,11 @@ export function AttendancePage() {
       header: t('attendance.driver'),
       accessor: (row) => localizedName(i18n.language, row.driver_name_en, row.driver_name_ar),
     },
-    { id: 'date', header: t('attendance.workDate'), accessor: (row) => row.work_date },
+    {
+      id: 'date',
+      header: t('attendance.workDate'),
+      accessor: (row) => formatDate(row.work_date, i18n.language),
+    },
     {
       id: 'status',
       header: t('attendance.status'),
@@ -87,21 +109,19 @@ export function AttendancePage() {
           <Count label={t('attendance.absent')} value={counts.absent} />
         </div>
       ) : null}
-      <div className="grid gap-3 md:grid-cols-4">
-        <FormField id="attendance-date" label={t('attendance.workDate')}>
-          <input
-            id="attendance-date"
-            type="date"
-            className="w-full rounded-control border border-line px-3 py-2"
-            value={date}
-            onChange={(event) => set({ date: event.target.value || null })}
-          />
-        </FormField>
-        <FilterSelect
-          label={t('attendance.period')}
-          value={period}
-          onChange={(next) => set({ period: next })}
-          options={periods.map((item) => ({ value: item, label: t(`period.${item}`) }))}
+      <FilterBar
+        activeCount={
+          countActive(FILTER_KEYS) -
+          (params.get('date') === formatDateParam(new Date()) && !params.get('period') ? 1 : 0)
+        }
+        onClear={() => clear(FILTER_KEYS)}
+      >
+        <PeriodControl
+          periods={PERIODS}
+          value={{ period, date }}
+          onChange={(next) =>
+            set({ period: next.period === 'day' ? null : next.period, date: next.date ?? null })
+          }
         />
         <FilterSelect
           label={t('attendance.status')}
@@ -112,15 +132,8 @@ export function AttendancePage() {
             label: item ? t(`attendance.${statusKey(item)}`) : t('branch.all'),
           }))}
         />
-        <FormField id="attendance-driver" label={t('attendance.driver')}>
-          <input
-            id="attendance-driver"
-            className="w-full rounded-control border border-line px-3 py-2"
-            value={driverId}
-            onChange={(event) => set({ driver: event.target.value || null })}
-          />
-        </FormField>
-      </div>
+        <DriverPicker value={driverId || null} onChange={(next) => set({ driver: next })} />
+      </FilterBar>
       {list.data?.totals ? (
         <p className="text-sm text-ink-muted">
           {t('attendance.totals', {
@@ -274,13 +287,18 @@ function AdjustDialog({
   )
 }
 
-function readPeriod(value: string | null): AttendancePeriod {
-  if (value === 'month' || value === 'year') return value
-  return 'week'
+function readPeriod(value: string | null): AttendanceView {
+  if (value === 'week' || value === 'month' || value === 'year') return value
+  return 'day'
 }
 
 function readStatus(value: string | null): '' | AttendanceStatus {
-  if (value === 'present' || value === 'absent' || value === 'checked_in' || value === 'checked_out') {
+  if (
+    value === 'present' ||
+    value === 'absent' ||
+    value === 'checked_in' ||
+    value === 'checked_out'
+  ) {
     return value
   }
   return ''
@@ -296,7 +314,11 @@ function formatTime(value: string | null): string {
   if (!value) return ''
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return value
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Africa/Cairo',
+  })
 }
 
 function cairoIso(date: string, time: string): string {

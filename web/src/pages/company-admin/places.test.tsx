@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../../api/client'
 import i18n from '../../i18n'
-import { paginated, place, renderPage } from '../../test/render-page'
+import { paginated, place, renderPage, chooseRowAction } from '../../test/render-page'
 import { PlacesPage } from './PlacesPage'
 
 vi.mock('../../components/map/MapView', () => ({
@@ -38,8 +38,11 @@ describe('places', () => {
     renderPage(<PlacesPage />, '/company-admin/places')
 
     expect(await screen.findByRole('button', { name: 'Add place' })).toBeInTheDocument()
-    expect(await screen.findByRole('button', { name: 'Edit' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
+    await userEvent
+      .setup()
+      .click(await screen.findByRole('button', { name: 'Actions for Headquarters' }))
+    expect(screen.getByRole('menuitem', { name: 'Edit' })).toBeInTheDocument()
+    expect(screen.getByRole('menuitem', { name: 'Delete' })).toBeInTheDocument()
   })
 
   it('sends only the changed fields when a place is edited', async () => {
@@ -47,7 +50,7 @@ describe('places', () => {
     http.patch.mockResolvedValue(place({ name_en: 'North gate' }))
     renderPage(<PlacesPage />)
 
-    await user.click(await screen.findByRole('button', { name: 'Edit' }))
+    await chooseRowAction(user, 'Headquarters', 'Edit')
     const dialog = await screen.findByRole('dialog', { name: 'Edit place' })
     const name = within(dialog).getByLabelText('Name (English)')
     await user.clear(name)
@@ -64,7 +67,7 @@ describe('places', () => {
     http.delete.mockResolvedValue(place())
     renderPage(<PlacesPage />)
 
-    await user.click(await screen.findByRole('button', { name: 'Delete' }))
+    await chooseRowAction(user, 'Headquarters', 'Delete')
     const dialog = await screen.findByRole('dialog', { name: 'Delete this place?' })
     await user.click(within(dialog).getByRole('button', { name: 'Delete' }))
 
@@ -105,7 +108,9 @@ describe('places', () => {
 
   it('creates a place with an address and no coordinates', async () => {
     const user = userEvent.setup()
-    http.post.mockResolvedValue(place({ id: 'place-2', name_en: 'Depot', latitude: null, longitude: null }))
+    http.post.mockResolvedValue(
+      place({ id: 'place-2', name_en: 'Depot', latitude: null, longitude: null }),
+    )
     renderPage(<PlacesPage />)
 
     await user.click(await screen.findByRole('button', { name: 'Add place' }))

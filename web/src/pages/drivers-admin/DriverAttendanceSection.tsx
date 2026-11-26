@@ -29,7 +29,7 @@ export function DriverAttendanceSection({ driverId }: { driverId: string }) {
         ))}
       </div>
       {history.isPending ? <p>{t('common.loading')}</p> : null}
-      {history.isError ? <p className="text-danger">{messageForApiError(history.error, t)}</p> : null}
+      {history.isError ? <p className="text-danger-ink">{messageForApiError(history.error, t)}</p> : null}
       {totals ? (
         <p className="mt-3 text-sm text-navy">
           {t('attendance.totals', {

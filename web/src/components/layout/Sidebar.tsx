@@ -76,9 +76,15 @@ export function Sidebar({ role, onNavigate }: SidebarProps) {
           <span
             aria-hidden="true"
             className={`absolute inset-x-3 rounded-[12px] bg-white/[0.1] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08)] ${
-              ready ? 'transition-[transform,height] duration-[320ms] ease-[var(--ease-in-out)]' : ''
+              ready
+                ? 'transition-[transform,height] duration-[320ms] ease-[var(--ease-in-out)]'
+                : ''
             }`}
-            style={{ height: indicator.height, transform: `translateY(${indicator.top}px)`, top: 0 }}
+            style={{
+              height: indicator.height,
+              transform: `translateY(${indicator.top}px)`,
+              top: 0,
+            }}
           />
         ) : null}
         {items.map((item) => {

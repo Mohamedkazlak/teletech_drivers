@@ -6,11 +6,13 @@ import { useTripRequests } from '../../api/use-trip-requests'
 import { PageHeading } from '../../components/layout/AppShell'
 import { BranchFilter, type BranchFilterValue } from '../../components/ui/BranchFilter'
 import { BranchText } from '../../components/ui/BranchText'
+import { FilterBar } from '../../components/ui/FilterBar'
+import { RequestStatusCell } from '../../components/trips/RequestStatusCell'
+import { RouteCell } from '../../components/trips/RouteCell'
 import { DataTable, type Column } from '../../components/ui/DataTable'
-import { FilterRow, FilterSelect } from '../../components/ui/FilterSelect'
-import { PeriodBar } from '../../components/ui/PeriodBar'
-import { StatusBadge } from '../../components/ui/StatusBadge'
-import { secondaryButtonClass } from '../../components/ui/styles'
+import { FilterSelect } from '../../components/ui/FilterSelect'
+import { PeriodControl } from '../../components/ui/PeriodControl'
+import { ghostButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
 import { formatWhen } from '../../lib/format'
 import { isBranch, localizedName } from '../../lib/names'
@@ -34,9 +36,11 @@ function readPeriod(value: string | null): RequestPeriod {
   return 'all'
 }
 
+const FILTER_KEYS = ['status', 'branch', 'period', 'date'] as const
+
 export function TripRequestsPage() {
   const { t, i18n } = useTranslation()
-  const { params, set, page, setPage } = useListParams()
+  const { params, set, page, setPage, countActive, clear } = useListParams()
   const status = readStatus(params.get('status'))
   const branch = readBranch(params.get('branch'))
   const period = readPeriod(params.get('period'))
@@ -67,8 +71,7 @@ export function TripRequestsPage() {
       {
         id: 'route',
         header: t('requests.route'),
-        accessor: (row) =>
-          t('requests.routeValue', { from: row.pickup.name, to: row.destination.name }),
+        accessor: (row) => <RouteCell from={row.pickup.name} to={row.destination.name} />,
       },
       {
         id: 'when',
@@ -79,7 +82,7 @@ export function TripRequestsPage() {
       {
         id: 'status',
         header: t('requests.status'),
-        accessor: (row) => <StatusBadge status={row.status} />,
+        accessor: (row) => <RequestStatusCell status={row.status} tripId={row.trip_id} />,
       },
       {
         id: 'notes',
@@ -91,8 +94,9 @@ export function TripRequestsPage() {
       {
         id: 'actions',
         header: t('common.actions'),
+        isActions: true,
         accessor: (row) => (
-          <button type="button" className={secondaryButtonClass} onClick={() => setSelected(row)}>
+          <button type="button" className={ghostButtonClass} onClick={() => setSelected(row)}>
             {t('common.view')}
           </button>
         ),
@@ -104,7 +108,7 @@ export function TripRequestsPage() {
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.tripRequests')} />
-      <FilterRow>
+      <FilterBar activeCount={countActive(FILTER_KEYS)} onClear={() => clear(FILTER_KEYS)}>
         <FilterSelect
           label={t('requests.status')}
           value={status}
@@ -115,14 +119,14 @@ export function TripRequestsPage() {
           value={branch}
           onChange={(next: Branch | '') => set({ branch: next || null })}
         />
-      </FilterRow>
-      <PeriodBar
-        periods={['week', 'month', 'year', 'all']}
-        value={{ period, date: period === 'all' ? undefined : date }}
-        onChange={(next) =>
-          set({ period: next.period === 'all' ? null : next.period, date: next.date ?? null })
-        }
-      />
+        <PeriodControl
+          periods={['week', 'month', 'year', 'all']}
+          value={{ period, date: period === 'all' ? undefined : date }}
+          onChange={(next) =>
+            set({ period: next.period === 'all' ? null : next.period, date: next.date ?? null })
+          }
+        />
+      </FilterBar>
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}
@@ -132,7 +136,15 @@ export function TripRequestsPage() {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('requests.empty')}
+        empty={{
+          message: t('requests.empty'),
+          action:
+            countActive(FILTER_KEYS) > 0
+              ? { label: t('filters.clear'), onClick: () => clear(FILTER_KEYS) }
+              : undefined,
+        }}
+        total={list.data?.meta.total}
+        onRowClick={(row) => setSelected(row)}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

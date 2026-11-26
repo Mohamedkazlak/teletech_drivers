@@ -12,7 +12,7 @@ import { PageHeading } from '../../components/layout/AppShell'
 import { BackArrow } from '../../components/layout/BackButton'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { DetailList } from '../../components/ui/DetailList'
-import { PeriodBar } from '../../components/ui/PeriodBar'
+import { PeriodControl } from '../../components/ui/PeriodControl'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { secondaryButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
@@ -130,7 +130,7 @@ function DriverProfile({ driverId }: { driverId: string }) {
         seconds={profile.totals?.total_seconds}
         km={profile.totals?.total_km}
       />
-      <PeriodBar
+      <PeriodControl
         value={selection}
         periods={PROFILE_PERIODS}
         onChange={(next) => {

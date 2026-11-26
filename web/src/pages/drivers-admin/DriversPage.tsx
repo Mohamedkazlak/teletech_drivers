@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { driversListQuery } from '../../api/drivers'
 import type { AttendanceListFilter } from '../../api/drivers'
@@ -8,11 +8,12 @@ import { useDeleteDriver, useDrivers, useRestoreDriver } from '../../api/use-dri
 import { PageHeading } from '../../components/layout/AppShell'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { DataTable, type Column } from '../../components/ui/DataTable'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { IncludeDeletedToggle } from '../../components/ui/IncludeDeletedToggle'
-import { FormField } from '../../components/ui/FormField'
+import { RowActions, type RowActionItem } from '../../components/ui/RowActions'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { controlClass, primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { primaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
@@ -34,6 +35,7 @@ type DriversPageProps = {
 export function DriversPage({ allowDeleted = false }: DriversPageProps) {
   const { t, i18n } = useTranslation()
   const toast = useToast()
+  const navigate = useNavigate()
   const { params, set, page, setPage } = useListParams()
   const searchParam = params.get('search') ?? ''
   const [search, setSearch] = useState(searchParam)
@@ -70,6 +72,7 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
         id: 'name',
         header: t('places.name'),
         sortValue: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
+        mobile: 'title',
         accessor: (row) => (
           <span className="flex flex-col items-start gap-1">
             <DriverName driver={row} language={i18n.language} />
@@ -104,41 +107,26 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
       {
         id: 'actions',
         header: t('common.actions'),
-        accessor: (row) => (
-          <div className="flex flex-wrap gap-2">
-            <Link to={row.id} className={secondaryButtonClass}>
-              {t('common.view')}
-            </Link>
-            {row.deleted_at ? (
-              allowDeleted ? (
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => setRestoring(row)}
-                >
-                  {t('common.restore')}
-                </button>
-              ) : null
-            ) : (
-              <>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => setEditing(row)}
-                >
-                  {t('common.edit')}
-                </button>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => setDeleting(row)}
-                >
-                  {t('common.delete')}
-                </button>
-              </>
-            )}
-          </div>
-        ),
+        isActions: true,
+        accessor: (row) => {
+          const items: RowActionItem[] = row.deleted_at
+            ? allowDeleted
+              ? [{ label: t('common.restore'), onSelect: () => setRestoring(row) }]
+              : []
+            : [
+                { label: t('common.edit'), onSelect: () => setEditing(row) },
+                { label: t('common.delete'), onSelect: () => setDeleting(row), danger: true },
+              ]
+          if (items.length === 0) return null
+          return (
+            <RowActions
+              label={t('table.actionsFor', {
+                name: localizedName(i18n.language, row.name_en, row.name_ar),
+              })}
+              items={items}
+            />
+          )
+        },
       },
     ]
   }, [allowDeleted, i18n.language, t])
@@ -173,6 +161,12 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
     ? localizedName(i18n.language, restoring.name_en, restoring.name_ar)
     : ''
 
+  const activeFilters = [attendance, searchParam, includeDeleted].filter(Boolean).length
+  function clearFilters() {
+    setSearch('')
+    set({ attendance: null, search: null, deleted: null })
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.drivers')}>
@@ -180,30 +174,28 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
           {t('driverAdmin.add')}
         </button>
       </PageHeading>
-      <FilterSelect
-        label={t('driverAdmin.filter')}
-        value={attendance}
-        onChange={(next) => set({ attendance: next || null })}
-        options={[
-          { value: '', label: t('branch.all') },
-          { value: 'checked_in', label: t('attendance.checkedInToday') },
-          { value: 'not_checked_in', label: t('attendance.notCheckedIn') },
-        ]}
-      />
-      {allowDeleted ? (
-        <IncludeDeletedToggle
-          checked={includeDeleted}
-          onChange={(checked) => set({ deleted: checked ? '1' : null })}
+      <FilterBar
+        search={{ value: search, onChange: setSearch, label: t('driverAdmin.search') }}
+        activeCount={activeFilters}
+        onClear={clearFilters}
+      >
+        <FilterSelect
+          label={t('driverAdmin.filter')}
+          value={attendance}
+          onChange={(next) => set({ attendance: next || null })}
+          options={[
+            { value: '', label: t('branch.all') },
+            { value: 'checked_in', label: t('attendance.checkedInToday') },
+            { value: 'not_checked_in', label: t('attendance.notCheckedIn') },
+          ]}
         />
-      ) : null}
-      <FormField id="drivers-search" label={t('driverAdmin.search')}>
-        <input
-          id="drivers-search"
-          className={controlClass}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </FormField>
+        {allowDeleted ? (
+          <IncludeDeletedToggle
+            checked={includeDeleted}
+            onChange={(checked) => set({ deleted: checked ? '1' : null })}
+          />
+        ) : null}
+      </FilterBar>
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}
@@ -213,7 +205,12 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('driverAdmin.empty')}
+        empty={{
+          message: t('driverAdmin.empty'),
+          action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
+        }}
+        total={list.data?.meta.total}
+        onRowClick={(row) => navigate(row.id)}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

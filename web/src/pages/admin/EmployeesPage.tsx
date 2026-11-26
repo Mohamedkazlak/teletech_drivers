@@ -7,12 +7,13 @@ import { PageHeading } from '../../components/layout/AppShell'
 import { BranchFilter, type BranchFilterValue } from '../../components/ui/BranchFilter'
 import { BranchText } from '../../components/ui/BranchText'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { DataTable, type Column } from '../../components/ui/DataTable'
-import { FilterRow, FilterSelect } from '../../components/ui/FilterSelect'
-import { FormField } from '../../components/ui/FormField'
+import { FilterSelect } from '../../components/ui/FilterSelect'
 import { IncludeDeletedToggle } from '../../components/ui/IncludeDeletedToggle'
+import { RowActions } from '../../components/ui/RowActions'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { controlClass, primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { primaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { isBranch, localizedName } from '../../lib/names'
@@ -81,7 +82,16 @@ export function EmployeesPage() {
         id: 'name',
         header: t('places.name'),
         sortValue: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
-        accessor: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
+        mobile: 'title',
+        accessor: (row) => (
+          <button
+            type="button"
+            className="text-start font-medium text-deep underline-offset-2 hover:underline"
+            onClick={() => openView(row)}
+          >
+            {localizedName(i18n.language, row.name_en, row.name_ar)}
+          </button>
+        ),
       },
       {
         id: 'email',
@@ -111,48 +121,27 @@ export function EmployeesPage() {
       {
         id: 'actions',
         header: t('common.actions'),
+        isActions: true,
         accessor: (row) => (
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              className={secondaryButtonClass}
-              onClick={() => {
-                setSelected(row)
-                setMode('view')
-              }}
-            >
-              {t('common.view')}
-            </button>
-            {row.deleted_at ? (
-              <button
-                type="button"
-                className={secondaryButtonClass}
-                onClick={() => setRestoring(row)}
-              >
-                {t('common.restore')}
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => {
-                    setSelected(row)
-                    setMode('edit')
-                  }}
-                >
-                  {t('common.edit')}
-                </button>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => setDeleting(row)}
-                >
-                  {t('common.delete')}
-                </button>
-              </>
-            )}
-          </div>
+          <RowActions
+            label={t('table.actionsFor', {
+              name: localizedName(i18n.language, row.name_en, row.name_ar),
+            })}
+            items={
+              row.deleted_at
+                ? [{ label: t('common.restore'), onSelect: () => setRestoring(row) }]
+                : [
+                    {
+                      label: t('common.edit'),
+                      onSelect: () => {
+                        setSelected(row)
+                        setMode('edit')
+                      },
+                    },
+                    { label: t('common.delete'), onSelect: () => setDeleting(row), danger: true },
+                  ]
+            }
+          />
         ),
       },
     ],
@@ -189,6 +178,17 @@ export function EmployeesPage() {
     ? localizedName(i18n.language, restoring.name_en, restoring.name_ar)
     : ''
 
+  const activeFilters = [searchParam, branch, active, includeDeleted].filter(Boolean).length
+  function clearFilters() {
+    setSearch('')
+    set({ search: null, branch: null, active: null, deleted: null })
+  }
+
+  function openView(row: Employee) {
+    setSelected(row)
+    setMode('view')
+  }
+
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.employees')}>
@@ -196,15 +196,11 @@ export function EmployeesPage() {
           {t('employees.add')}
         </button>
       </PageHeading>
-      <FormField id="employees-search" label={t('employees.search')}>
-        <input
-          id="employees-search"
-          className={controlClass}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </FormField>
-      <FilterRow>
+      <FilterBar
+        search={{ value: search, onChange: setSearch, label: t('employees.search') }}
+        activeCount={activeFilters}
+        onClear={clearFilters}
+      >
         <BranchFilter
           value={branch}
           onChange={(next: Branch | '') => set({ branch: next || null })}
@@ -219,11 +215,11 @@ export function EmployeesPage() {
             { value: 'false', label: t('status.inactive') },
           ]}
         />
-      </FilterRow>
-      <IncludeDeletedToggle
-        checked={includeDeleted}
-        onChange={(checked) => set({ deleted: checked ? '1' : null })}
-      />
+        <IncludeDeletedToggle
+          checked={includeDeleted}
+          onChange={(checked) => set({ deleted: checked ? '1' : null })}
+        />
+      </FilterBar>
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}
@@ -233,7 +229,12 @@ export function EmployeesPage() {
         onRetry={() => {
           void list.refetch()
         }}
-        emptyLabel={t('employees.empty')}
+        empty={{
+          message: t('employees.empty'),
+          action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
+        }}
+        total={list.data?.meta.total}
+        onRowClick={openView}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

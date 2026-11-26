@@ -4,9 +4,9 @@ import { driversListQuery } from '../../api/drivers'
 import type { Driver } from '../../api/types'
 import { useDrivers } from '../../api/use-drivers'
 import { PageHeading } from '../../components/layout/AppShell'
+import { FilterBar } from '../../components/ui/FilterBar'
 import { DataTable, type Column } from '../../components/ui/DataTable'
-import { FormField } from '../../components/ui/FormField'
-import { controlClass, secondaryButtonClass } from '../../components/ui/styles'
+import { secondaryButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
 import { ExportReportDialog } from '../drivers-admin/ExportReportDialog'
@@ -62,15 +62,11 @@ export function DriverReportsPage() {
     <section className="flex flex-col gap-4">
       <PageHeading title={t('driverAdmin.driverReports')} />
       <p className="text-sm text-ink-muted">{t('driverAdmin.driverReportsHint')}</p>
-      <FormField id="driver-report-search" label={t('driverAdmin.search')}>
-        <input
-          id="driver-report-search"
-          className={controlClass}
-          type="search"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-      </FormField>
+      <FilterBar
+        search={{ value: search, onChange: setSearch, label: t('driverAdmin.search') }}
+        activeCount={applied ? 1 : 0}
+        onClear={() => setSearch('')}
+      />
       <DataTable
         columns={columns}
         rows={list.data?.data ?? []}

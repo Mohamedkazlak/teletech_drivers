@@ -17,6 +17,9 @@ export function AppShell() {
   const [menuPath, setMenuPath] = useState<string | null>(null)
   const open = menuPath === location.pathname
   const menuRef = useDialogKey(open, () => setMenuPath(null))
+  // The page rises in once when the console opens; route changes only cross-fade.
+  // Filter changes (same path) don't animate.
+  const [firstPath] = useState(location.pathname)
 
   if (!user || !isWebRole(user.role)) return null
 
@@ -66,10 +69,14 @@ export function AppShell() {
         />
         <main
           id="main"
-          key={location.pathname}
-          className="mx-auto w-full max-w-[1400px] px-4 py-6 animate-rise sm:px-6 lg:px-8"
+          className={`mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8 animate-rise`}
         >
-          <Outlet />
+          <div
+            key={location.pathname}
+            className={firstPath === location.pathname ? undefined : 'animate-fade-quick'}
+          >
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
