@@ -122,11 +122,12 @@ export function PeriodControl({ value, onChange, periods = DEFAULT_PERIODS }: Pe
             <ChevronStartIcon size={18} />
           </button>
           <p
-            key={range}
             aria-live="polite"
-            className="min-w-0 flex-1 truncate px-1 text-center text-sm font-medium text-navy tabular animate-fade"
+            className="min-w-0 flex-1 truncate px-1 text-center text-sm font-medium text-navy tabular"
           >
-            {range}
+            <span key={range} className="inline-block animate-fade">
+              {range}
+            </span>
           </p>
           <button
             type="button"

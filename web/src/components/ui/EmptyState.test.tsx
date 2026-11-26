@@ -8,11 +8,17 @@ describe('EmptyState', () => {
   it('links to the next step', () => {
     render(
       <MemoryRouter>
-        <EmptyState message="No trips this week." action={{ label: 'Show all', to: '/trips?period=all' }} />
+        <EmptyState
+          message="No trips this week."
+          action={{ label: 'Show all', to: '/trips?period=all' }}
+        />
       </MemoryRouter>,
     )
     expect(screen.getByText('No trips this week.')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Show all' })).toHaveAttribute('href', '/trips?period=all')
+    expect(screen.getByRole('link', { name: 'Show all' })).toHaveAttribute(
+      'href',
+      '/trips?period=all',
+    )
   })
 
   it('runs an action button', async () => {

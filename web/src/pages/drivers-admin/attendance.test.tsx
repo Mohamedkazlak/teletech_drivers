@@ -114,6 +114,29 @@ describe('attendance page', () => {
     })
   })
 
+  it('does not offer Clear filters for today', async () => {
+    renderPage(<AttendancePage />, `/?date=${formatDateParam(new Date())}`)
+    await screen.findByText('Nader Ali')
+    expect(screen.queryByRole('button', { name: 'Clear filters' })).not.toBeInTheDocument()
+  })
+
+  it('shows check-in times in Cairo time', async () => {
+    renderPage(<AttendancePage />)
+    expect(await screen.findByText(/8:00/)).toBeInTheDocument()
+  })
+
+  it('opens the driver list on ArrowDown with the first driver highlighted', async () => {
+    const user = userEvent.setup()
+    renderPage(<AttendancePage />)
+    await screen.findByText('Nader Ali')
+    const input = screen.getByRole('combobox', { name: 'Driver' })
+    expect(input).not.toHaveAttribute('aria-controls')
+    input.focus()
+    await user.keyboard('{Escape}{ArrowDown}')
+    const first = within(await screen.findByRole('listbox')).getAllByRole('option')[0]
+    expect(input).toHaveAttribute('aria-activedescendant', first.id)
+  })
+
   it('requires a reason before adjusting attendance', async () => {
     const user = userEvent.setup()
     renderPage(<AttendancePage />)

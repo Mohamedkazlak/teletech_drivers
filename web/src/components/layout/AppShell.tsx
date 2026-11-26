@@ -17,9 +17,9 @@ export function AppShell() {
   const [menuPath, setMenuPath] = useState<string | null>(null)
   const open = menuPath === location.pathname
   const menuRef = useDialogKey(open, () => setMenuPath(null))
-  // The page rises in once when the console opens (the router's first entry is
-  // keyed "default"); later route changes only cross-fade.
-  const firstEntry = location.key === 'default'
+  // The page rises in once when the console opens; route changes only cross-fade.
+  // Filter changes (same path) don't animate.
+  const [firstPath] = useState(location.pathname)
 
   if (!user || !isWebRole(user.role)) return null
 
@@ -69,9 +69,12 @@ export function AppShell() {
         />
         <main
           id="main"
-          className={`mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8 ${firstEntry ? 'animate-rise' : ''}`}
+          className={`mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8 animate-rise`}
         >
-          <div key={location.pathname} className={firstEntry ? undefined : 'animate-fade-quick'}>
+          <div
+            key={location.pathname}
+            className={firstPath === location.pathname ? undefined : 'animate-fade-quick'}
+          >
             <Outlet />
           </div>
         </main>

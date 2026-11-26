@@ -20,7 +20,10 @@ function columns(onEdit = vi.fn()): Column<Row>[] {
       header: 'Actions',
       isActions: true,
       accessor: (row) => (
-        <RowActions label={`Actions for ${row.name}`} items={[{ label: 'Edit', onSelect: () => onEdit(row) }]} />
+        <RowActions
+          label={`Actions for ${row.name}`}
+          items={[{ label: 'Edit', onSelect: () => onEdit(row) }]}
+        />
       ),
     },
   ]
@@ -50,7 +53,14 @@ describe('DataTable rows', () => {
   it('opens a row when it is clicked', async () => {
     const user = userEvent.setup()
     const onRowClick = vi.fn()
-    render(<DataTable columns={columns()} rows={rows} rowKey={(row) => row.id} onRowClick={onRowClick} />)
+    render(
+      <DataTable
+        columns={columns()}
+        rows={rows}
+        rowKey={(row) => row.id}
+        onRowClick={onRowClick}
+      />,
+    )
     await user.click(screen.getByText('0111'))
     expect(onRowClick).toHaveBeenCalledWith(rows[1])
   })
@@ -60,7 +70,12 @@ describe('DataTable rows', () => {
     const onRowClick = vi.fn()
     const onEdit = vi.fn()
     render(
-      <DataTable columns={columns(onEdit)} rows={rows} rowKey={(row) => row.id} onRowClick={onRowClick} />,
+      <DataTable
+        columns={columns(onEdit)}
+        rows={rows}
+        rowKey={(row) => row.id}
+        onRowClick={onRowClick}
+      />,
     )
     await user.click(screen.getByRole('button', { name: 'Actions for Nader Ali' }))
     await user.click(screen.getByRole('menuitem', { name: 'Edit' }))
@@ -88,7 +103,14 @@ describe('DataTable pagination', () => {
 
   it('shows the pager when there is more than one page', () => {
     render(
-      <DataTable columns={columns()} rows={rows} rowKey={(row) => row.id} page={1} lastPage={3} onPageChange={() => {}} />,
+      <DataTable
+        columns={columns()}
+        rows={rows}
+        rowKey={(row) => row.id}
+        page={1}
+        lastPage={3}
+        onPageChange={() => {}}
+      />,
     )
     expect(screen.getByRole('button', { name: /Next/ })).toBeEnabled()
   })

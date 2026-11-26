@@ -2,7 +2,11 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { AttendancePeriod, AttendanceStatus } from '../../api/attendance'
-import { useAdjustAttendance, useAttendanceList, useAttendanceSummary } from '../../api/use-attendance'
+import {
+  useAdjustAttendance,
+  useAttendanceList,
+  useAttendanceSummary,
+} from '../../api/use-attendance'
 import { PageHeading } from '../../components/layout/AppShell'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { DriverPicker } from '../../components/ui/DriverPicker'
@@ -23,7 +27,13 @@ import type { AttendanceDay } from '../../api/attendance'
 type AttendanceView = 'day' | AttendancePeriod
 const PERIODS: AttendanceView[] = ['day', 'week', 'month', 'year']
 const FILTER_KEYS = ['period', 'date', 'status', 'driver'] as const
-const statuses: Array<'' | AttendanceStatus> = ['', 'present', 'absent', 'checked_in', 'checked_out']
+const statuses: Array<'' | AttendanceStatus> = [
+  '',
+  'present',
+  'absent',
+  'checked_in',
+  'checked_out',
+]
 
 export function AttendancePage() {
   const { t, i18n } = useTranslation()
@@ -99,7 +109,13 @@ export function AttendancePage() {
           <Count label={t('attendance.absent')} value={counts.absent} />
         </div>
       ) : null}
-      <FilterBar activeCount={countActive(FILTER_KEYS)} onClear={() => clear(FILTER_KEYS)}>
+      <FilterBar
+        activeCount={
+          countActive(FILTER_KEYS) -
+          (params.get('date') === formatDateParam(new Date()) && !params.get('period') ? 1 : 0)
+        }
+        onClear={() => clear(FILTER_KEYS)}
+      >
         <PeriodControl
           periods={PERIODS}
           value={{ period, date }}
@@ -277,7 +293,12 @@ function readPeriod(value: string | null): AttendanceView {
 }
 
 function readStatus(value: string | null): '' | AttendanceStatus {
-  if (value === 'present' || value === 'absent' || value === 'checked_in' || value === 'checked_out') {
+  if (
+    value === 'present' ||
+    value === 'absent' ||
+    value === 'checked_in' ||
+    value === 'checked_out'
+  ) {
     return value
   }
   return ''
@@ -293,7 +314,11 @@ function formatTime(value: string | null): string {
   if (!value) return ''
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return value
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Africa/Cairo',
+  })
 }
 
 function cairoIso(date: string, time: string): string {

@@ -36,10 +36,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const push = useCallback(
     (message: string, tone: ToastTone = 'info', options?: { action?: ToastAction }) => {
       const id = crypto.randomUUID()
-      setToasts((current) => [
-        ...current,
-        { id, message, tone, action: options?.action, leaving: false },
-      ])
+      setToasts((current) => {
+        const next = [...current, { id, message, tone, action: options?.action, leaving: false }]
+        // Errors stay until closed; keep only the latest three so repeats don't pile up.
+        const errors = next.filter((item) => item.tone === 'error')
+        const drop = new Set(errors.slice(0, Math.max(0, errors.length - 3)).map((item) => item.id))
+        return next.filter((item) => !drop.has(item.id))
+      })
       if (tone !== 'error') window.setTimeout(() => dismiss(id), VISIBLE_MS)
     },
     [dismiss],

@@ -54,4 +54,16 @@ describe('ToastProvider', () => {
     })
     expect(screen.queryByText('A success message')).not.toBeInTheDocument()
   })
+
+  it('keeps at most three error toasts', () => {
+    render(
+      <ToastProvider>
+        <Trigger tone="error" />
+      </ToastProvider>,
+    )
+    for (let index = 0; index < 5; index += 1) {
+      fireEvent.click(screen.getByRole('button', { name: 'Show' }))
+    }
+    expect(screen.getAllByRole('alert')).toHaveLength(3)
+  })
 })

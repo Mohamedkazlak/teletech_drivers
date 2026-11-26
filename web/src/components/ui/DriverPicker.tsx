@@ -55,7 +55,11 @@ export function DriverPicker({ value, onChange }: DriverPickerProps) {
   function onKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'ArrowDown') {
       event.preventDefault()
-      setOpen(true)
+      if (!open) {
+        setOpen(true)
+        setActive(0)
+        return
+      }
       setActive((index) => Math.min(index + 1, matches.length - 1))
     } else if (event.key === 'ArrowUp') {
       event.preventDefault()
@@ -78,7 +82,7 @@ export function DriverPicker({ value, onChange }: DriverPickerProps) {
         id={id}
         role="combobox"
         aria-expanded={open}
-        aria-controls={listId}
+        aria-controls={open && matches.length > 0 ? listId : undefined}
         aria-autocomplete="list"
         aria-activedescendant={open && matches[active] ? `${id}-${matches[active].id}` : undefined}
         autoComplete="off"

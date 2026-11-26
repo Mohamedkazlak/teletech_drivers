@@ -68,4 +68,40 @@ describe('PeriodControl', () => {
     await user.keyboard('{ArrowRight}')
     expect(onChange).toHaveBeenCalledWith({ period: 'month', date: '2026-11-26' })
   })
+
+  it('moves forward with ArrowLeft in Arabic', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(
+      <div dir="rtl" style={{ direction: 'rtl' }}>
+        <PeriodControl
+          value={{ period: 'week', date: '2026-11-26' }}
+          onChange={onChange}
+          periods={['week', 'month']}
+        />
+      </div>,
+    )
+    screen.getByRole('radio', { name: 'Week' }).focus()
+    await user.keyboard('{ArrowLeft}')
+    expect(onChange).toHaveBeenCalledWith({ period: 'month', date: '2026-11-26' })
+  })
+
+  it('announces the range from a live region that stays mounted', async () => {
+    const { rerender } = render(
+      <PeriodControl
+        value={{ period: 'week', date: '2026-11-26' }}
+        onChange={() => {}}
+        periods={['week']}
+      />,
+    )
+    const region = document.querySelector('[aria-live="polite"]')
+    rerender(
+      <PeriodControl
+        value={{ period: 'week', date: '2026-12-03' }}
+        onChange={() => {}}
+        periods={['week']}
+      />,
+    )
+    expect(document.querySelector('[aria-live="polite"]')).toBe(region)
+  })
 })

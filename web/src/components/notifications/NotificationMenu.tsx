@@ -70,11 +70,7 @@ export function NotificationMenu() {
         ) : null}
       </button>
       {open ? (
-        <div
-          id={menuId}
-          role="menu"
-          className={`${menuPanelClass} w-[22rem] max-w-[85vw]`}
-        >
+        <div id={menuId} role="menu" className={`${menuPanelClass} w-[22rem] max-w-[85vw]`}>
           <div className="max-h-96 overflow-y-auto">
             {list.isPending ? (
               <p className="px-3 py-3 text-sm text-ink-muted">{t('common.loading')}</p>
@@ -102,7 +98,10 @@ export function NotificationMenu() {
                   >
                     <span className="flex items-center gap-2 text-sm font-semibold text-navy">
                       {item.read_at ? null : (
-                        <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-signal" />
+                        <span
+                          aria-hidden="true"
+                          className="h-2 w-2 shrink-0 rounded-full bg-signal"
+                        />
                       )}
                       {t(item.title_key, values)}
                     </span>

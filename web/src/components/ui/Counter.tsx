@@ -31,11 +31,11 @@ export function Counter({ value, className = '' }: CounterProps) {
 
   return (
     <span
-      role="img"
-      aria-label={String(value)}
+      data-testid="counter"
       data-changed={changed ? 'true' : undefined}
       className={`inline-flex tabular transition-colors duration-[600ms] ease-[var(--ease-out)] data-[changed=true]:text-signal ${className}`}
     >
+      <span className="sr-only">{value}</span>
       {digits.map((digit, index) => (
         <span
           key={digits.length - index}

@@ -136,7 +136,12 @@ function MenuLink({
   onPick: () => void
 }) {
   return (
-    <Link to={to} role="menuitem" className={`${menuItemClass} text-ink-muted hover:text-navy`} onClick={onPick}>
+    <Link
+      to={to}
+      role="menuitem"
+      className={`${menuItemClass} text-ink-muted hover:text-navy`}
+      onClick={onPick}
+    >
       <span className="text-ink-muted">{icon}</span>
       <span className="text-navy">{label}</span>
     </Link>

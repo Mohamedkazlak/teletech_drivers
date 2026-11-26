@@ -72,7 +72,10 @@ export function MapView({
   const initial =
     center ??
     (drawnMarkers[0]
-      ? ([readCoordinate(drawnMarkers[0].lat)!, readCoordinate(drawnMarkers[0].lng)!] as [number, number])
+      ? ([readCoordinate(drawnMarkers[0].lat)!, readCoordinate(drawnMarkers[0].lng)!] as [
+          number,
+          number,
+        ])
       : CAIRO)
 
   return (
