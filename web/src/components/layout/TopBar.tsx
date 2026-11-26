@@ -65,8 +65,9 @@ export function TopBar({ user, connection, onMenu, onLogout }: TopBarProps) {
         <div ref={rootRef} className="relative">
           <button
             type="button"
-            className="inline-flex h-10 max-w-56 items-center gap-2 rounded-full border border-line bg-white py-1 pe-2.5 ps-1 text-sm font-semibold text-navy transition-[background-color,border-color,transform] duration-150 ease-[var(--ease-out)] hover:border-light hover:bg-pale/60 active:scale-[0.97]"
+            className="inline-flex h-10 max-w-56 items-center gap-2 rounded-full border border-line bg-white p-1 sm:pe-2.5 text-sm font-semibold text-navy transition-[background-color,border-color,transform] duration-150 ease-[var(--ease-out)] hover:border-light hover:bg-pale/60 active:scale-[0.97]"
             aria-haspopup="menu"
+            aria-label={name}
             aria-expanded={open}
             aria-controls={menuId}
             onClick={() => setOpen((current) => !current)}
@@ -77,10 +78,10 @@ export function TopBar({ user, connection, onMenu, onLogout }: TopBarProps) {
             >
               {initials(name)}
             </span>
-            <span className="truncate">{name}</span>
+            <span className="hidden truncate sm:inline">{name}</span>
             <ChevronDownIcon
               size={16}
-              className={`shrink-0 text-ink-muted transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+              className={`hidden shrink-0 text-ink-muted sm:block transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
             />
           </button>
           {open ? (

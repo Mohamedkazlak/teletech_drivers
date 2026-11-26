@@ -268,13 +268,21 @@ function AttentionStrip({ summary }: { summary: AdminDashboard }) {
 function TotalsLine({ summary }: { summary: AdminDashboard }) {
   const { t } = useTranslation()
   const items = [
-    { to: '/admin/drivers', value: summary.drivers.total, label: t('dashboard.totalDrivers') },
+    {
+      to: '/admin/drivers',
+      value: summary.drivers.total,
+      label: t('dashboard.totalDrivers', { count: summary.drivers.total }),
+    },
     {
       to: '/admin/employees',
       value: summary.employees_total,
-      label: t('dashboard.totalEmployees'),
+      label: t('dashboard.totalEmployees', { count: summary.employees_total }),
     },
-    { to: '/admin/places', value: summary.places_total, label: t('dashboard.totalPlaces') },
+    {
+      to: '/admin/places',
+      value: summary.places_total,
+      label: t('dashboard.totalPlaces', { count: summary.places_total }),
+    },
     {
       to: '/admin/trips?stage=completed&finished_period=day',
       value: summary.trips.completed_today,

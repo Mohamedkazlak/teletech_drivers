@@ -1,15 +1,5 @@
 import type { TFunction } from 'i18next'
 
-export function formatWhen(value: string | null | undefined, language: string): string {
-  if (!value) return ''
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return value
-  return new Intl.DateTimeFormat(language.startsWith('ar') ? 'ar' : 'en', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(date)
-}
-
 const CAIRO = 'Africa/Cairo'
 const EMPTY = '—'
 
@@ -49,6 +39,11 @@ export function formatDateTime(value: string | null | undefined, language: strin
     .format(date)
     .replace(/\s/g, ' ')
   return `${formatDate(value, language)}${isArabic(language) ? '،' : ','} ${time}`
+}
+
+/** Same as formatDateTime, but empty for missing values so callers choose the fallback. */
+export function formatWhen(value: string | null | undefined, language: string): string {
+  return parseDate(value) ? formatDateTime(value, language) : (value ?? '')
 }
 
 export function formatDuration(seconds: number, t: TFunction): string {

@@ -15,6 +15,7 @@ import { primaryButtonClass, secondaryButtonClass } from '../../components/ui/st
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
+import { formatDate } from '../../lib/format'
 import { formatDateParam } from '../../lib/period'
 import { useListParams } from '../../lib/use-list-params'
 import type { AttendanceDay } from '../../api/attendance'
@@ -49,7 +50,11 @@ export function AttendancePage() {
       header: t('attendance.driver'),
       accessor: (row) => localizedName(i18n.language, row.driver_name_en, row.driver_name_ar),
     },
-    { id: 'date', header: t('attendance.workDate'), accessor: (row) => row.work_date },
+    {
+      id: 'date',
+      header: t('attendance.workDate'),
+      accessor: (row) => formatDate(row.work_date, i18n.language),
+    },
     {
       id: 'status',
       header: t('attendance.status'),

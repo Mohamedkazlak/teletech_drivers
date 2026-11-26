@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatDate, formatDateTime } from './format'
+import { formatDate, formatDateTime, formatWhen } from './format'
 
 describe('formatDate', () => {
   it('shows weekday, day and month in Cairo time', () => {
@@ -24,5 +24,15 @@ describe('formatDateTime', () => {
     const value = formatDateTime('2026-11-26T13:58:00Z', 'ar')
     expect(value).not.toMatch(/\n/)
     expect(value).toContain(' ')
+  })
+})
+
+describe('formatWhen', () => {
+  it('uses the same Cairo format as formatDateTime', () => {
+    expect(formatWhen('2026-11-26T13:58:00Z', 'en')).toBe(formatDateTime('2026-11-26T13:58:00Z', 'en'))
+  })
+
+  it('stays empty for missing values so callers can pick a fallback', () => {
+    expect(formatWhen(null, 'en')).toBe('')
   })
 })
