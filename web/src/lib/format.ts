@@ -10,6 +10,47 @@ export function formatWhen(value: string | null | undefined, language: string): 
   }).format(date)
 }
 
+const CAIRO = 'Africa/Cairo'
+const EMPTY = '—'
+
+function parseDate(value: string | null | undefined): Date | null {
+  if (!value) return null
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
+function isArabic(language: string): boolean {
+  return language.startsWith('ar')
+}
+
+/** "Wed 26 Nov" in Cairo time. */
+export function formatDate(value: string | null | undefined, language: string): string {
+  const date = parseDate(value)
+  if (!date) return EMPTY
+  return new Intl.DateTimeFormat(isArabic(language) ? 'ar' : 'en-GB', {
+    timeZone: CAIRO,
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  })
+    .format(date)
+    .replace(',', '')
+}
+
+/** "Wed 26 Nov, 3:58 PM" in Cairo time; the time never wraps. */
+export function formatDateTime(value: string | null | undefined, language: string): string {
+  const date = parseDate(value)
+  if (!date) return EMPTY
+  const time = new Intl.DateTimeFormat(isArabic(language) ? 'ar' : 'en-US', {
+    timeZone: CAIRO,
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+    .format(date)
+    .replace(/\s/g, ' ')
+  return `${formatDate(value, language)}${isArabic(language) ? '،' : ','} ${time}`
+}
+
 export function formatDuration(seconds: number, t: TFunction): string {
   const total = Math.max(0, Math.round(seconds))
   const hours = Math.floor(total / 3600)

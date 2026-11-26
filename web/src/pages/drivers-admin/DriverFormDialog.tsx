@@ -169,7 +169,7 @@ function DriverForm({
       noValidate
     >
       {banner ? (
-        <p role="alert" className="text-sm text-danger">
+        <p role="alert" className="text-sm text-danger-ink">
           {banner}
         </p>
       ) : null}
@@ -288,7 +288,7 @@ function DriverForm({
         />
       </FormField>
       {places.isError ? (
-        <p role="alert" className="text-sm text-danger">
+        <p role="alert" className="text-sm text-danger-ink">
           {messageForApiError(places.error, t)}
         </p>
       ) : (

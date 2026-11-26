@@ -6,6 +6,7 @@ import type { RealtimeStatus } from '../../realtime/use-fleet-realtime'
 import { NotificationMenu } from '../notifications/NotificationMenu'
 import { BrandMark } from '../brand/BrandMark'
 import { ChevronDownIcon, LogoutIcon, MenuIcon, SettingsIcon, UserIcon } from '../icons'
+import { initials } from '../../lib/initials'
 import { LanguageToggle } from '../language/LanguageToggle'
 import { iconButtonClass, menuItemClass, menuPanelClass } from '../ui/styles'
 import { BackButton } from './BackButton'
@@ -16,14 +17,6 @@ type TopBarProps = {
   connection: RealtimeStatus
   onMenu: () => void
   onLogout: () => void
-}
-
-function initials(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean)
-  if (parts.length === 0) return '?'
-  const first = Array.from(parts[0])[0] ?? ''
-  const last = parts.length > 1 ? (Array.from(parts[parts.length - 1])[0] ?? '') : ''
-  return (first + last).toUpperCase()
 }
 
 export function TopBar({ user, connection, onMenu, onLogout }: TopBarProps) {
@@ -63,6 +56,9 @@ export function TopBar({ user, connection, onMenu, onLogout }: TopBarProps) {
       <div className="ms-auto flex items-center gap-2 sm:gap-2.5">
         <ConnectionStatus status={connection} />
         <NotificationMenu />
+        <div className="sm:hidden">
+          <LanguageToggle compact />
+        </div>
         <div className="hidden sm:block">
           <LanguageToggle />
         </div>

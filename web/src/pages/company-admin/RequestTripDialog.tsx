@@ -123,12 +123,12 @@ export function RequestTripDialog({ open, onClose, onCreated }: RequestTripDialo
           noValidate
         >
           {banner ? (
-            <p role="alert" className="text-sm text-danger">
+            <p role="alert" className="text-sm text-danger-ink">
               {banner}
             </p>
           ) : null}
           {places.isError ? (
-            <p role="alert" className="text-sm text-danger">
+            <p role="alert" className="text-sm text-danger-ink">
               {messageForApiError(places.error, t)}
             </p>
           ) : null}

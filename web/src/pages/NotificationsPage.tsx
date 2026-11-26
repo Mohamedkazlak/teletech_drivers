@@ -58,7 +58,7 @@ export function NotificationsPage() {
         </p>
       ) : list.isError ? (
         <div className="flex flex-col items-start gap-3">
-          <p role="alert" className="text-sm text-danger">
+          <p role="alert" className="text-sm text-danger-ink">
             {messageForApiError(list.error, t)}
           </p>
           <button type="button" className={secondaryButtonClass} onClick={() => void list.refetch()}>

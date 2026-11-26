@@ -1,7 +1,7 @@
 const en = {
   app: {
-    name: 'TeleTech Drivers',
-    tagline: 'Fleet console',
+    name: 'TeleCars',
+    tagline: 'TeleTech fleet console',
   },
   common: {
     loading: 'Loading…',

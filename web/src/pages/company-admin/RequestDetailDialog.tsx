@@ -37,7 +37,7 @@ export function RequestDetailDialog({
     <DetailDialog open={open} title={t('requests.detailTitle')} onClose={onClose}>
       {isLoading ? <p role="status">{t('common.loading')}</p> : null}
       {error ? (
-        <p role="alert" className="text-sm text-danger">
+        <p role="alert" className="text-sm text-danger-ink">
           {error}
         </p>
       ) : null}

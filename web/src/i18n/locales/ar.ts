@@ -1,7 +1,7 @@
 const ar = {
   app: {
-    name: 'تيلي تك للسائقين',
-    tagline: 'لوحة الأسطول',
+    name: 'تيلي كارز',
+    tagline: 'منصة أسطول تيلي تك',
   },
   common: {
     loading: 'جار التحميل…',

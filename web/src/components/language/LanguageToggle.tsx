@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next'
 type LanguageToggleProps = {
   /** "dark" sits on the navy auth header; "light" in the top bar. */
   tone?: 'light' | 'dark'
+  /** Short "EN" / "ع" labels for narrow screens; full names stay as accessible names. */
+  compact?: boolean
 }
 
 /** Segmented English / العربية switch with a sliding thumb. */
-export function LanguageToggle({ tone = 'light' }: LanguageToggleProps) {
+export function LanguageToggle({ tone = 'light', compact = false }: LanguageToggleProps) {
   const { i18n, t } = useTranslation()
   const current = i18n.language.startsWith('ar') ? 'ar' : 'en'
   const dark = tone === 'dark'
@@ -30,30 +32,32 @@ export function LanguageToggle({ tone = 'light' }: LanguageToggleProps) {
       <button
         type="button"
         aria-pressed={current === 'en'}
-        className={buttonClass(current === 'en', dark)}
+        aria-label={compact ? 'English' : undefined}
+        className={buttonClass(current === 'en', dark, compact)}
         onClick={() => {
           void i18n.changeLanguage('en')
         }}
       >
-        English
+        {compact ? 'EN' : 'English'}
       </button>
       <button
         type="button"
         aria-pressed={current === 'ar'}
-        className={buttonClass(current === 'ar', dark)}
+        aria-label={compact ? 'العربية' : undefined}
+        className={buttonClass(current === 'ar', dark, compact)}
         onClick={() => {
           void i18n.changeLanguage('ar')
         }}
       >
-        العربية
+        {compact ? 'ع' : 'العربية'}
       </button>
     </div>
   )
 }
 
-function buttonClass(selected: boolean, dark: boolean): string {
-  const base =
-    'relative z-10 h-8 min-w-[4.75rem] rounded-full px-3 text-[13px] font-semibold transition-colors duration-200'
+function buttonClass(selected: boolean, dark: boolean, compact: boolean): string {
+  const width = compact ? 'min-w-10' : 'min-w-[4.75rem]'
+  const base = `relative z-10 h-10 ${width} rounded-full px-3 text-[13px] font-semibold transition-colors duration-200`
   if (selected) return `${base} text-navy`
   return `${base} ${dark ? 'text-white/80 hover:text-white' : 'text-ink-muted hover:text-navy'}`
 }

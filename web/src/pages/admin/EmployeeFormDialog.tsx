@@ -178,7 +178,7 @@ function EmployeeForm({
       noValidate
     >
       {banner ? (
-        <p role="alert" className="text-sm text-danger">
+        <p role="alert" className="text-sm text-danger-ink">
           {banner}
         </p>
       ) : null}
