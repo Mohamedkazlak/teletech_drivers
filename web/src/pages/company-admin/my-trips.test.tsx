@@ -68,7 +68,7 @@ describe('my trips request form', () => {
 
     await user.selectOptions(screen.getByRole('combobox', { name: 'My trips' }), 'Active')
 
-    expect(await screen.findByText('Kept to Plant')).toBeInTheDocument()
+    expect(await screen.findByRole('row', { name: /Kept.*Plant/ })).toBeInTheDocument()
     expect(myTripQueries()).toContainEqual({ bucket: 'active', per_page: 15 })
   })
 

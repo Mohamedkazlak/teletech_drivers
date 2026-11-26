@@ -236,6 +236,7 @@ const en = {
     meters: '{{value}} m',
   },
   requests: {
+    waitingOn: { company: 'Waiting on company admin', drivers: 'Waiting on drivers admin' },
     requester: 'Requester',
     from: 'From',
     to: 'To',
@@ -329,6 +330,9 @@ const en = {
     unassignedReady: 'Your trip is unassigned. Open it here to choose a driver.',
   },
   trips: {
+    phaseOf: 'Phase {{step}} of {{total}}: {{label}}',
+    when: 'When',
+    phase: 'Phase',
     empty: 'No trips in this view.',
     detailTitle: 'Trip details',
     stage: 'Stage',

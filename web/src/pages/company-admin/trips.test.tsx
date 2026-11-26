@@ -75,6 +75,19 @@ describe('company trips', () => {
     })
   })
 
+  it('lists trips as When, Route, Driver, Phase', async () => {
+    renderPage(<TripsPage />, '/?period=week&date=2026-11-11')
+    await waitFor(() => {
+      expect(screen.getAllByRole('columnheader').map((cell) => cell.textContent)).toEqual([
+        'When',
+        'Route',
+        'Driver',
+        'Phase',
+        'Actions',
+      ])
+    })
+  })
+
   it('applies finished_period and unconfirmed without the default scheduled week', async () => {
     const finished = renderPage(<TripsPage />, '/admin/trips?stage=completed&finished_period=day')
 

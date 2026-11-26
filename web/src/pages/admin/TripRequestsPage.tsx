@@ -7,10 +7,11 @@ import { PageHeading } from '../../components/layout/AppShell'
 import { BranchFilter, type BranchFilterValue } from '../../components/ui/BranchFilter'
 import { BranchText } from '../../components/ui/BranchText'
 import { FilterBar } from '../../components/ui/FilterBar'
+import { RequestStatusCell } from '../../components/trips/RequestStatusCell'
+import { RouteCell } from '../../components/trips/RouteCell'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { PeriodControl } from '../../components/ui/PeriodControl'
-import { StatusBadge } from '../../components/ui/StatusBadge'
 import { ghostButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
 import { formatWhen } from '../../lib/format'
@@ -70,8 +71,7 @@ export function TripRequestsPage() {
       {
         id: 'route',
         header: t('requests.route'),
-        accessor: (row) =>
-          t('requests.routeValue', { from: row.pickup.name, to: row.destination.name }),
+        accessor: (row) => <RouteCell from={row.pickup.name} to={row.destination.name} />,
       },
       {
         id: 'when',
@@ -82,7 +82,7 @@ export function TripRequestsPage() {
       {
         id: 'status',
         header: t('requests.status'),
-        accessor: (row) => <StatusBadge status={row.status} />,
+        accessor: (row) => <RequestStatusCell status={row.status} tripId={row.trip_id} />,
       },
       {
         id: 'notes',

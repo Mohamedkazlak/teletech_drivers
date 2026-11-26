@@ -103,6 +103,20 @@ describe('drivers admin trips', () => {
     )
   })
 
+  it('lists trips as When, Route, People, Driver, Phase', async () => {
+    renderPage(<TripsPage />, '/?period=week&date=2026-11-11')
+    await waitFor(() => {
+      expect(screen.getAllByRole('columnheader').map((cell) => cell.textContent)).toEqual([
+        'When',
+        'Route',
+        'People',
+        'Driver',
+        'Phase',
+        'Actions',
+      ])
+    })
+  })
+
   it('polls the driver location while the in-progress dialog is open and stops on close', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true })
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })

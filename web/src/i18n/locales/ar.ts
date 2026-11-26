@@ -235,6 +235,7 @@ const ar = {
     meters: '{{value}} م',
   },
   requests: {
+    waitingOn: { company: 'بانتظار مدير الشركة', drivers: 'بانتظار مسؤول السائقين' },
     requester: 'مقدم الطلب',
     from: 'من',
     to: 'إلى',
@@ -328,6 +329,9 @@ const ar = {
     unassignedReady: 'رحلتك غير معينة. افتحها من هنا لاختيار سائق.',
   },
   trips: {
+    phaseOf: 'المرحلة {{step}} من {{total}}: {{label}}',
+    when: 'الموعد',
+    phase: 'المرحلة',
     empty: 'لا توجد رحلات في هذا العرض.',
     detailTitle: 'تفاصيل الرحلة',
     stage: 'المرحلة',

@@ -15,10 +15,11 @@ import { BranchText } from '../../components/ui/BranchText'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { FilterBar } from '../../components/ui/FilterBar'
 import { RowActions } from '../../components/ui/RowActions'
+import { RequestStatusCell } from '../../components/trips/RequestStatusCell'
+import { RouteCell } from '../../components/trips/RouteCell'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { FormField } from '../../components/ui/FormField'
-import { StatusBadge } from '../../components/ui/StatusBadge'
 import { controlClass, ghostButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { fieldDescribedBy } from '../../components/ui/described-by'
@@ -85,8 +86,7 @@ export function RequestedTripsPage() {
       {
         id: 'route',
         header: t('requests.route'),
-        accessor: (row) =>
-          t('requests.routeValue', { from: row.pickup.name, to: row.destination.name }),
+        accessor: (row) => <RouteCell from={row.pickup.name} to={row.destination.name} />,
       },
       {
         id: 'when',
@@ -97,7 +97,7 @@ export function RequestedTripsPage() {
       {
         id: 'status',
         header: t('requests.status'),
-        accessor: (row) => <StatusBadge status={row.status} />,
+        accessor: (row) => <RequestStatusCell status={row.status} tripId={row.trip_id} />,
       },
       {
         id: 'notes',

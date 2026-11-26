@@ -14,6 +14,7 @@ import { BranchText } from '../../components/ui/BranchText'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { FilterBar } from '../../components/ui/FilterBar'
 import { RowActions } from '../../components/ui/RowActions'
+import { RouteCell } from '../../components/trips/RouteCell'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { fieldDescribedBy } from '../../components/ui/described-by'
 import { FilterSelect } from '../../components/ui/FilterSelect'
@@ -192,8 +193,7 @@ export function RequestsPage() {
     {
       id: 'route',
       header: t('requests.route'),
-      accessor: (row) =>
-        t('requests.routeValue', { from: row.pickup.name, to: row.destination.name }),
+      accessor: (row) => <RouteCell from={row.pickup.name} to={row.destination.name} />,
     },
     {
       id: 'when',
