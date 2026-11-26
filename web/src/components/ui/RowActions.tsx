@@ -65,7 +65,9 @@ export function RowActions({ label, items, primary }: RowActionsProps) {
       setOpen(false)
     }
     function onViewportChange() {
+      const hadFocus = menuRef.current?.contains(document.activeElement) ?? false
       setOpen(false)
+      if (hadFocus) triggerRef.current?.focus()
     }
     document.addEventListener('pointerdown', onPointerDown)
     window.addEventListener('resize', onViewportChange)
@@ -98,12 +100,23 @@ export function RowActions({ label, items, primary }: RowActionsProps) {
       close(true)
       return
     } else if (event.key === 'Tab') {
-      close(false)
+      // The menu lives in a portal at the end of the page, so let focus go
+      // back to the row instead of jumping out of the table.
+      event.preventDefault()
+      close(true)
       return
     }
     if (next < 0) return
     event.preventDefault()
     enabled[next]?.focus()
+  }
+
+  if (items.length === 0) {
+    return primary ? (
+      <div data-row-actions="" className="flex items-center justify-end gap-1">
+        {primary}
+      </div>
+    ) : null
   }
 
   return (

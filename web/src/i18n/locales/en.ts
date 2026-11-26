@@ -40,6 +40,7 @@ const en = {
     clearSearch: 'Clear search',
     anyDriver: 'Any driver',
     clearDriver: 'Clear driver',
+    unknownDriver: 'Unknown driver',
   },
   nav: {
     dashboard: 'Dashboard',

@@ -106,6 +106,14 @@ describe('attendance page', () => {
     expect(screen.getByRole('combobox', { name: 'Driver' })).toHaveValue('Huda Samir')
   })
 
+  it('names an active driver filter even when the driver is not in the roster', async () => {
+    renderPage(<AttendancePage />, '/?driver=driver-9')
+    await screen.findByText('Nader Ali')
+    await waitFor(() => {
+      expect(screen.getByRole('combobox', { name: 'Driver' })).toHaveValue('Unknown driver')
+    })
+  })
+
   it('requires a reason before adjusting attendance', async () => {
     const user = userEvent.setup()
     renderPage(<AttendancePage />)

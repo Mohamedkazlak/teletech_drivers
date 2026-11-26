@@ -23,9 +23,15 @@ export function DriverPicker({ value, onChange }: DriverPickerProps) {
   const roster = useDriverRoster(true)
   const drivers = useMemo(() => roster.data ?? [], [roster.data])
   const selected = drivers.find((driver) => driver.id === value)
+  // A filter from the URL may name a driver the roster doesn't have (still
+  // loading, deleted): say so rather than looking like "Any driver".
   const selectedName = selected
     ? localizedName(i18n.language, selected.name_en, selected.name_ar)
-    : ''
+    : value
+      ? roster.isPending
+        ? t('common.loading')
+        : t('filters.unknownDriver')
+      : ''
   const [draft, setDraft] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)

@@ -13,15 +13,21 @@ function isArabic(language: string): boolean {
   return language.startsWith('ar')
 }
 
-/** "Wed 26 Nov" in Cairo time. */
+function cairoYear(date: Date): string {
+  return new Intl.DateTimeFormat('en', { timeZone: CAIRO, year: 'numeric' }).format(date)
+}
+
+/** "Wed 26 Nov" in Cairo time; the year is added when it isn't this year. */
 export function formatDate(value: string | null | undefined, language: string): string {
   const date = parseDate(value)
   if (!date) return EMPTY
+  const otherYear = cairoYear(date) !== cairoYear(new Date())
   return new Intl.DateTimeFormat(isArabic(language) ? 'ar' : 'en-GB', {
     timeZone: CAIRO,
     weekday: 'short',
     day: 'numeric',
     month: 'short',
+    ...(otherYear ? { year: 'numeric' as const } : {}),
   })
     .format(date)
     .replace(',', '')

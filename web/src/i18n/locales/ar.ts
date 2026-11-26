@@ -40,6 +40,7 @@ const ar = {
     clearSearch: 'مسح البحث',
     anyDriver: 'أي سائق',
     clearDriver: 'مسح السائق',
+    unknownDriver: 'سائق غير معروف',
   },
   nav: {
     dashboard: 'لوحة المعلومات',
