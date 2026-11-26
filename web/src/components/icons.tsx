@@ -123,6 +123,14 @@ export const MenuIcon = (p: IconProps) => (
   </Icon>
 )
 
+export const MoreIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="5.5" cy="12" r="1.25" fill="currentColor" stroke="none" />
+    <circle cx="12" cy="12" r="1.25" fill="currentColor" stroke="none" />
+    <circle cx="18.5" cy="12" r="1.25" fill="currentColor" stroke="none" />
+  </Icon>
+)
+
 export const SearchIcon = (p: IconProps) => (
   <Icon {...p}>
     <circle cx="11" cy="11" r="6.5" />

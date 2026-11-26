@@ -5,7 +5,7 @@ import { api } from '../../api/client'
 import { ApiError } from '../../api/errors'
 import type { Employee } from '../../api/types'
 import i18n from '../../i18n'
-import { paginated, renderPage } from '../../test/render-page'
+import { paginated, renderPage, chooseRowAction } from '../../test/render-page'
 import { EmployeesPage } from './EmployeesPage'
 
 vi.mock('../../api/client', () => ({
@@ -100,8 +100,9 @@ describe('employees', () => {
         }),
       )
     })
-    expect(await screen.findByRole('button', { name: 'Restore' })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Edit' })).not.toBeInTheDocument()
+    await user.click(await screen.findByRole('button', { name: 'Actions for Sara Nabil' }))
+    expect(screen.getByRole('menuitem', { name: 'Restore' })).toBeInTheDocument()
+    expect(screen.queryByRole('menuitem', { name: 'Edit' })).not.toBeInTheDocument()
   })
 
   it('creates an employee and shows a 422 field error', async () => {
@@ -135,7 +136,7 @@ describe('employees', () => {
     http.patch.mockResolvedValue(employee({ phone: '01099999999' }))
     renderPage(<EmployeesPage />)
 
-    await user.click(await screen.findByRole('button', { name: 'Edit' }))
+    await chooseRowAction(user, 'Sara Nabil', 'Edit')
     const dialog = await screen.findByRole('dialog', { name: 'Edit employee' })
     expect(within(dialog).queryByLabelText('Temporary password')).not.toBeInTheDocument()
     const phone = within(dialog).getByLabelText('Phone')
@@ -154,7 +155,7 @@ describe('employees', () => {
     http.post.mockResolvedValue(employee({ deleted_at: null }))
     renderPage(<EmployeesPage />)
 
-    await user.click(await screen.findByRole('button', { name: 'Delete' }))
+    await chooseRowAction(user, 'Sara Nabil', 'Delete')
     const deleteDialog = await screen.findByRole('dialog', { name: 'Delete this employee?' })
     await user.click(within(deleteDialog).getByRole('button', { name: 'Delete' }))
     await waitFor(() => {
@@ -162,7 +163,7 @@ describe('employees', () => {
     })
 
     await user.click(screen.getByRole('switch', { name: 'Include deleted' }))
-    await user.click(await screen.findByRole('button', { name: 'Restore' }))
+    await chooseRowAction(user, 'Sara Nabil', 'Restore')
     const restoreDialog = await screen.findByRole('dialog', { name: 'Restore this employee?' })
     await user.click(within(restoreDialog).getByRole('button', { name: 'Restore' }))
     await waitFor(() => {

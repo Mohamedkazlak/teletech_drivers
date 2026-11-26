@@ -6,9 +6,10 @@ import { useDeletePlace, usePlaces } from '../../api/use-places'
 import { PageHeading } from '../../components/layout/AppShell'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { FilterBar } from '../../components/ui/FilterBar'
+import { RowActions } from '../../components/ui/RowActions'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { primaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
@@ -48,7 +49,16 @@ export function PlacesPage() {
         id: 'name',
         header: t('places.name'),
         sortValue: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
-        accessor: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
+        mobile: 'title',
+        accessor: (row) => (
+          <button
+            type="button"
+            className="text-start font-medium text-deep underline-offset-2 hover:underline"
+            onClick={() => setViewing(row)}
+          >
+            {localizedName(i18n.language, row.name_en, row.name_ar)}
+          </button>
+        ),
       },
       {
         id: 'address',
@@ -68,25 +78,23 @@ export function PlacesPage() {
       {
         id: 'actions',
         header: t('common.actions'),
+        isActions: true,
         accessor: (row) => (
-          <div className="flex flex-wrap gap-2">
-            <button type="button" className={secondaryButtonClass} onClick={() => setViewing(row)}>
-              {t('common.view')}
-            </button>
-            <button
-              type="button"
-              className={secondaryButtonClass}
-              onClick={() => {
-                setViewing(null)
-                setEditing(row)
-              }}
-            >
-              {t('common.edit')}
-            </button>
-            <button type="button" className={secondaryButtonClass} onClick={() => setDeleting(row)}>
-              {t('common.delete')}
-            </button>
-          </div>
+          <RowActions
+            label={t('table.actionsFor', {
+              name: localizedName(i18n.language, row.name_en, row.name_ar),
+            })}
+            items={[
+              {
+                label: t('common.edit'),
+                onSelect: () => {
+                  setViewing(null)
+                  setEditing(row)
+                },
+              },
+              { label: t('common.delete'), onSelect: () => setDeleting(row), danger: true },
+            ]}
+          />
         ),
       },
     ],
@@ -145,6 +153,8 @@ export function PlacesPage() {
           message: t('places.empty'),
           action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
         }}
+        total={list.data?.meta.total}
+        onRowClick={setViewing}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

@@ -11,7 +11,7 @@ import { DataTable, type Column } from '../../components/ui/DataTable'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { PeriodControl } from '../../components/ui/PeriodControl'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { secondaryButtonClass } from '../../components/ui/styles'
+import { ghostButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
 import { formatWhen } from '../../lib/format'
 import { isBranch, localizedName } from '../../lib/names'
@@ -94,8 +94,9 @@ export function TripRequestsPage() {
       {
         id: 'actions',
         header: t('common.actions'),
+        isActions: true,
         accessor: (row) => (
-          <button type="button" className={secondaryButtonClass} onClick={() => setSelected(row)}>
+          <button type="button" className={ghostButtonClass} onClick={() => setSelected(row)}>
             {t('common.view')}
           </button>
         ),
@@ -142,6 +143,8 @@ export function TripRequestsPage() {
               ? { label: t('filters.clear'), onClick: () => clear(FILTER_KEYS) }
               : undefined,
         }}
+        total={list.data?.meta.total}
+        onRowClick={(row) => setSelected(row)}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

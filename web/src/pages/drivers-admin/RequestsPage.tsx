@@ -13,11 +13,12 @@ import { BranchFilter, type BranchFilterValue } from '../../components/ui/Branch
 import { BranchText } from '../../components/ui/BranchText'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { FilterBar } from '../../components/ui/FilterBar'
+import { RowActions } from '../../components/ui/RowActions'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { fieldDescribedBy } from '../../components/ui/described-by'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { FormField } from '../../components/ui/FormField'
-import { controlClass, primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { controlClass, ghostButtonClass, primaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { firstFieldError, messageForApiError } from '../../lib/api-message'
 import {
@@ -123,9 +124,7 @@ export function RequestsPage() {
       const result = await createTrips.mutateAsync({
         mode: ids.length > 1 ? 'grouped' : 'one_per_request',
         request_ids: ids,
-        ...(ids.length > 1 && scheduledAt
-          ? { scheduled_at: cairoInputToIso(scheduledAt) }
-          : {}),
+        ...(ids.length > 1 && scheduledAt ? { scheduled_at: cairoInputToIso(scheduledAt) } : {}),
       })
       const trip = result.data[0]
       if (!trip) {
@@ -212,26 +211,33 @@ export function RequestsPage() {
     {
       id: 'actions',
       header: t('common.actions'),
+      isActions: true,
       accessor: (row) => (
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            className={secondaryButtonClass}
-            onClick={() => setSelectedId(row.id)}
-          >
-            {t('common.view')}
-          </button>
-          {tab === 'pending' && !row.trip_id ? (
+        <RowActions
+          label={t('table.actionsFor', {
+            name: localizedName(i18n.language, row.employee_name_en, row.employee_name_ar),
+          })}
+          primary={
             <button
               type="button"
-              className={secondaryButtonClass}
-              disabled={createTrips.isPending}
-              onClick={() => openCreate([row.id], row.requested_at)}
+              className={ghostButtonClass}
+              onClick={() => setSelectedId(row.id)}
             >
-              {t('requests.createTrip')}
+              {t('common.view')}
             </button>
-          ) : null}
-        </div>
+          }
+          items={
+            tab === 'pending' && !row.trip_id
+              ? [
+                  {
+                    label: t('requests.createTrip'),
+                    disabled: createTrips.isPending,
+                    onSelect: () => openCreate([row.id], row.requested_at),
+                  },
+                ]
+              : []
+          }
+        />
       ),
     },
   )
@@ -312,7 +318,9 @@ export function RequestsPage() {
         rows={rows}
         rowKey={(row) => row.id}
         rowDomId={(row) => `request-${row.id}`}
-        rowClassName={(row) => (row.id === highlight ? 'bg-pale outline outline-2 outline-deep' : undefined)}
+        rowClassName={(row) =>
+          row.id === highlight ? 'bg-pale outline outline-2 outline-deep' : undefined
+        }
         isLoading={list.isPending}
         error={list.isError ? messageForApiError(list.error, t) : null}
         onRetry={() => {
@@ -320,8 +328,13 @@ export function RequestsPage() {
         }}
         empty={{
           message: t('requests.empty'),
-          action: countActive(FILTER_KEYS) > 0 ? { label: t('filters.clear'), onClick: () => clear(FILTER_KEYS) } : undefined,
+          action:
+            countActive(FILTER_KEYS) > 0
+              ? { label: t('filters.clear'), onClick: () => clear(FILTER_KEYS) }
+              : undefined,
         }}
+        total={list.data?.meta.total}
+        onRowClick={(row) => setSelectedId(row.id)}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

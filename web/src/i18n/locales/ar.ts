@@ -122,6 +122,8 @@ const ar = {
     passwordMatch: 'كلمتا المرور غير متطابقتين.',
   },
   table: {
+    actionsFor: 'إجراءات {{name}}',
+    results: 'النتائج: {{count}}',
     sort: 'ترتيب حسب {{column}}',
   },
   status: {
@@ -442,6 +444,7 @@ const ar = {
     restored: 'تمت استعادة الموظف.',
   },
   users: {
+    you: 'أنت',
     search: 'بحث في المستخدمين',
     role: 'الدور',
     allRoles: 'كل الأدوار',

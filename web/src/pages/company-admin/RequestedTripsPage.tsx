@@ -14,11 +14,12 @@ import { BranchFilter, type BranchFilterValue } from '../../components/ui/Branch
 import { BranchText } from '../../components/ui/BranchText'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { FilterBar } from '../../components/ui/FilterBar'
+import { RowActions } from '../../components/ui/RowActions'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { FormField } from '../../components/ui/FormField'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { controlClass, secondaryButtonClass } from '../../components/ui/styles'
+import { controlClass, ghostButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { fieldDescribedBy } from '../../components/ui/described-by'
 import { firstFieldError, messageForApiError } from '../../lib/api-message'
@@ -108,38 +109,38 @@ export function RequestedTripsPage() {
       {
         id: 'actions',
         header: t('common.actions'),
+        isActions: true,
         accessor: (row) => (
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              className={secondaryButtonClass}
-              onClick={() => setSelectedId(row.id)}
-            >
-              {t('common.view')}
-            </button>
-            {row.status === 'pending' ? (
-              <>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => setApproveId(row.id)}
-                >
-                  {t('requests.approve')}
-                </button>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => {
-                    setReason('')
-                    setReasonError(null)
-                    setRejectId(row.id)
-                  }}
-                >
-                  {t('requests.reject')}
-                </button>
-              </>
-            ) : null}
-          </div>
+          <RowActions
+            label={t('table.actionsFor', {
+              name: localizedName(i18n.language, row.employee_name_en, row.employee_name_ar),
+            })}
+            primary={
+              <button
+                type="button"
+                className={ghostButtonClass}
+                onClick={() => setSelectedId(row.id)}
+              >
+                {t('common.view')}
+              </button>
+            }
+            items={
+              row.status === 'pending'
+                ? [
+                    { label: t('requests.approve'), onSelect: () => setApproveId(row.id) },
+                    {
+                      label: t('requests.reject'),
+                      danger: true,
+                      onSelect: () => {
+                        setReason('')
+                        setReasonError(null)
+                        setRejectId(row.id)
+                      },
+                    },
+                  ]
+                : []
+            }
+          />
         ),
       },
     ],
@@ -188,10 +189,7 @@ export function RequestedTripsPage() {
   return (
     <section className="flex flex-col gap-4">
       <PageHeading title={t('nav.requestedTrips')} />
-      <FilterBar
-        activeCount={countActive(FILTER_KEYS)}
-        onClear={() => clear(FILTER_KEYS)}
-      >
+      <FilterBar activeCount={countActive(FILTER_KEYS)} onClear={() => clear(FILTER_KEYS)}>
         <FilterSelect
           label={t('requests.approval')}
           value={status}
@@ -214,7 +212,9 @@ export function RequestedTripsPage() {
         rows={rows}
         rowKey={(row) => row.id}
         rowDomId={(row) => `request-${row.id}`}
-        rowClassName={(row) => (row.id === highlight ? 'bg-pale outline outline-2 outline-deep' : undefined)}
+        rowClassName={(row) =>
+          row.id === highlight ? 'bg-pale outline outline-2 outline-deep' : undefined
+        }
         isLoading={list.isPending}
         error={list.isError ? messageForApiError(list.error, t) : null}
         onRetry={() => {
@@ -222,8 +222,13 @@ export function RequestedTripsPage() {
         }}
         empty={{
           message: t('requests.empty'),
-          action: countActive(FILTER_KEYS) > 0 ? { label: t('filters.clear'), onClick: () => clear(FILTER_KEYS) } : undefined,
+          action:
+            countActive(FILTER_KEYS) > 0
+              ? { label: t('filters.clear'), onClick: () => clear(FILTER_KEYS) }
+              : undefined,
         }}
+        total={list.data?.meta.total}
+        onRowClick={(row) => setSelectedId(row.id)}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

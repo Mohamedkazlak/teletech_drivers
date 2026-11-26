@@ -122,6 +122,9 @@ const en = {
     passwordMatch: 'The passwords do not match.',
   },
   table: {
+    actionsFor: 'Actions for {{name}}',
+    results_one: '{{count}} result',
+    results_other: '{{count}} results',
     sort: 'Sort by {{column}}',
   },
   status: {
@@ -443,6 +446,7 @@ const en = {
     restored: 'Employee restored.',
   },
   users: {
+    you: 'You',
     search: 'Search users',
     role: 'Role',
     allRoles: 'All roles',

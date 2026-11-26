@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../../api/client'
 import { ApiError } from '../../api/errors'
 import i18n from '../../i18n'
-import { driver, paginated, place, renderPage } from '../../test/render-page'
+import { chooseRowAction, driver, paginated, place, renderPage } from '../../test/render-page'
 import { DriverProfilePage } from './DriverProfilePage'
 import { DriversPage } from './DriversPage'
 
@@ -214,7 +214,7 @@ describe('drivers admin roster', () => {
     http.patch.mockResolvedValue(driver({ phone: '01022222222' }))
     renderPage(<DriversPage />)
 
-    await user.click(await screen.findByRole('button', { name: 'Edit' }))
+    await chooseRowAction(user, 'Nader Ali', 'Edit')
     const dialog = await screen.findByRole('dialog', { name: 'Edit driver' })
     expect(within(dialog).getByLabelText('Email')).toHaveAttribute('readonly')
     const phone = within(dialog).getByLabelText('Phone')
@@ -232,7 +232,7 @@ describe('drivers admin roster', () => {
     http.delete.mockResolvedValue(driver())
     renderPage(<DriversPage />)
 
-    await user.click(await screen.findByRole('button', { name: 'Delete' }))
+    await chooseRowAction(user, 'Nader Ali', 'Delete')
     expect(http.delete).not.toHaveBeenCalled()
     const dialog = await screen.findByRole('dialog', { name: 'Delete this driver?' })
     await user.click(within(dialog).getByRole('button', { name: 'Delete' }))
@@ -343,7 +343,8 @@ describe('admin driver restore', () => {
     const user = userEvent.setup()
     const fleet = renderPage(<DriversPage />)
     expect(screen.queryByRole('switch', { name: 'Include deleted' })).not.toBeInTheDocument()
-    expect(await screen.findByRole('button', { name: 'Edit' })).toBeInTheDocument()
+    await user.click(await screen.findByRole('button', { name: 'Actions for Nader Ali' }))
+    expect(screen.getByRole('menuitem', { name: 'Edit' })).toBeInTheDocument()
     fleet.unmount()
 
     renderPage(<DriversPage allowDeleted />)
@@ -353,12 +354,12 @@ describe('admin driver restore', () => {
         expect.objectContaining({ include_deleted: true, per_page: 15 }),
       )
     })
-    expect(await screen.findByRole('button', { name: 'Restore' })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Edit' })).not.toBeInTheDocument()
-    expect(screen.getByText('Deleted')).toBeInTheDocument()
+    expect(await screen.findByText('Deleted')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Actions for Nader Ali' }))
+    expect(screen.queryByRole('menuitem', { name: 'Edit' })).not.toBeInTheDocument()
 
     http.post.mockResolvedValue(driver())
-    await user.click(screen.getByRole('button', { name: 'Restore' }))
+    await user.click(screen.getByRole('menuitem', { name: 'Restore' }))
     const dialog = await screen.findByRole('dialog', { name: 'Restore this driver?' })
     await user.click(within(dialog).getByRole('button', { name: 'Restore' }))
     await waitFor(() => {

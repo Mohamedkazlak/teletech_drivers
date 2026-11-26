@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { driversListQuery } from '../../api/drivers'
 import type { AttendanceListFilter } from '../../api/drivers'
@@ -11,8 +11,9 @@ import { DataTable, type Column } from '../../components/ui/DataTable'
 import { FilterBar } from '../../components/ui/FilterBar'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { IncludeDeletedToggle } from '../../components/ui/IncludeDeletedToggle'
+import { RowActions, type RowActionItem } from '../../components/ui/RowActions'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { primaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
@@ -34,6 +35,7 @@ type DriversPageProps = {
 export function DriversPage({ allowDeleted = false }: DriversPageProps) {
   const { t, i18n } = useTranslation()
   const toast = useToast()
+  const navigate = useNavigate()
   const { params, set, page, setPage } = useListParams()
   const searchParam = params.get('search') ?? ''
   const [search, setSearch] = useState(searchParam)
@@ -70,6 +72,7 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
         id: 'name',
         header: t('places.name'),
         sortValue: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
+        mobile: 'title',
         accessor: (row) => (
           <span className="flex flex-col items-start gap-1">
             <DriverName driver={row} language={i18n.language} />
@@ -104,41 +107,26 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
       {
         id: 'actions',
         header: t('common.actions'),
-        accessor: (row) => (
-          <div className="flex flex-wrap gap-2">
-            <Link to={row.id} className={secondaryButtonClass}>
-              {t('common.view')}
-            </Link>
-            {row.deleted_at ? (
-              allowDeleted ? (
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => setRestoring(row)}
-                >
-                  {t('common.restore')}
-                </button>
-              ) : null
-            ) : (
-              <>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => setEditing(row)}
-                >
-                  {t('common.edit')}
-                </button>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => setDeleting(row)}
-                >
-                  {t('common.delete')}
-                </button>
-              </>
-            )}
-          </div>
-        ),
+        isActions: true,
+        accessor: (row) => {
+          const items: RowActionItem[] = row.deleted_at
+            ? allowDeleted
+              ? [{ label: t('common.restore'), onSelect: () => setRestoring(row) }]
+              : []
+            : [
+                { label: t('common.edit'), onSelect: () => setEditing(row) },
+                { label: t('common.delete'), onSelect: () => setDeleting(row), danger: true },
+              ]
+          if (items.length === 0) return null
+          return (
+            <RowActions
+              label={t('table.actionsFor', {
+                name: localizedName(i18n.language, row.name_en, row.name_ar),
+              })}
+              items={items}
+            />
+          )
+        },
       },
     ]
   }, [allowDeleted, i18n.language, t])
@@ -221,6 +209,8 @@ export function DriversPage({ allowDeleted = false }: DriversPageProps) {
           message: t('driverAdmin.empty'),
           action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
         }}
+        total={list.data?.meta.total}
+        onRowClick={(row) => navigate(row.id)}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

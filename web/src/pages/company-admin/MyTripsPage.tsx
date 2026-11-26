@@ -9,7 +9,7 @@ import { DataTable, type Column } from '../../components/ui/DataTable'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { trackingChipStatus } from '../../lib/request-tracking'
-import { primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { ghostButtonClass, primaryButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
 import { formatWhen } from '../../lib/format'
 import { localizedName } from '../../lib/names'
@@ -86,10 +86,11 @@ export function MyTripsPage() {
       {
         id: 'actions',
         header: t('common.actions'),
+        isActions: true,
         accessor: (row) => (
           <button
             type="button"
-            className={secondaryButtonClass}
+            className={ghostButtonClass}
             onClick={() => set({ trip: row.id }, false)}
           >
             {t('common.view')}
@@ -133,6 +134,8 @@ export function MyTripsPage() {
               ? { label: t('filters.clear'), onClick: () => clear(['tab']) }
               : undefined,
         }}
+        total={list.data?.meta.total}
+        onRowClick={(row) => set({ trip: row.id }, false)}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

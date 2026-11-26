@@ -6,10 +6,10 @@ import type { UserRole } from '../../api/types'
 import { useAuth } from '../../auth/auth-context'
 import { PageHeading } from '../../components/layout/AppShell'
 import { FilterBar } from '../../components/ui/FilterBar'
+import { RowActions } from '../../components/ui/RowActions'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { secondaryButtonClass } from '../../components/ui/styles'
 import { messageForApiError } from '../../lib/api-message'
 import { localizedName } from '../../lib/names'
 import { useListParams } from '../../lib/use-list-params'
@@ -54,7 +54,17 @@ export function UsersPage() {
         id: 'name',
         header: t('places.name'),
         sortValue: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
-        accessor: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
+        mobile: 'title',
+        accessor: (row) => (
+          <span className="inline-flex flex-wrap items-center gap-2">
+            {localizedName(i18n.language, row.name_en, row.name_ar)}
+            {row.id === user?.id ? (
+              <span className="rounded-chip bg-pale px-2 py-0.5 text-xs font-semibold text-deep">
+                {t('users.you')}
+              </span>
+            ) : null}
+          </span>
+        ),
       },
       {
         id: 'email',
@@ -83,15 +93,15 @@ export function UsersPage() {
       {
         id: 'actions',
         header: t('common.actions'),
+        isActions: true,
         accessor: (row) =>
           row.id === user?.id ? null : (
-            <button
-              type="button"
-              className={secondaryButtonClass}
-              onClick={() => setResetting(row)}
-            >
-              {t('users.reset')}
-            </button>
+            <RowActions
+              label={t('table.actionsFor', {
+                name: localizedName(i18n.language, row.name_en, row.name_ar),
+              })}
+              items={[{ label: t('users.reset'), onSelect: () => setResetting(row) }]}
+            />
           ),
       },
     ],
@@ -135,6 +145,7 @@ export function UsersPage() {
           message: t('users.empty'),
           action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
         }}
+        total={list.data?.meta.total}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

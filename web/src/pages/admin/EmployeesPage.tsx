@@ -11,8 +11,9 @@ import { FilterBar } from '../../components/ui/FilterBar'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { FilterSelect } from '../../components/ui/FilterSelect'
 import { IncludeDeletedToggle } from '../../components/ui/IncludeDeletedToggle'
+import { RowActions } from '../../components/ui/RowActions'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { primaryButtonClass, secondaryButtonClass } from '../../components/ui/styles'
+import { primaryButtonClass } from '../../components/ui/styles'
 import { useToast } from '../../components/ui/toast-context'
 import { messageForApiError } from '../../lib/api-message'
 import { isBranch, localizedName } from '../../lib/names'
@@ -81,7 +82,16 @@ export function EmployeesPage() {
         id: 'name',
         header: t('places.name'),
         sortValue: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
-        accessor: (row) => localizedName(i18n.language, row.name_en, row.name_ar),
+        mobile: 'title',
+        accessor: (row) => (
+          <button
+            type="button"
+            className="text-start font-medium text-deep underline-offset-2 hover:underline"
+            onClick={() => openView(row)}
+          >
+            {localizedName(i18n.language, row.name_en, row.name_ar)}
+          </button>
+        ),
       },
       {
         id: 'email',
@@ -111,48 +121,27 @@ export function EmployeesPage() {
       {
         id: 'actions',
         header: t('common.actions'),
+        isActions: true,
         accessor: (row) => (
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              className={secondaryButtonClass}
-              onClick={() => {
-                setSelected(row)
-                setMode('view')
-              }}
-            >
-              {t('common.view')}
-            </button>
-            {row.deleted_at ? (
-              <button
-                type="button"
-                className={secondaryButtonClass}
-                onClick={() => setRestoring(row)}
-              >
-                {t('common.restore')}
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => {
-                    setSelected(row)
-                    setMode('edit')
-                  }}
-                >
-                  {t('common.edit')}
-                </button>
-                <button
-                  type="button"
-                  className={secondaryButtonClass}
-                  onClick={() => setDeleting(row)}
-                >
-                  {t('common.delete')}
-                </button>
-              </>
-            )}
-          </div>
+          <RowActions
+            label={t('table.actionsFor', {
+              name: localizedName(i18n.language, row.name_en, row.name_ar),
+            })}
+            items={
+              row.deleted_at
+                ? [{ label: t('common.restore'), onSelect: () => setRestoring(row) }]
+                : [
+                    {
+                      label: t('common.edit'),
+                      onSelect: () => {
+                        setSelected(row)
+                        setMode('edit')
+                      },
+                    },
+                    { label: t('common.delete'), onSelect: () => setDeleting(row), danger: true },
+                  ]
+            }
+          />
         ),
       },
     ],
@@ -193,6 +182,11 @@ export function EmployeesPage() {
   function clearFilters() {
     setSearch('')
     set({ search: null, branch: null, active: null, deleted: null })
+  }
+
+  function openView(row: Employee) {
+    setSelected(row)
+    setMode('view')
   }
 
   return (
@@ -239,6 +233,8 @@ export function EmployeesPage() {
           message: t('employees.empty'),
           action: activeFilters ? { label: t('filters.clear'), onClick: clearFilters } : undefined,
         }}
+        total={list.data?.meta.total}
+        onRowClick={openView}
         page={list.data?.meta.current_page ?? page}
         lastPage={list.data?.meta.last_page ?? 1}
         onPageChange={setPage}

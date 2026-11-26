@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, type RenderOptions } from '@testing-library/react'
+import { render, screen, type RenderOptions } from '@testing-library/react'
+import type { UserEvent } from '@testing-library/user-event'
 import type { ReactElement, ReactNode } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { ToastProvider } from '../components/ui/ToastProvider'
@@ -22,6 +23,12 @@ export function renderPage(ui: ReactElement, path = '/', options?: Omit<RenderOp
     )
   }
   return render(ui, { wrapper: Wrapper, ...options })
+}
+
+/** Opens a row's "⋯" menu (by the row's name) and picks an item. */
+export async function chooseRowAction(user: UserEvent, rowName: string, item: string) {
+  await user.click(await screen.findByRole('button', { name: `Actions for ${rowName}` }))
+  await user.click(screen.getByRole('menuitem', { name: item }))
 }
 
 export function pageMeta(total: number, page = 1): PageMeta {

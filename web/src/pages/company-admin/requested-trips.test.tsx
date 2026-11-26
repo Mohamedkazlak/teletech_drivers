@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../../api/client'
 import { ApiError } from '../../api/errors'
 import i18n from '../../i18n'
-import { paginated, renderPage, tripRequest } from '../../test/render-page'
+import { paginated, renderPage, tripRequest, chooseRowAction } from '../../test/render-page'
 import { RequestedTripsPage } from './RequestedTripsPage'
 
 vi.mock('../../components/map/MapView', () => ({
@@ -72,7 +72,10 @@ describe('requested trips', () => {
       })
     })
 
-    await user.selectOptions(screen.getByRole('combobox', { name: 'Branch' }), 'Company Headquarters')
+    await user.selectOptions(
+      screen.getByRole('combobox', { name: 'Branch' }),
+      'Company Headquarters',
+    )
     await waitFor(() => {
       expect(http.get.mock.calls.map(listQuery)).toContainEqual({
         status: 'approved',
@@ -92,7 +95,7 @@ describe('requested trips', () => {
     http.post.mockResolvedValue(tripRequest({ status: 'approved' }))
 
     renderPage(<RequestedTripsPage />)
-    await user.click(await screen.findByRole('button', { name: 'Approve' }))
+    await chooseRowAction(user, 'Sara Nabil', 'Approve')
     const dialog = await screen.findByRole('dialog', { name: 'Approve this request?' })
     await user.click(within(dialog).getByRole('button', { name: 'Approve request' }))
 
@@ -116,7 +119,7 @@ describe('requested trips', () => {
     )
 
     renderPage(<RequestedTripsPage />)
-    await user.click(await screen.findByRole('button', { name: 'Reject' }))
+    await chooseRowAction(user, 'Sara Nabil', 'Reject')
     const dialog = await screen.findByRole('dialog', { name: 'Reject this request?' })
     await user.type(within(dialog).getByLabelText('Rejection reason'), 'Schedule conflict')
     await user.click(within(dialog).getByRole('button', { name: 'Reject request' }))

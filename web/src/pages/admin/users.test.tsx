@@ -84,9 +84,11 @@ describe('system admin users', () => {
 
     expect(await screen.findByText('Sara Nabil')).toBeInTheDocument()
     expect(screen.getByText('System Admin')).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: 'Reset password' })).toHaveLength(1)
+    expect(screen.getAllByRole('button', { name: /^Actions for/ })).toHaveLength(1)
+    expect(screen.getByText('You')).toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: 'Reset password' }))
+    await user.click(screen.getByRole('button', { name: /^Actions for/ }))
+    await user.click(screen.getByRole('menuitem', { name: 'Reset password' }))
     const dialog = await screen.findByRole('dialog', { name: 'Reset password' })
     expect(
       within(dialog).getByText(/must change this password the next time they sign in/i),
